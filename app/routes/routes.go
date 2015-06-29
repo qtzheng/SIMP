@@ -68,6 +68,42 @@ func (_ tStatic) ServeModule(
 }
 
 
+type tRole struct {}
+var Role tRole
+
+
+func (_ tRole) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Role.Index", args).Url
+}
+
+
+type tSystem struct {}
+var System tSystem
+
+
+func (_ tSystem) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.Index", args).Url
+}
+
+
+type tAccount struct {}
+var Account tAccount
+
+
+func (_ tAccount) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Account.Index", args).Url
+}
+
+
 type tApp struct {}
 var App tApp
 
@@ -80,15 +116,27 @@ func (_ tApp) Index(
 }
 
 
-type tIndex struct {}
-var Index tIndex
+type tDepartment struct {}
+var Department tDepartment
 
 
-func (_ tIndex) Index(
+func (_ tDepartment) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("Index.Index", args).Url
+	return revel.MainRouter.Reverse("Department.Index", args).Url
+}
+
+
+type tModule struct {}
+var Module tModule
+
+
+func (_ tModule) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Module.Index", args).Url
 }
 
 
