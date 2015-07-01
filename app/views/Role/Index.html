@@ -1,0 +1,124 @@
+{{template "header.html" .}}
+<div class="mini-splitter" vertical="false" style="width:100%;height:100%;" borderstyle="border:0;">
+    <div size="200px">
+        <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
+            <div size="30">
+                <div class="mini-toolbar" borderstyle="border:0;">
+                    <a class="mini-button" iconcls="icon-add" onclick="OpenRoleWin('add')">增加</a>
+                    <a class="mini-button" iconcls="icon-edit" onclick="OpenRoleWin('edit')">修改</a>
+                    <a class="mini-button" iconcls="icon-remove" onclick="DeleteRole()">删除</a>
+                </div>
+            </div>
+            <div>
+                <ul id="treeRole" class="mini-tree" style="width:100%;padding:5px;" url="/RoleManage/GetRoleTreeJson" onnodeselect="onRoleSelect"
+                    showtreeicon="true" parentfield="PId" textfield="Name" idfield="ID" resultastree="false" expandonload="1"></ul>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <div id="tbMain" class="mini-tabs" activeindex="0" style="width:100%;height:100%;border:0px;padding:0px" borderstyle="padding:0;border:0"
+             plain="false" tabposition="bottom" onactivechanged="OnTabChanged">
+            <div title="权限">
+                <div class="mini-splitter" vertical="false" style="width:100%;height:100%;" borderstyle="border:0;">
+                    <div size="300px">
+                        <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
+                            <div size="30">
+                                <div class="mini-toolbar" borderstyle="border:0;" style="height:30px">
+                                    选择可操作模块
+                                </div>
+                            </div>
+                            <div style="vertical-align:top">
+                                <ul id="treeModule" class="mini-tree" style="width:100%;padding:5px;height:100%" url="/Module/GetAllUsed" onnodeselect="onModuleSelect"
+                                    onbeforenodecheck="onModuleCheck"
+                                    showtreeicon="true" showcheckbox="true" parentfield="PId" textfield="Name" idfield="ID" resultastree="false" expandonload="0"></ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+                        <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
+                            <div size="30">
+                                <div class="mini-toolbar" borderstyle="border:0;" style="height:30px">
+                                    选择可操作功能点
+                                </div>
+                            </div>
+                            <div>
+                                <div id="gridFunction" class="mini-datagrid" multiselect="true" style="width:100%;height:100%;" url="/Module/GetModuleFunc" borderstyle="border:0;"
+                                     showpager="false" onload="OnFunctionLoad">
+                                    <div property="columns">
+                                        <div type="indexcolumn" headeralign="center" width="40px">序号</div>
+                                        <div field="name" headeralign="center" width="40px" renderer="CreateCheck">选择</div>
+                                        <div field="id" headeralign="center" visible="false">功能点ID</div>
+                                        <div field="name" headeralign="center" width="200px">功能点名称</div>
+                                        <div field="code" headeralign="center" width="200px">功能点编码</div>
+                                        <div field="perId" headeralign="center" visible="false">授权ID</div>
+                                        <div headeralign="center" width="100px" renderer="OnRenderer">查看资源</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div title="用户">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="winRole" class="mini-window" style="display: none; width: 450px; height: 300px" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+    <form id="formRole">
+        <table class="FormTable" cellspacing="1" style=" width:100%" border="0">
+            <tr>
+                <td style="width:100px;text-align:right">角色名称：</td>
+                <td>
+                    <input id="hidRoleId" name="RoleID" class="mini-hidden" style=" width:300px" />
+                    <input id="txtName" name="RoleName" class="mini-textbox" required="true" style=" width: 300px" />
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:100px;text-align:right">角色编码：</td>
+                <td><input id="txtRoleCode" name="RoleCode" class="mini-textbox" required="true" style=" width: 300px" /></td>
+            </tr>
+            <tr>
+                <td style="width:100px;text-align:right">上级角色：</td>
+                <td>
+                    <span id="spanParentName"></span>
+                    <input id="txtParentId" name="ParentRoleID" class="mini-hidden" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width:100px;text-align:right">排序标记：</td>
+                <td>
+                    <input id="txtSort" name="Sort" class="mini-textbox" required="true" vtype="int" style=" width: 300px" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width:100px;text-align:right">是否启用：</td>
+                <td>
+                    <input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" checked="true" value="2" truevalue="2" falsevalue="1" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width:100px;text-align:right">备注：</td>
+                <td>
+                    <textarea name="Remark" class="mini-textarea" style=" width: 300px"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center">
+                    <a id="roleAdd" class=" mini-button" iconcls="icon-add" onclick="SubmitRole('add', '/RoleManage/AddRole')">添加</a>
+                    <a id="roleSave" class=" mini-button" iconcls="icon-save" onclick="SubmitRole('edit', '/RoleManage/EditRole')">保存</a>
+                    <a class=" mini-button" iconcls="icon-close" onclick="hideWindow(winRole);">取消</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
