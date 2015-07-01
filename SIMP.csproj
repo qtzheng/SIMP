@@ -165,8 +165,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\views\Account\Login.html" />
     <Content Include="app\views\App\Index.html" />
     <Content Include="app\views\debug.html" />
+    <Content Include="app\views\Department\Index.html" />
     <Content Include="app\views\errors\404.html" />
     <Content Include="app\views\errors\500.html" />
     <Content Include="app\views\flash.html" />
@@ -177,6 +179,9 @@
     <Content Include="app\init.go" />
     <Content Include="app\routes\routes.go" />
     <Content Include="app\tmp\main.go" />
+    <Content Include="app\views\Module\Index.html" />
+    <Content Include="app\views\Role\Index.html" />
+    <Content Include="app\views\Role\RoleUser.html" />
     <Content Include="conf\app.conf" />
     <Content Include="conf\routes" />
     <Content Include="LICENSE" />
@@ -1212,6 +1217,25 @@
       <Project>{e81894bb-40f3-4fb4-99f7-143a34359a34}</Project>
       <Name>SCDP.WebConfigSection</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\controllers\department.go" />
+    <Content Include="app\controllers\module.go" />
+    <Content Include="app\controllers\role.go" />
+    <Content Include="app\controllers\system.go" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\views\System\" />
+    <Folder Include="bll\" />
+    <Folder Include="dal\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="utils\debug.go" />
+    <Content Include="utils\log.go" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\modules\basemodule.go" />
+    <Content Include="app\modules\user.go" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
