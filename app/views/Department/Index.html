@@ -1,0 +1,142 @@
+{{template "header.html" .}}
+    <div class="mini-splitter" vertical="false" style="width:100%;height:100%;" borderstyle="border:0;">
+        <div size="200px">
+            <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
+                <div size="30px">
+                    <div class="mini-toolbar" borderstyle="border:0;">
+                        <a class=" mini-button" iconcls="icon-add" onclick="openDepWindow('add')">增加</a>
+                        <a class="mini-button" iconcls="icon-edit" onclick="openDepWindow('edit')">修改</a>
+                        <a class="mini-button" iconcls="icon-remove" onclick="deleteDep()">删除</a>
+                    </div>
+                </div>
+                <div>
+                    <ul id="treeDep" class="mini-tree" style="width:100%;padding:5px;" url='listTree.txt' onnodeclick="onDepSelect"
+                        showtreeicon="true" parentfield="pid" textfield="text" idfield="id" resultastree="false"></ul>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
+                <div size="30px">
+                    <div class="mini-toolbar" borderstyle="border:0;">
+                        <a class=" mini-button" iconcls="icon-add" onclick="add()">
+                            增加
+                        </a>
+                        <a class="mini-button" iconcls="icon-edit" onclick="add()">修改</a>
+                        <a class="mini-button" iconcls="icon-remove">删除</a>
+                        <span class="separator"></span>
+                        <input class="mini-textbox" />
+                        <a class="mini-button" plain="true">查询</a>
+                    </div>
+                </div>
+                <div>
+                    <div id="datagrid1" class="mini-datagrid" style="width:100%;height:100%;border:0px" borderstyle="border:0;" allowresize="false"
+                         url="grid.txt" idfield="id" multiselect="true">
+                        <div property="columns">
+                            <div type="checkcolumn"></div>
+                            <div field="loginname" width="120" headeralign="center" allowsort="true">员工帐号</div>
+                            <div field="name" width="120" headeralign="center" allowsort="true">姓名</div>
+                            <div field="dept_name" width="120">所属部门</div>
+                            <div field="createtime" width="100" headeralign="center" dateformat="yyyy-MM-dd" allowsort="true">创建日期</div>
+                            <div field="email" width="100">邮箱</div>
+                            <div field="email" width="80">是否启用</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="viewDep" class="mini-window" style="display:none;width:400px; height:300px" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+        <form id="formDep">
+            <table cellspacing="1" style=" width:100%" border="0">
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">部门名称：</td>
+                    <td>
+                        <input id="hidDepId" name="DepartmentID" class="mini-hidden" />
+                        <input id="txtName" name="DepartmentName" class="mini-textbox" required="true" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">部门编码：</td>
+                    <td><input id="txtDepCode" name="Code" class="mini-textbox" required="true" /></td>
+                </tr>
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">上级部门：</td>
+                    <td>
+                        <span id="spanParentName"></span>
+                        <input id="txtParentId" name="ParentDepID" class="mini-hidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">排序标记：</td>
+                    <td>
+                        <input id="txtSort" name="Sort" class="mini-textbox" required="true" vtype="int" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">是否启用：</td>
+                    <td>
+                        <input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" value="1" truevalue="1" falsevalue="0" />
+                        <input id="txtGrade" name="Grade" class="mini-hidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center">
+                        <a id="depAdd" class=" mini-button" iconcls="icon-add" onclick="submitDep('add')">添加</a>
+                        <a id="depSave" class=" mini-button" iconcls="icon-add" onclick="submitDep('edit')">保存</a>
+                        <a id="depReset" class=" mini-button" iconcls="icon-add">重置</a>
+                        <a class=" mini-button" iconcls="icon-add" onclick="closeDepWindow()">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="viewEmp" class="mini-window" style="display:none;width:400px; height:300px" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+        <form id="formDep">
+            <table cellspacing="1" style=" width:100%" border="0">
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">部门名称：</td>
+                    <td>
+                        <input id="hidDepId" name="DepartmentID" class="mini-hidden" />
+                        <input id="txtName" name="DepartmentName" class="mini-textbox" required="true" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">部门编码：</td>
+                    <td><input id="txtDepCode" name="Code" class="mini-textbox" required="true" /></td>
+                </tr>
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">上级部门：</td>
+                    <td>
+                        <span id="spanParentName"></span>
+                        <input id="txtParentId" name="ParentDepID" class="mini-hidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">排序标记：</td>
+                    <td>
+                        <input id="txtSort" name="Sort" class="mini-textbox" required="true" vtype="int" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:30%;min-width:100px;text-align:right">是否启用：</td>
+                    <td>
+                        <input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" value="1" truevalue="1" falsevalue="0" />
+                        <input id="txtGrade" name="Grade" class="mini-hidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center">
+                        <a id="depSave" class=" mini-button" iconcls="icon-add" onclick="submitDep('edit')">保存</a>
+                        <a id="depReset" class=" mini-button" iconcls="icon-add">重置</a>
+                        <a class=" mini-button" iconcls="icon-add" onclick="closeDepWindow()">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
+
