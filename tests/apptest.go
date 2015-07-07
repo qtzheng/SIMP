@@ -1,4 +1,4 @@
-package tests
+﻿package tests
 
 import "github.com/revel/revel/testing"
 
