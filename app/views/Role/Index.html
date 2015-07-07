@@ -4,14 +4,14 @@
         <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
             <div size="30">
                 <div class="mini-toolbar" borderstyle="border:0;">
-                    <a class="mini-button" iconcls="icon-add" onclick="OpenRoleWin('add')">增加</a>
+                    <a class="mini-button" iconcls="icon-add" onclick="OpenRoleAdd()">增加</a>
                     <a class="mini-button" iconcls="icon-edit" onclick="OpenRoleWin('edit')">修改</a>
                     <a class="mini-button" iconcls="icon-remove" onclick="DeleteRole()">删除</a>
                 </div>
             </div>
             <div>
-                <ul id="treeRole" class="mini-tree" style="width:100%;padding:5px;" url="/RoleManage/GetRoleTreeJson" onnodeselect="onRoleSelect"
-                    showtreeicon="true" parentfield="PId" textfield="Name" idfield="ID" resultastree="false" expandonload="1"></ul>
+                <ul id="treeRole" class="mini-tree" style="width:100%;padding:5px;" url="/Role/GetRoleTreeJson" onnodeselect="onRoleSelect"
+                    showtreeicon="true" parentfield="pid" textfield="text" idfield="id" resultastree="false" expandonload="1"></ul>
             </div>
         </div>
 
@@ -120,5 +120,6 @@
         </table>
     </form>
 </div>
+<script type="text/javascript" src="/public/js/role.js" ></script>
 </body>
 </html>

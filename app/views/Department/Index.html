@@ -1,17 +1,16 @@
-{{append  . "moreScripts" "common.js" ""}}
 {{template "header.html" .}}
     <div class="mini-splitter" vertical="false" style="width:100%;height:100%;" borderstyle="border:0;">
         <div size="200px">
             <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
                 <div size="30px">
                     <div class="mini-toolbar" borderstyle="border:0;">
-                        <a class=" mini-button" iconcls="icon-add" onclick="openDepWindow('add')">增加</a>
+                        <a class=" mini-button" iconcls="icon-add" onclick="OpenDepAdd()">增加</a>
                         <a class="mini-button" iconcls="icon-edit" onclick="openDepWindow('edit')">修改</a>
                         <a class="mini-button" iconcls="icon-remove" onclick="deleteDep()">删除</a>
                     </div>
                 </div>
                 <div>
-                    <ul id="treeDep" class="mini-tree" style="width:100%;padding:5px;" url='listTree.txt' onnodeclick="onDepSelect"
+                    <ul id="treeDep" class="mini-tree" style="width:100%;padding:5px;" onnodeclick="onDepSelect" url="/Department/GetDepTree"
                         showtreeicon="true" parentfield="pid" textfield="text" idfield="id" resultastree="false"></ul>
                 </div>
             </div>
@@ -138,6 +137,7 @@
             </table>
         </form>
     </div>
+    <script type="text/javascript" src="/public/js/department.js"></script>
 </body>
 </html>
 

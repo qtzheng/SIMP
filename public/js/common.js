@@ -60,7 +60,7 @@ function OpenAddForm(form, win, title, icons, funcBefore) {
     if (typeof funcBefore =="function") {
         funcBefore();
     }
-    win.set({ title: wtitle, iconCls: icons });
+    win.set({ title: title, iconCls: icons });
     win.showAtPos("center", "middle");
 }
 function OpenEditForm(url, form, win, title, icons, func) {
@@ -85,6 +85,6 @@ function OpenEditForm(url, form, win, title, icons, func) {
                 mini.alert(m);
         }
     });
-    win.set({ title: wtitle, iconCls: icons });
+    win.set({ title: title, iconCls: icons });
     win.showAtPos("center", "middle");
 }
