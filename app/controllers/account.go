@@ -8,6 +8,6 @@ type Account struct {
 	Application
 }
 
-func (c Account) Index() revel.Result {
+func (c Account) Login() revel.Result {
 	return c.Render()
 }
