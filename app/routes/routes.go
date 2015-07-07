@@ -68,27 +68,15 @@ func (_ tTestRunner) List(
 }
 
 
-type tAccount struct {}
-var Account tAccount
+type tModule struct {}
+var Module tModule
 
 
-func (_ tAccount) Index(
+func (_ tModule) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("Account.Index", args).Url
-}
-
-
-type tSystem struct {}
-var System tSystem
-
-
-func (_ tSystem) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("System.Index", args).Url
+	return revel.MainRouter.Reverse("Module.Index", args).Url
 }
 
 
@@ -104,6 +92,30 @@ func (_ tRole) Index(
 }
 
 
+type tSystem struct {}
+var System tSystem
+
+
+func (_ tSystem) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.Index", args).Url
+}
+
+
+type tAccount struct {}
+var Account tAccount
+
+
+func (_ tAccount) Login(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Account.Login", args).Url
+}
+
+
 type tApp struct {}
 var App tApp
 
@@ -113,18 +125,6 @@ func (_ tApp) Index(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-
-type tModule struct {}
-var Module tModule
-
-
-func (_ tModule) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Module.Index", args).Url
 }
 
 
