@@ -12,13 +12,14 @@ const (
 )
 
 var (
-	//MgoConn *mgo.Session
+	MgoConn *mgo.Session
 	DevMode bool
 )
 
 func init() {
 	DevMode = revel.DevMode
-	MgoConn, err := mgo.Dial(url)
+	var err error
+	MgoConn, err = mgo.Dial(url)
 	if err != nil {
 		if revel.DevMode {
 			utils.Display(err)
@@ -33,4 +34,8 @@ func init() {
 }
 
 type BaseBussiness struct {
+}
+
+func (b *BaseBussiness) DB() *mgo.Database {
+	return MgoConn.Clone().DB("test")
 }
