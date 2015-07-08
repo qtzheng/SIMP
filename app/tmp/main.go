@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT EDIT
+﻿// GENERATED CODE - DO NOT EDIT
 package main
 
 import (

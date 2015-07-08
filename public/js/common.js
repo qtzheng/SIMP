@@ -1,4 +1,4 @@
-var request = {
+ï»¿var request = {
     QueryString: function (val) {
         var uri = window.location.search;
         var re = new RegExp("" + val + "=([^&?]*)", "ig");
@@ -15,25 +15,25 @@ var IsOpenWindow= function() {
 }
 function OpenWindow(url, title, iconCls, width, height, data, ondestroy) {
     mini.open({
-        url: url,        //Ò³ÃæµØÖ·
-        title: title,      //±êÌâ
-        iconCls: iconCls,    //±êÌâÍ¼±ê
-        width: width,      //¿í¶È
-        height: height,     //¸ß¶È
-        allowResize: true,       //ÔÊĞí³ß´çµ÷½Ú
-        allowDrag: true,         //ÔÊĞíÍÏ×§Î»ÖÃ
-        showCloseButton: true,   //ÏÔÊ¾¹Ø±Õ°´Å¥
-        showMaxButton: false,     //ÏÔÊ¾×î´ó»¯°´Å¥
-        showModal: true,         //ÏÔÊ¾ÕÚÕÖ
-        loadOnRefresh: true,       //trueÃ¿´ÎË¢ĞÂ¶¼¼¤·¢onloadÊÂ¼ş
-        onload: function () {       //µ¯³öÒ³Ãæ¼ÓÔØÍê³É
+        url: url,        //é¡µé¢åœ°å€
+        title: title,      //æ ‡é¢˜
+        iconCls: iconCls,    //æ ‡é¢˜å›¾æ ‡
+        width: width,      //å®½åº¦
+        height: height,     //é«˜åº¦
+        allowResize: true,       //å…è®¸å°ºå¯¸è°ƒèŠ‚
+        allowDrag: true,         //å…è®¸æ‹–æ‹½ä½ç½®
+        showCloseButton: true,   //æ˜¾ç¤ºå…³é—­æŒ‰é’®
+        showMaxButton: false,     //æ˜¾ç¤ºæœ€å¤§åŒ–æŒ‰é’®
+        showModal: true,         //æ˜¾ç¤ºé®ç½©
+        loadOnRefresh: true,       //trueæ¯æ¬¡åˆ·æ–°éƒ½æ¿€å‘onloadäº‹ä»¶
+        onload: function () {       //å¼¹å‡ºé¡µé¢åŠ è½½å®Œæˆ
             if (typeof data != "undefined") {
                 var iframe = this.getIFrameEl();
-                //µ÷ÓÃµ¯³öÒ³Ãæ·½·¨½øĞĞ³õÊ¼»¯
+                //è°ƒç”¨å¼¹å‡ºé¡µé¢æ–¹æ³•è¿›è¡Œåˆå§‹åŒ–
                 iframe.contentWindow.InitWindow(data);
             }
         },
-        ondestroy: function (data) {  //µ¯³öÒ³Ãæ¹Ø±ÕÇ°
+        ondestroy: function (data) {  //å¼¹å‡ºé¡µé¢å…³é—­å‰
             if (typeof ondestroy == "function") {
                 data = mini.clone(data);
                 ondestroy(data);
@@ -44,7 +44,7 @@ function OpenWindow(url, title, iconCls, width, height, data, ondestroy) {
 function CloseWindow(action, data, form) {
     if (form.isChanged) {
         if (action == "close" && form.isChanged()) {
-            if (confirm("Êı¾İ±»ĞŞ¸ÄÁË£¬ÊÇ·ñÏÈ±£´æ£¿")) {
+            if (confirm("æ•°æ®è¢«ä¿®æ”¹äº†ï¼Œæ˜¯å¦å…ˆä¿å­˜ï¼Ÿ")) {
                 return false;
             }
         }
@@ -71,8 +71,8 @@ function OpenEditForm(url, form, win, title, icons, func) {
         type: "get",
         success: function (text) {
             CloseWaite();
-            var data = mini.decode(text);   //·´ĞòÁĞ»¯³É¶ÔÏó
-            formModule.setData(data);             //ÉèÖÃ¶à¸ö¿Ø¼şÊı¾İ
+            var data = mini.decode(text);   //ååºåˆ—åŒ–æˆå¯¹è±¡
+            formModule.setData(data);             //è®¾ç½®å¤šä¸ªæ§ä»¶æ•°æ®
             if (func) {
                 func(data);
             }
