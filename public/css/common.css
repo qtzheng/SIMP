@@ -1,0 +1,53 @@
+.FormTable {
+    width: 100%;
+    font-size: 9pt;
+    background-color: #c2c2c2;
+}
+
+    .FormTable tr {
+        background-color: white;
+    }
+    .FormTable th {
+        text-align:right;
+        font-size:9pt;
+        font-weight:normal;
+        white-space:nowrap;
+        width:10%;
+    }
+    .TableTitlePath {
+    background-image: url("../../Images/head.jpg");
+    /*background-color: #bc8f8f;
+   
+    color: #b22222;*/
+    font-size: 9pt;
+    font-weight: bold;
+    height: 25px;
+    text-indent: 5px;
+}
+.asLabel .mini-textbox-border,
+.asLabel .mini-textbox-input,
+.asLabel .mini-buttonedit-border,
+.asLabel .mini-buttonedit-input,
+.asLabel .mini-textboxlist-border {
+    border: 0;
+    background: none;
+    cursor: default;
+}
+
+.asLabel .mini-buttonedit-button,
+.asLabel .mini-textboxlist-close {
+    display: none;
+}
+
+.asLabel .mini-textboxlist-item {
+    padding-right: 8px;
+}
+.zqt-toolbar {
+    /*border: solid 1px #909aa6;*/
+    border: 0px;
+    padding: 3px;
+    _padding-bottom: 4px;
+    background: #E7EAEE url('../Images/toolbar.png') repeat-x 0 0;
+}
+ #tbSelectPart {border-right:1px solid #A5ACB5;border-bottom:1px solid #A5ACB5}
+ #tbSelectPart td{border-left:1px solid #A5ACB5;border-top:1px solid #A5ACB5}

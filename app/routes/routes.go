@@ -1,4 +1,4 @@
-﻿// GENERATED CODE - DO NOT EDIT
+// GENERATED CODE - DO NOT EDIT
 package routes
 
 import "github.com/revel/revel"
@@ -7,36 +7,6 @@ import "github.com/revel/revel"
 type tApplication struct {}
 var Application tApplication
 
-
-
-type tTestRunner struct {}
-var TestRunner tTestRunner
-
-
-func (_ tTestRunner) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
-}
-
-func (_ tTestRunner) Run(
-		suite string,
-		test string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "suite", suite)
-	revel.Unbind(args, "test", test)
-	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
-}
-
-func (_ tTestRunner) List(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("TestRunner.List", args).Url
-}
 
 
 type tStatic struct {}
@@ -68,15 +38,33 @@ func (_ tStatic) ServeModule(
 }
 
 
-type tSystem struct {}
-var System tSystem
+type tTestRunner struct {}
+var TestRunner tTestRunner
 
 
-func (_ tSystem) Index(
+func (_ tTestRunner) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("System.Index", args).Url
+	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
+}
+
+func (_ tTestRunner) Run(
+		suite string,
+		test string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "suite", suite)
+	revel.Unbind(args, "test", test)
+	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
+}
+
+func (_ tTestRunner) List(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("TestRunner.List", args).Url
 }
 
 
@@ -134,6 +122,13 @@ func (_ tModule) Index(
 	return revel.MainRouter.Reverse("Module.Index", args).Url
 }
 
+func (_ tModule) GetFuncs(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Module.GetFuncs", args).Url
+}
+
 
 type tRole struct {}
 var Role tRole
@@ -151,6 +146,32 @@ func (_ tRole) GetRoleTreeJson(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("Role.GetRoleTreeJson", args).Url
+}
+
+func (_ tRole) GetRoleInfo(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Role.GetRoleInfo", args).Url
+}
+
+func (_ tRole) AddRole(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Role.AddRole", args).Url
+}
+
+
+type tSystem struct {}
+var System tSystem
+
+
+func (_ tSystem) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.Index", args).Url
 }
 
 

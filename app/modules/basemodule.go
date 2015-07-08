@@ -2,22 +2,21 @@
 
 import (
 	"encoding/json"
-	"github.com/qtzheng/SIMP/utils"
+	//"github.com/qtzheng/SIMP/utils"
 	"github.com/revel/revel"
 )
 
 type BaseModule struct {
-	revel.DevMode
 }
 
 func (b *BaseModule) ConvertToJson() string {
 	js, err := json.Marshal(b)
 	if err != nil {
-		if b.DevMode {
+		if revel.DevMode {
 			panic(err)
 		}
 		return ""
 	} else {
-		return js
+		return string(js)
 	}
 }

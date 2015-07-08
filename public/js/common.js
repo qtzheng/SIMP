@@ -5,7 +5,7 @@
         return ((uri.match(re)) ? (uri.match(re)[0].substr(val.length + 1)) : null);
     }
 }
-var IsOpenWindow= function() {
+var IsOpenWindow = function () {
     var winId = request.QueryString("_winid");
     if (!winId && winId != "") {
         return true;
@@ -41,7 +41,7 @@ function OpenWindow(url, title, iconCls, width, height, data, ondestroy) {
         }
     });
 }
-function CloseWindow(action, data, form) {
+function CloseOpenWindow(action, data, form) {
     if (form.isChanged) {
         if (action == "close" && form.isChanged()) {
             if (confirm("数据被修改了，是否先保存？")) {
@@ -49,42 +49,107 @@ function CloseWindow(action, data, form) {
             }
         }
     }
-   
-    if (window.CloseOwnerWindow&&IsOpenWindow())
+
+    if (window.CloseOwnerWindow && IsOpenWindow())
         return window.CloseOwnerWindow(data);
     //else
     //    window.close();
 }
 function OpenAddForm(form, win, title, icons, funcBefore) {
     form.clear();
-    if (typeof funcBefore =="function") {
+    if (typeof funcBefore == "function") {
         funcBefore();
     }
     win.set({ title: title, iconCls: icons });
     win.showAtPos("center", "middle");
 }
-function OpenEditForm(url, form, win, title, icons, func) {
+function OpenEditForm(url, form, win, title, icons, funcBefore,funcLoad) {
     OpenWaite();
-    formModule.clear();
-    $.ajax({
-        url: url,
-        type: "get",
-        success: function (text) {
-            CloseWaite();
-            var data = mini.decode(text);   //反序列化成对象
-            formModule.setData(data);             //设置多个控件数据
-            if (func) {
-                func(data);
-            }
-        }, error: function (q, m, e) {
-            CloseWaite();
-            if (q.responseText && q.responseText != "") {
-                mini.alert(q.responseText);
-            }
-            else
-                mini.alert(m);
+    try {
+        form.clear();
+        if (typeof funcBefore == "function") {
+            funcBefore();
         }
+        $.ajax({
+            url: url,
+            type: "get",
+            success: function (text) {
+                CloseWaite();
+                var data = mini.decode(text);   //反序列化成对象
+                form.setData(data);             //设置多个控件数据
+                if (typeof funcLoad == "function") {
+                    funcLoad(data);
+                }
+            }, error: function (q, m, e) {
+                CloseWaite();
+                mini.alert(m);
+            }
+        });
+        win.set({ title: title, iconCls: icons });
+        win.showAtPos("center", "middle");
+    } catch (e) {
+        CloseWaite();
+        mini.alert(e.message);
+    }
+}
+
+function HideWin(win) {
+    if (typeof win == "String") {
+        mini.get(win).hide();
+    }
+    else
+        win.hide();
+}
+function OpenWaite(msg) {
+    if (!msg) {
+        msg = "请等待...";
+    }
+    mini.mask({
+        el: document.body,
+        cls: 'mini-mask-loading',
+        html: msg
     });
-    win.set({ title: title, iconCls: icons });
-    win.showAtPos("center", "middle");
+}
+function CloseWaite() {
+    mini.unmask(document.body);
+}
+function Ajax(option) {
+    OpenWaite();
+    try {
+        $.ajax({
+            url: option.url,
+            type: option.type,
+            data: option.data,
+            success: function (msg) {
+                CloseWaite();
+                option.success(msg);
+            },
+            error: function (q, m, e) {
+                CloseWaite();
+                if (option.error) {
+                    option.error();
+                }
+                mini.alert(m);
+            }
+        });
+    } catch (e) {
+        CloseWaite();
+        mini.alert(e.message);
+    }
+}
+function CheckForm(form) {
+    if (typeof form == "String") {
+        form = new mini.Form(form);
+    }
+    form.validate();
+    if (!form.isValid) {
+        var err = form.getErrorTexts().join(";");
+        if (err=="") {
+            err = "数据验证不通过";
+        }
+        mini.alert(err);
+        return false;
+    }
+    else
+        return true;
 }

@@ -2,7 +2,7 @@ package bll
 
 import (
 	"fmt"
-	"github.com/qtzheng/SIMP/utils"
+	//"github.com/qtzheng/SIMP/utils"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2"
 )
@@ -12,10 +12,12 @@ const (
 )
 
 var (
-//MgoConn *mgo.Session
+	//MgoConn *mgo.Session
+	DevMode bool
 )
 
 func init() {
+	DevMode = revel.DevMode
 	MgoConn, err := mgo.Dial(url)
 	if err != nil {
 		if revel.DevMode {

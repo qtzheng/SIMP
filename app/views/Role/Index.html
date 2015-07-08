@@ -5,7 +5,7 @@
             <div size="30">
                 <div class="mini-toolbar" borderstyle="border:0;">
                     <a class="mini-button" iconcls="icon-add" onclick="OpenRoleAdd()">增加</a>
-                    <a class="mini-button" iconcls="icon-edit" onclick="OpenRoleWin('edit')">修改</a>
+                    <a class="mini-button" iconcls="icon-edit" onclick="OpenRoleEdit()">修改</a>
                     <a class="mini-button" iconcls="icon-remove" onclick="DeleteRole()">删除</a>
                 </div>
             </div>
@@ -29,9 +29,9 @@
                                 </div>
                             </div>
                             <div style="vertical-align:top">
-                                <ul id="treeModule" class="mini-tree" style="width:100%;padding:5px;height:100%" url="/Module/GetAllUsed" onnodeselect="onModuleSelect"
+                                <ul id="treeModule" class="mini-tree" style="width:100%;padding:5px;height:100%" url="/Department/GetDepTree" onnodeselect="onModuleSelect"
                                     onbeforenodecheck="onModuleCheck"
-                                    showtreeicon="true" showcheckbox="true" parentfield="PId" textfield="Name" idfield="ID" resultastree="false" expandonload="0"></ul>
+                                    showtreeicon="true" showcheckbox="true" parentfield="pid" textfield="text" idfield="id" resultastree="false" expandonload="0"></ul>
                             </div>
                         </div>
 
@@ -112,9 +112,9 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align:center">
-                    <a id="roleAdd" class=" mini-button" iconcls="icon-add" onclick="SubmitRole('add', '/RoleManage/AddRole')">添加</a>
+                    <a id="roleAdd" class=" mini-button" iconcls="icon-add" onclick="AddRole()">添加</a>
                     <a id="roleSave" class=" mini-button" iconcls="icon-save" onclick="SubmitRole('edit', '/RoleManage/EditRole')">保存</a>
-                    <a class=" mini-button" iconcls="icon-close" onclick="hideWindow(winRole);">取消</a>
+                    <a class=" mini-button" iconcls="icon-close" onclick="HideWin(winRole);">取消</a>
                 </td>
             </tr>
         </table>

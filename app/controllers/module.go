@@ -11,3 +11,6 @@ type Module struct {
 func (c Module) Index() revel.Result {
 	return c.Render()
 }
+func (m Module) GetFuncs() revel.Result {
+	return m.RenderText("")
+}
