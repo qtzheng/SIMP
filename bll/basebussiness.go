@@ -8,7 +8,9 @@ import (
 )
 
 const (
-	url = ""
+	url      = ""
+	DbName   = "DB_SIMP"
+	RoleColl = "C_Role"
 )
 
 var (
@@ -36,6 +38,9 @@ func init() {
 type BaseBussiness struct {
 }
 
-func (b *BaseBussiness) DB() *mgo.Database {
-	return MgoConn.Clone().DB("test")
+func (b *BaseBussiness) CloneDB() *mgo.Database {
+	return MgoConn.Clone().DB(DbName)
+}
+func (b *BaseBussiness) NewDB() *mgo.Database {
+	return MgoConn.New().DB(DbName)
 }
