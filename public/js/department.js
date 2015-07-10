@@ -17,3 +17,16 @@ function OpenDepAdd() {
 function onDepSelect(e){
 	selectDep=e.node;
 }
+function AddDep () {
+    if (!CheckForm(formDep))
+        return;
+    var data = mini.encode(formDep.getData());
+    Ajax({
+        url: "/Department/AddDep",
+        type: "post",
+        data: { role: data },
+        success: function (msg) {
+            mini.alert("");
+        }
+    });
+}
