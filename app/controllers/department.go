@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"github.com/qtzheng/SIMP/app/modules"
+	"github.com/qtzheng/SIMP/bll"
 	"github.com/revel/revel"
 )
 
@@ -20,5 +22,8 @@ func (d Department) GetDepTree() revel.Result {
 	{id: "ajax", text: "一级管理员", pid: "base"},
 	{id: "json", text: "二级管理员", pid: "base"}
 ]`)
+
+}
+func (d *Department) AddDep(dep *modules.Department) {
 
 }
