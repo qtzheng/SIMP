@@ -6,7 +6,7 @@ import (
 )
 
 type Role struct {
-	RoleID   bson.ObjectId
+	RoleID   bson.ObjectId `"bson":_id`
 	RoleName string
 	RoleCode string
 	IsUse    bool

@@ -3,7 +3,6 @@
 import (
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"sync"
 )
 
@@ -30,10 +29,6 @@ func init() {
 	MgoSession, err = mgo.Dial(url)
 	if err != nil {
 		revel.WARN.Fatalln(err)
-	} else {
-		fmt.Print("数据库链接成功！")
-		dbName, _ := MgoSession.DatabaseNames()
-		fmt.Print(dbName)
 	}
 }
 
@@ -50,5 +45,5 @@ func (b *BaseAccess) CopyDB() *mgo.Database {
 	return MgoSession.Copy().DB(DbName)
 }
 func (b *BaseAccess) CloseDB() {
-	return MgoSession.Close()
+	MgoSession.Close()
 }
