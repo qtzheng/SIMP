@@ -16,5 +16,6 @@ func RoleCreateTree() *[]modules.Role {
 
 //插入角色信息
 func RoleInsert(role *modules.Role) error {
+	role.RoleID = NewObjectID()
 	return dal.RoleInsert(role)
 }

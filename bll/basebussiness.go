@@ -2,6 +2,7 @@ package bll
 
 import (
 	"github.com/revel/revel"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var (
@@ -13,4 +14,7 @@ func init() {
 }
 func ErrorLog(err error) {
 	revel.WARN.Fatalln(err)
+}
+func NewObjectID() bson.ObjectId {
+	return bson.NewObjectId()
 }

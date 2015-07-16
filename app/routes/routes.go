@@ -68,18 +68,6 @@ func (_ tTestRunner) List(
 }
 
 
-type tAccount struct {}
-var Account tAccount
-
-
-func (_ tAccount) Login(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Account.Login", args).Url
-}
-
-
 type tApp struct {}
 var App tApp
 
@@ -89,6 +77,25 @@ func (_ tApp) Index(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+
+type tModule struct {}
+var Module tModule
+
+
+func (_ tModule) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Module.Index", args).Url
+}
+
+func (_ tModule) GetFuncs(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Module.GetFuncs", args).Url
 }
 
 
@@ -111,22 +118,27 @@ func (_ tDepartment) GetDepTree(
 }
 
 
-type tModule struct {}
-var Module tModule
+type tAccount struct {}
+var Account tAccount
 
 
-func (_ tModule) Index(
+func (_ tAccount) Login(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("Module.Index", args).Url
+	return revel.MainRouter.Reverse("Account.Login", args).Url
 }
 
-func (_ tModule) GetFuncs(
+
+type tSystem struct {}
+var System tSystem
+
+
+func (_ tSystem) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("Module.GetFuncs", args).Url
+	return revel.MainRouter.Reverse("System.Index", args).Url
 }
 
 
@@ -162,18 +174,6 @@ func (_ tRole) AddRole(
 	
 	revel.Unbind(args, "role", role)
 	return revel.MainRouter.Reverse("Role.AddRole", args).Url
-}
-
-
-type tSystem struct {}
-var System tSystem
-
-
-func (_ tSystem) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("System.Index", args).Url
 }
 
 

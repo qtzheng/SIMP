@@ -25,5 +25,5 @@ func (d Department) GetDepTree() revel.Result {
 
 }
 func (d *Department) AddDep(dep *modules.Department) {
-
+	bll.InsertDep(dep)
 }

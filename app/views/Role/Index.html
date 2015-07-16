@@ -76,38 +76,38 @@
             <tr>
                 <td style="width:100px;text-align:right">角色名称：</td>
                 <td>
-                    <input id="hidRoleId" name="RoleID" class="mini-hidden" style=" width:300px" />
-                    <input id="txtName" name="RoleName" class="mini-textbox" required="true" style=" width: 300px" />
+                    <input id="hidRoleId" name="role.RoleID" class="mini-hidden" style=" width:300px" />
+                    <input id="txtName" name="role.RoleName" class="mini-textbox" required="true" style=" width: 300px" />
                 </td>
             </tr>
 
             <tr>
                 <td style="width:100px;text-align:right">角色编码：</td>
-                <td><input id="txtRoleCode" name="RoleCode" class="mini-textbox" required="true" style=" width: 300px" /></td>
+                <td><input id="txtRoleCode" name="role.RoleCode" class="mini-textbox" required="true" style=" width: 300px" /></td>
             </tr>
             <tr>
                 <td style="width:100px;text-align:right">上级角色：</td>
                 <td>
                     <span id="spanParentName"></span>
-                    <input id="txtParentId" name="ParentRoleID" class="mini-hidden" />
+                    <input id="txtParentId" name="role.ParentRoleID" class="mini-hidden" />
                 </td>
             </tr>
             <tr>
                 <td style="width:100px;text-align:right">排序标记：</td>
                 <td>
-                    <input id="txtSort" name="Sort" class="mini-textbox" required="true" vtype="int" style=" width: 300px" />
+                    <input id="txtSort" name="role.Sort" class="mini-textbox" required="true" vtype="int" style=" width: 300px" />
                 </td>
             </tr>
             <tr>
                 <td style="width:100px;text-align:right">是否启用：</td>
                 <td>
-                    <input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" checked="true" value="2" truevalue="2" falsevalue="1" />
+                    <input id="txtIsUse" name="role.IsUse" class="mini-checkbox" text="启用" checked="true" value="2" truevalue="2" falsevalue="1" />
                 </td>
             </tr>
             <tr>
                 <td style="width:100px;text-align:right">备注：</td>
                 <td>
-                    <textarea name="Remark" class="mini-textarea" style=" width: 300px"></textarea>
+                    <textarea name="role.Remark" class="mini-textarea" style=" width: 300px"></textarea>
                 </td>
             </tr>
             <tr>

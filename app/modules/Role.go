@@ -6,12 +6,12 @@ import (
 )
 
 type Role struct {
-	RoleID   bson.ObjectId `"bson":_id`
+	RoleID   bson.ObjectId `bson:"_id"`
 	RoleName string
 	RoleCode string
 	IsUse    bool
 	Remark   string
-	ParentID bson.ObjectId
+	ParentID string
 }
 
 func (r *Role) Validate(v *revel.Validation) {
