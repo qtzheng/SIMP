@@ -11,6 +11,6 @@ var (
 func init() {
 	DevMode = revel.DevMode
 }
-
-type BaseBussiness struct {
+func ErrorLog(err error) {
+	revel.WARN.Fatalln(err)
 }

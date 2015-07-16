@@ -6,5 +6,5 @@ import (
 )
 
 func InsertDep(dep *modules.Department) {
-
+	dal.DepInsert(dep)
 }

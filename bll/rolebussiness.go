@@ -5,14 +5,16 @@ import (
 	"github.com/qtzheng/SIMP/dal"
 )
 
-type RoleBussiness struct {
-	BaseBussiness
-}
-
-func (r *RoleBussiness) CreateRoleTree() *[]modules.Role {
-	roles := *dal.RoleAccess.SelectRoleTree()
+//创建权限树
+func RoleCreateTree() *[]modules.Role {
+	roles, err := dal.SelectRoleTree()
+	if err != nil {
+		ErrorLog(err)
+	}
 	return roles
 }
-func (r *RoleBussiness) Insert(role *modules.Role) error {
-	return dal.RoleAccess.Insert(role)
+
+//插入角色信息
+func RoleInsert(role *modules.Role) error {
+	return dal.RoleInsert(role)
 }

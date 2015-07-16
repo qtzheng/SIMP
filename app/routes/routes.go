@@ -9,6 +9,35 @@ var Application tApplication
 
 
 
+type tStatic struct {}
+var Static tStatic
+
+
+func (_ tStatic) Serve(
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
+}
+
+func (_ tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
+}
+
+
 type tTestRunner struct {}
 var TestRunner tTestRunner
 
@@ -39,44 +68,65 @@ func (_ tTestRunner) List(
 }
 
 
-type tStatic struct {}
-var Static tStatic
+type tAccount struct {}
+var Account tAccount
 
 
-func (_ tStatic) Serve(
-		prefix string,
-		filepath string,
+func (_ tAccount) Login(
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
-}
-
-func (_ tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
+	return revel.MainRouter.Reverse("Account.Login", args).Url
 }
 
 
-type tSystem struct {}
-var System tSystem
+type tApp struct {}
+var App tApp
 
 
-func (_ tSystem) Index(
+func (_ tApp) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("System.Index", args).Url
+	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+
+type tDepartment struct {}
+var Department tDepartment
+
+
+func (_ tDepartment) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Department.Index", args).Url
+}
+
+func (_ tDepartment) GetDepTree(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Department.GetDepTree", args).Url
+}
+
+
+type tModule struct {}
+var Module tModule
+
+
+func (_ tModule) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Module.Index", args).Url
+}
+
+func (_ tModule) GetFuncs(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Module.GetFuncs", args).Url
 }
 
 
@@ -115,65 +165,15 @@ func (_ tRole) AddRole(
 }
 
 
-type tApp struct {}
-var App tApp
+type tSystem struct {}
+var System tSystem
 
 
-func (_ tApp) Index(
+func (_ tSystem) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-
-type tModule struct {}
-var Module tModule
-
-
-func (_ tModule) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Module.Index", args).Url
-}
-
-func (_ tModule) GetFuncs(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Module.GetFuncs", args).Url
-}
-
-
-type tDepartment struct {}
-var Department tDepartment
-
-
-func (_ tDepartment) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Department.Index", args).Url
-}
-
-func (_ tDepartment) GetDepTree(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Department.GetDepTree", args).Url
-}
-
-
-type tAccount struct {}
-var Account tAccount
-
-
-func (_ tAccount) Login(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Account.Login", args).Url
+	return revel.MainRouter.Reverse("System.Index", args).Url
 }
 
 

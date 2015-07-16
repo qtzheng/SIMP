@@ -4,6 +4,6 @@ import (
 	"github.com/qtzheng/SIMP/app/modules"
 )
 
-func InsertDep(dep *modules.Department) error {
-
+func DepInsert(dep *modules.Department) error {
+	return NewDB().C(DepColl).Insert(dep)
 }

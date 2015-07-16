@@ -10,6 +10,7 @@ const (
 	url      = ""
 	DbName   = "DB_SIMP"
 	RoleColl = "C_Role"
+	DepColl  = "C_Department"
 )
 
 var (
@@ -32,18 +33,18 @@ func init() {
 	}
 }
 
-type BaseAccess struct {
-}
-
-func (b *BaseAccess) CloneDB() *mgo.Database {
+func CloneDB() *mgo.Database {
 	return MgoSession.Clone().DB(DbName)
 }
-func (b *BaseAccess) NewDB() *mgo.Database {
+func NewDB() *mgo.Database {
 	return MgoSession.New().DB(DbName)
 }
-func (b *BaseAccess) CopyDB() *mgo.Database {
+func CopyDB() *mgo.Database {
 	return MgoSession.Copy().DB(DbName)
 }
-func (b *BaseAccess) CloseDB() {
-	MgoSession.Close()
+func CloseDB() {
+	if MgoSession != nil {
+		MgoSession.Close()
+	}
+
 }

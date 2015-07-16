@@ -5,21 +5,20 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-type RoleAccess struct {
-	BaseAccess
-}
-
 //查询角色列表
-func (r *RoleAccess) SelectRoles() {
-	r.NewDB().C(RoleColl).Find(bson.M{})
-}
-func (r *RoleAccess) SelectRoleTree() *[]modules.Role {
+func SelectRoles(page, size int) (*[]modules.Role, error) {
 	roles := &[]modules.Role{}
-	query := r.NewDB().C(RoleColl).Find(nil).Select(bson.M{"RoleID": 1, "RoleName": 1, "ParentID": 1})
-	query.All(roles)
-	return roles
+	query := NewDB().C(RoleColl).Find(bson.M{}).Skip(page * size).Limit(size)
+	err := query.All(roles)
+	return roles, err
 }
-func (r *RoleAccess) Insert(role *modules.Role) error {
-	err := r.NewDB().C(RoleColl).Insert(role)
+func SelectRoleTree() (*[]modules.Role, error) {
+	roles := &[]modules.Role{}
+	query := NewDB().C(RoleColl).Find(nil).Select(bson.M{"RoleID": 1, "RoleName": 1, "ParentID": 1})
+	err := query.All(roles)
+	return roles, err
+}
+func RoleInsert(role *modules.Role) error {
+	err := NewDB().C(RoleColl).Insert(role)
 	return err
 }
