@@ -32,11 +32,12 @@ function DeleteRole() {
 function AddRole() {
     if (!CheckForm(formRole))
         return;
-    var data = formRole.getData();
+    var data =mini.encode(formRole.getData());
+    var role={role:data};
     Ajax({
         url: "/Role/AddRole",
         type: "post",
-        data: data ,
+        data: role ,
         success: function (msg) {
             mini.alert(msg);
         }

@@ -3,7 +3,7 @@ package controllers
 import (
 	//"encoding/json"
 	"github.com/qtzheng/SIMP/app/modules"
-	"github.com/qtzheng/SIMP/bll"
+	//"github.com/qtzheng/SIMP/bll"
 	"github.com/revel/revel"
 )
 
@@ -39,10 +39,11 @@ func (r Role) GetRoleInfo() revel.Result {
 	return r.RenderText(`{"RoleID":"1","RoleName":"测试角色","RoleCode":"Test","Sort":0,"IsUse":2,"Remark":"车上"}`)
 }
 func (r Role) AddRole(role *modules.Role) revel.Result {
-	err := bll.RoleInsert(role)
-	if err != nil {
-		revel.WARN.Fatal(err)
-		return r.RenderText("保存失败")
-	}
+	r.Params.Bind(role, "role")
+	//err := bll.RoleInsert(role)
+	//if err != nil {
+	//	revel.WARN.Fatal(err)
+	//	return r.RenderText("保存失败")
+	//}
 	return r.RenderJson(role)
 }
