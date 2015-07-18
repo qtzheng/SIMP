@@ -7,7 +7,6 @@ import (
 	"github.com/revel/revel"
 	_ "github.com/qtzheng/SIMP/app"
 	controllers "github.com/qtzheng/SIMP/app/controllers"
-	modules "github.com/qtzheng/SIMP/app/modules"
 	tests "github.com/qtzheng/SIMP/tests"
 	controllers0 "github.com/revel/modules/static/app/controllers"
 	_ "github.com/revel/modules/testrunner/app"
@@ -30,8 +29,47 @@ func main() {
 	revel.Init(*runMode, *importPath, *srcPath)
 	revel.INFO.Println("Running revel server")
 	
-	revel.RegisterController((*controllers.Application)(nil),
+	revel.RegisterController((*controllers.System)(nil),
 		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Role",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					10: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "GetRoleTreeJson",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.App)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					10: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Role",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					13: []string{ 
+					},
+				},
+			},
 			
 		})
 	
@@ -92,139 +130,7 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.App)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					10: []string{ 
-					},
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Module)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					12: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "GetFuncs",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Department)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					14: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "GetDepTree",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Account)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Login",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					12: []string{ 
-					},
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.System)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					12: []string{ 
-					},
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Role)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					15: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "GetRoleTreeJson",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "GetRoleInfo",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "AddRole",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "role", Type: reflect.TypeOf((**modules.Role)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
-		"github.com/qtzheng/SIMP/app/modules.(*Department).Validate": { 
-			19: "d.IsUse",
-			20: "d.ParentID",
-			21: "d.Code",
-			22: "d.Name",
-		},
-		"github.com/qtzheng/SIMP/app/modules.(*Role).Validate": { 
-			18: "r.IsUse",
-			19: "r.ParentID",
-			20: "r.RoleCode",
-			21: "r.RoleName",
-		},
 	}
 	testing.TestSuites = []interface{}{ 
 		(*tests.AppTest)(nil),

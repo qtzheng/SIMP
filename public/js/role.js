@@ -1,4 +1,4 @@
-﻿mini.parse();
+mini.parse();
 var formRole = new mini.Form("formRole");
 var winRole = mini.get("winRole");
 var treeRole = mini.get("treeRole");
@@ -39,7 +39,7 @@ function AddRole() {
         type: "post",
         data: role ,
         success: function (msg) {
-            mini.alert(msg);
+            mini.alert(mini.decode(msg));
         }
     });
 }

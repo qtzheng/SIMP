@@ -1,4 +1,4 @@
-﻿var request = {
+var request = {
     QueryString: function (val) {
         var uri = window.location.search;
         var re = new RegExp("" + val + "=([^&?]*)", "ig");

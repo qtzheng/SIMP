@@ -1,4 +1,4 @@
-﻿mini.parse();
+mini.parse();
 var formDep = new mini.Form("formDep");
 var winDep = mini.get("viewDep");
 var treeDep = mini.get("treeDep");
