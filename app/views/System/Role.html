@@ -80,7 +80,7 @@
 				<td style="width:100px;text-align:right">上级角色：</td>
 				<td>
 					<span id="spanParentName"></span>
-					<input id="txtParentId" name="ParentRoleID" class="mini-hidden" />
+					<input id="txtParentId" name="ParentID" class="mini-hidden" />
 				</td>
 			</tr>
 			<tr>
@@ -92,7 +92,7 @@
 			<tr>
 				<td style="width:100px;text-align:right">是否启用：</td>
 				<td>
-					<input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" checked="true" value="2" truevalue="2" falsevalue="1" />
+					<input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" checked="true" value="1" truevalue="1" falsevalue="0" />
 				</td>
 			</tr>
 			<tr>
@@ -104,7 +104,7 @@
 			<tr>
 				<td colspan="2" style="text-align:center">
 					<a id="roleAdd" class=" mini-button" iconcls="icon-add" onclick="AddRole()">添加</a>
-					<a id="roleSave" class=" mini-button" iconcls="icon-save" onclick="SubmitRole('edit', '/RoleManage/EditRole')">保存</a>
+					<a id="roleSave" class=" mini-button" iconcls="icon-save" onclick="SubmitRole('edit', '/RoleManage/EditRole')">修改</a>
 					<a class=" mini-button" iconcls="icon-close" onclick="HideWin(winRole);">取消</a>
 				</td>
 			</tr>

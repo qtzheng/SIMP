@@ -12,6 +12,7 @@ type Role struct {
 	IsUse    bool
 	Remark   string
 	ParentID string
+	Sort     int
 }
 
 func (r *Role) Validate(v *revel.Validation) {
@@ -19,4 +20,5 @@ func (r *Role) Validate(v *revel.Validation) {
 	v.Check(r.ParentID, revel.MaxSize{50})
 	v.Check(r.RoleCode, revel.Required{}, revel.MaxSize{50}, revel.MinSize{10})
 	v.Check(r.RoleName, revel.Required{}, revel.MaxSize{10}, revel.MinSize{2})
+	v.Check(r.Sort, revel.Required{})
 }

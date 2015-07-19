@@ -7,6 +7,7 @@ import (
 	"github.com/revel/revel"
 	_ "github.com/qtzheng/SIMP/app"
 	controllers "github.com/qtzheng/SIMP/app/controllers"
+	modules "github.com/qtzheng/SIMP/app/modules"
 	tests "github.com/qtzheng/SIMP/tests"
 	controllers0 "github.com/revel/modules/static/app/controllers"
 	_ "github.com/revel/modules/testrunner/app"
@@ -29,6 +30,29 @@ func main() {
 	revel.Init(*runMode, *importPath, *srcPath)
 	revel.INFO.Println("Running revel server")
 	
+	revel.RegisterController((*controllers.App)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					31: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Role",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					34: []string{ 
+					},
+				},
+			},
+			
+		})
+	
 	revel.RegisterController((*controllers.System)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -36,8 +60,15 @@ func main() {
 				Args: []*revel.MethodArg{ 
 				},
 				RenderArgNames: map[int][]string{ 
-					10: []string{ 
+					14: []string{ 
 					},
+				},
+			},
+			&revel.MethodType{
+				Name: "GetRoleInfo",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
 				},
 			},
 			&revel.MethodType{
@@ -47,27 +78,20 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
-			
-		})
-	
-	revel.RegisterController((*controllers.App)(nil),
-		[]*revel.MethodType{
 			&revel.MethodType{
-				Name: "Index",
+				Name: "AddRole",
 				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "role", Type: reflect.TypeOf((**modules.Role)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					10: []string{ 
-					},
 				},
 			},
 			&revel.MethodType{
-				Name: "Role",
+				Name: "EditRole",
 				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "role", Type: reflect.TypeOf((**modules.Role)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-					13: []string{ 
-					},
 				},
 			},
 			
@@ -131,6 +155,19 @@ func main() {
 		})
 	
 	revel.DefaultValidationKeys = map[string]map[int]string{ 
+		"github.com/qtzheng/SIMP/app/modules.(*Department).Validate": { 
+			19: "d.IsUse",
+			20: "d.ParentID",
+			21: "d.Code",
+			22: "d.Name",
+		},
+		"github.com/qtzheng/SIMP/app/modules.(*Role).Validate": { 
+			19: "r.IsUse",
+			20: "r.ParentID",
+			21: "r.RoleCode",
+			22: "r.RoleName",
+			23: "r.Sort",
+		},
 	}
 	testing.TestSuites = []interface{}{ 
 		(*tests.AppTest)(nil),

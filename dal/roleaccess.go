@@ -22,3 +22,7 @@ func RoleInsert(role *modules.Role) error {
 	err := NewDB().C(RoleColl).Insert(role)
 	return err
 }
+func RoleEdit(role *modules.Role) error {
+	err := NewDB().C(RoleColl).Update(bson.M{"_id": role.RoleID}, role)
+	return err
+}

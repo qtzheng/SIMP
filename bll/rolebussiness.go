@@ -19,3 +19,6 @@ func RoleInsert(role *modules.Role) error {
 	role.RoleID = NewObjectID()
 	return dal.RoleInsert(role)
 }
+func RoleEdit(role *modules.Role) error {
+	return dal.RoleEdit(role)
+}

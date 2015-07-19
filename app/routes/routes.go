@@ -4,25 +4,6 @@ package routes
 import "github.com/revel/revel"
 
 
-type tSystem struct {}
-var System tSystem
-
-
-func (_ tSystem) Role(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("System.Role", args).Url
-}
-
-func (_ tSystem) GetRoleTreeJson(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("System.GetRoleTreeJson", args).Url
-}
-
-
 type tApp struct {}
 var App tApp
 
@@ -39,6 +20,50 @@ func (_ tApp) Role(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("App.Role", args).Url
+}
+
+
+type tSystem struct {}
+var System tSystem
+
+
+func (_ tSystem) Role(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.Role", args).Url
+}
+
+func (_ tSystem) GetRoleInfo(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.GetRoleInfo", args).Url
+}
+
+func (_ tSystem) GetRoleTreeJson(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.GetRoleTreeJson", args).Url
+}
+
+func (_ tSystem) AddRole(
+		role interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "role", role)
+	return revel.MainRouter.Reverse("System.AddRole", args).Url
+}
+
+func (_ tSystem) EditRole(
+		role interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "role", role)
+	return revel.MainRouter.Reverse("System.EditRole", args).Url
 }
 
 
