@@ -25,7 +25,7 @@ function OpenRoleEdit() {
         mini.alert("请选择角色");
         return;
     }
-    var url = "/System/GetRoleInfo";
+    var url = "/System/GetRoleInfo"+selectRole.RoleID;
     OpenEditForm(url, formRole, winRole, "编辑角色", "icon-edit", function() {
         var RoleName = treeRole.getParentNode(selectRole).text;
         $('#spanParentName').html(RoleName);

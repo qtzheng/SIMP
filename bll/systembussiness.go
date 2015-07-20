@@ -34,3 +34,6 @@ func RoleEdit(role *modules.Role) error {
 func RoleDelete(id bson.ObjectId) error {
 	return dal.RoleDelete(id)
 }
+func RoleInfo(id bson.ObjectId) (*modules.Role, error) {
+	return dal.RoleInfo(id)
+}

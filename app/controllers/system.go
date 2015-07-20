@@ -14,9 +14,14 @@ type System struct {
 func (s System) Role() revel.Result {
 	return s.Render()
 }
-func (r System) GetRoleInfo() revel.Result {
-
-	return r.RenderText(`{"RoleID":"1","RoleName":"测试角色","RoleCode":"Test","Sort":0,"IsUse":2,"Remark":"车上"}`)
+func (r System) GetRoleInfo(id bson.ObjectId) revel.Result {
+	role, err := bll.RoleInfo(id)
+	if err != nil {
+		revel.WARN.Fatal(err)
+		return r.RenderJson(&opResult{Error, err})
+	}
+	result := &opResult{Success, role}
+	return r.RenderJson(result)
 }
 func (s System) GetRoleTreeJson() revel.Result {
 	roles := bll.RoleCreateTree()

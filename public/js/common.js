@@ -81,11 +81,21 @@ function OpenEditForm(url, form, win, title, icons, funcBefore, funcLoad) {
             type: "get",
             success: function(text) {
                 CloseWaite();
-                var data = mini.decode(text); //反序列化成对象
-                form.setData(data); //设置多个控件数据
-                if (typeof funcLoad == "function") {
-                    funcLoad(data);
+                var data
+                if (typeof text == "string") {
+                    data = mini.decode(text); //反序列化成对象
+                } else {
+                    data = text;
                 }
+                if (data.Result && data.Result == 0) {
+                    form.setData(data.Message); //设置多个控件数据
+                    if (typeof funcLoad == "function") {
+                        funcLoad(data.Message);
+                    }
+                } else {
+                    mini.alert("系统出错！" + data.Message);
+                }
+
             },
             error: function(q, m, e) {
                 CloseWaite();
@@ -178,17 +188,19 @@ function ShowTips(msg, time) {
         timeout: time //自动消失间隔时间。默认2000（2秒）。});
     })
 }
+
 function SetAsLabel(c) {
-    if (typeof c =="string") {
-        c=mini.get(c);
+    if (typeof c == "string") {
+        c = mini.get(c);
     };
-    c.setReadOnly(true);     //只读
-    c.setIsValid(true);      //去除错误提示
-    c.addCls("asLabel");          //增加asLabel外观
+    c.setReadOnly(true); //只读
+    c.setIsValid(true); //去除错误提示
+    c.addCls("asLabel"); //增加asLabel外观
 }
+
 function SetAsInput(c) {
-     if (typeof c =="string") {
-        c=mini.get(c);
+    if (typeof c == "string") {
+        c = mini.get(c);
     };
     c.setReadOnly(false);
     c.removeCls("asLabel");

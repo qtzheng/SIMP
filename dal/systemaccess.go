@@ -26,7 +26,7 @@ func roleInit() error {
 	return nil
 }
 
-//角色总数
+//角色总数./revel run github.com/qtzheng/SIMP
 func RoleCount() (int, error) {
 	count, err := NewDB().C(RoleColl).Count()
 	if err != nil {
@@ -46,7 +46,7 @@ func RoleSelect(page, size int) (*[]modules.Role, error) {
 //查询角色树
 func RoleTreeSelect() (*[]modules.Role, error) {
 	roles := &[]modules.Role{}
-	query := NewDB().C(RoleColl).Find(nil).Select(bson.M{"RoleID": 1, "RoleName": 1, "ParentID": 1})
+	query := NewDB().C(RoleColl).Find(nil).Select(bson.M{"_id": 1, "rolename": 1, "parentid": 1})
 	err := query.All(roles)
 	return roles, err
 }
