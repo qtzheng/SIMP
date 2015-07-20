@@ -31,6 +31,7 @@ func init() {
 	if err != nil {
 		revel.WARN.Fatalln(err)
 	}
+	roleInit()
 }
 
 func CloneDB() *mgo.Database {

@@ -24,7 +24,7 @@ func init() {
 }
 
 type App struct {
-	*revel.Controller
+	BaseCollection
 }
 
 func (c App) Index() revel.Result {

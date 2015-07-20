@@ -1,5 +1,0 @@
-﻿package bll
-
-func name() {
-
-}

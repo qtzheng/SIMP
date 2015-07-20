@@ -3,11 +3,16 @@ package bll
 import (
 	"github.com/qtzheng/SIMP/app/modules"
 	"github.com/qtzheng/SIMP/dal"
+	"gopkg.in/mgo.v2/bson"
 )
+
+func RoleInit() {
+
+}
 
 //创建权限树
 func RoleCreateTree() *[]modules.Role {
-	roles, err := dal.SelectRoleTree()
+	roles, err := dal.RoleTreeSelect()
 	if err != nil {
 		ErrorLog(err)
 	}
@@ -19,6 +24,13 @@ func RoleInsert(role *modules.Role) error {
 	role.RoleID = NewObjectID()
 	return dal.RoleInsert(role)
 }
+
+//编辑权限信息
 func RoleEdit(role *modules.Role) error {
 	return dal.RoleEdit(role)
+}
+
+//删除权限信息
+func RoleDelete(id bson.ObjectId) error {
+	return dal.RoleDelete(id)
 }
