@@ -16,42 +16,21 @@ func (s System) Role() revel.Result {
 }
 func (r System) GetRoleInfo(id bson.ObjectId) revel.Result {
 	role, err := bll.RoleInfo(id)
-	if err != nil {
-		revel.WARN.Fatal(err)
-		return r.RenderJson(&opResult{Error, err})
-	}
-	result := &opResult{Success, role}
-	return r.RenderJson(result)
+	return returnMessage(r.Controller, role, err)
 }
 func (s System) GetRoleTreeJson() revel.Result {
-	roles := bll.RoleCreateTree()
-	return s.RenderJson(roles)
+	roles, err := bll.RoleCreateTree()
+	return returnMessage(s.Controller, roles, err)
 }
 func (r System) AddRole(role *modules.Role) revel.Result {
 	err := bll.RoleInsert(role)
-	if err != nil {
-		revel.WARN.Fatal(err)
-		return r.RenderJson(&opResult{Error, err})
-	}
-	result := &opResult{Success, role.RoleID}
-	return r.RenderJson(result)
+	return returnMessage(r.Controller, role.RoleID, err)
 }
 func (s System) EditRole(role *modules.Role) revel.Result {
 	err := bll.RoleEdit(role)
-	if err != nil {
-		revel.WARN.Fatal(err)
-		return s.RenderJson(&opResult{Error, err})
-	}
-	result := &opResult{Success, ""}
-	return s.RenderJson(result)
+	return returnMessage(s.Controller, "", err)
 }
 func (s System) RoleDelete(id bson.ObjectId) revel.Result {
 	err := bll.RoleDelete(id)
-	if err != nil {
-		revel.WARN.Fatal(err)
-		return s.RenderJson(&opResult{Error, err})
-	}
-
-	result := &opResult{Success, ""}
-	return s.RenderJson(result)
+	return returnMessage(s.Controller, "", err)
 }

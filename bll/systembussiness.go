@@ -11,12 +11,9 @@ func RoleInit() {
 }
 
 //创建权限树
-func RoleCreateTree() *[]modules.Role {
+func RoleCreateTree() (*[]modules.Role, error) {
 	roles, err := dal.RoleTreeSelect()
-	if err != nil {
-		ErrorLog(err)
-	}
-	return roles
+	return roles, err
 }
 
 //插入角色信息

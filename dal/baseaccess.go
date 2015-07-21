@@ -8,9 +8,9 @@ import (
 
 const (
 	url      = ""
-	DbName   = "DB_SIMP"
-	RoleColl = "C_Role"
-	DepColl  = "C_Department"
+	DbName   = "db_simp"
+	RoleColl = "c_role"
+	DepColl  = "c_department"
 )
 
 var (

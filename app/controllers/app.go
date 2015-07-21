@@ -34,17 +34,6 @@ func (a App) Role() revel.Result {
 	return a.Render()
 }
 
-type opResult struct {
-	Result  int
-	Message interface{}
-}
-
-const (
-	Success = 0 + iota
-	Fail
-	Error
-)
-
 var myBinder = revel.Binder{
 	bindStruct,
 	unbindStruct,

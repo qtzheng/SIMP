@@ -92,6 +92,11 @@ function OpenEditForm(url, form, win, title, icons, funcBefore, funcLoad) {
                     if (typeof funcLoad == "function") {
                         funcLoad(data.Message);
                     }
+                    win.set({
+                        title: title,
+                        iconCls: icons
+                    });
+                    win.showAtPos("center", "middle");
                 } else {
                     mini.alert("系统出错！" + data.Message);
                 }
@@ -102,11 +107,6 @@ function OpenEditForm(url, form, win, title, icons, funcBefore, funcLoad) {
                 mini.alert(m);
             }
         });
-        win.set({
-            title: title,
-            iconCls: icons
-        });
-        win.showAtPos("center", "middle");
     } catch (e) {
         CloseWaite();
         mini.alert(e.message);
