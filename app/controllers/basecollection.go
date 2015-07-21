@@ -22,7 +22,7 @@ func returnMessage(c *revel.Controller, message interface{}, err error) revel.Re
 	result := &opResult{}
 	if err != nil {
 		result.Result = Error
-		result.Message = err
+		result.Message = err.Error()
 	} else {
 		result.Result = Success
 		result.Message = message

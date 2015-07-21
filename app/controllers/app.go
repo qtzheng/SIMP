@@ -13,10 +13,10 @@ func init() {
 	revel.TypeBinders[reflect.TypeOf(bson.NewObjectId())] = revel.Binder{
 		Bind: func(params *revel.Params, name string, typ reflect.Type) reflect.Value {
 			values, ok := params.Values[name]
-			if !ok || len(values) == 0 {
+			if !ok || len(values) == 0 || !bson.IsObjectIdHex(values[0]) {
 				return reflect.Zero(typ)
 			}
-			var value bson.ObjectId = bson.ObjectId(values[0])
+			var value bson.ObjectId = bson.ObjectIdHex(values[0])
 			return reflect.ValueOf(value)
 		},
 		Unbind: nil,
@@ -60,11 +60,11 @@ func bindStruct(params *revel.Params, name string, typ reflect.Type) reflect.Val
 			// Time to bind this field.  Get it and make sure we can set it.
 			fieldValue := result.FieldByName(fieldName)
 			if !fieldValue.IsValid() {
-				revel.WARN.Println("W: bindStruct: Field not found:", fieldName)
+				//revel.WARN.Println("W: bindStruct: Field not found:", fieldName)
 				continue
 			}
 			if !fieldValue.CanSet() {
-				revel.WARN.Println("W: bindStruct: Field not settable:", fieldName)
+				//revel.WARN.Println("W: bindStruct: Field not settable:", fieldName)
 				continue
 			}
 			boundVal := revel.Bind(params, fieldName, fieldValue.Type())

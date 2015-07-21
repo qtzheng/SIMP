@@ -87,7 +87,7 @@ function OpenEditForm(url, form, win, title, icons, funcBefore, funcLoad) {
                 } else {
                     data = text;
                 }
-                if (data.Result && data.Result == 0) {
+                if (typeof data.Result !="undefined" && data.Result == 0) {
                     form.setData(data.Message); //设置多个控件数据
                     if (typeof funcLoad == "function") {
                         funcLoad(data.Message);

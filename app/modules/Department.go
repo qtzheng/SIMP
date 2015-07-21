@@ -6,11 +6,11 @@ import (
 )
 
 type Department struct {
-	ID       bson.ObjectId `bson:_id`
+	ID       bson.ObjectId `bson:"_id"`
 	Name     string
 	Code     string
 	Manager  string
-	ParentID bson.ObjectId
+	ParentID string
 	IsUse    bool
 	Remark   string
 }

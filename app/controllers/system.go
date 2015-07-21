@@ -20,7 +20,11 @@ func (r System) GetRoleInfo(id bson.ObjectId) revel.Result {
 }
 func (s System) GetRoleTreeJson() revel.Result {
 	roles, err := bll.RoleCreateTree()
-	return returnMessage(s.Controller, roles, err)
+	if err != nil {
+		return s.RenderText("")
+	} else {
+		return s.RenderJson(roles)
+	}
 }
 func (r System) AddRole(role *modules.Role) revel.Result {
 	err := bll.RoleInsert(role)
@@ -33,4 +37,14 @@ func (s System) EditRole(role *modules.Role) revel.Result {
 func (s System) RoleDelete(id bson.ObjectId) revel.Result {
 	err := bll.RoleDelete(id)
 	return returnMessage(s.Controller, "", err)
+}
+
+/*==========================================分割线===========================*/
+func (s System) DepTree() revel.Result {
+	roles, err := bll.RoleCreateTree()
+	if err != nil {
+		return s.RenderText("")
+	} else {
+		return s.RenderJson(roles)
+	}
 }

@@ -68,25 +68,6 @@ func (_ tStatic) ServeModule(
 }
 
 
-type tApp struct {}
-var App tApp
-
-
-func (_ tApp) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-func (_ tApp) Role(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Role", args).Url
-}
-
-
 type tSystem struct {}
 var System tSystem
 
@@ -139,6 +120,25 @@ func (_ tSystem) RoleDelete(
 	
 	revel.Unbind(args, "id", id)
 	return revel.MainRouter.Reverse("System.RoleDelete", args).Url
+}
+
+
+type tApp struct {}
+var App tApp
+
+
+func (_ tApp) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+func (_ tApp) Role(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Role", args).Url
 }
 
 

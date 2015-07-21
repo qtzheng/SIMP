@@ -34,3 +34,5 @@ func RoleDelete(id bson.ObjectId) error {
 func RoleInfo(id bson.ObjectId) (*modules.Role, error) {
 	return dal.RoleInfo(id)
 }
+
+//====================================================分割线===========================================

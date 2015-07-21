@@ -10,8 +10,8 @@ function OpenRoleAdd() {
         return;
     }
     OpenAddForm(formRole, winRole, "添加角色", "icon-add", function() {
-        var parRoleId = selectRole.id;
-        var parRoleName = selectRole.text;
+        var parRoleId = selectRole.RoleID;
+        var parRoleName = selectRole.RoleName;
         mini.get("txtParentId").setValue(parRoleId);
         mini.get("roleAdd").show();
         mini.get("roleSave").hide();
@@ -25,9 +25,9 @@ function OpenRoleEdit() {
         mini.alert("请选择角色");
         return;
     }
-    var url = "/System/GetRoleInfo"+selectRole.RoleID;
+    var url = "/System/GetRoleInfo?id="+selectRole.RoleID;
     OpenEditForm(url, formRole, winRole, "编辑角色", "icon-edit", function() {
-        var RoleName = treeRole.getParentNode(selectRole).text;
+        var RoleName = treeRole.getParentNode(selectRole).RoleName;
         $('#spanParentName').html(RoleName);
         mini.get("roleAdd").hide();
         mini.get("roleSave").show();
@@ -52,9 +52,9 @@ function AddRole() {
                 ShowTips("保存成功");
                 HideWin(winRole);
                 var newNode = {
-                    id: msg.Message,
-                    text: data.RoleName,
-                    pid: data.ParentID
+                    RoleID: msg.Message,
+                    RoleName: data.RoleName,
+                    ParentID: data.ParentID
                 };
                 treeRole.addNode(newNode, 0, selectRole);
             }
@@ -75,7 +75,7 @@ function EditRole() {
                 ShowTips("保存成功");
                 HideWin(winRole);
                 var newNode = {
-                    text: data.RoleName,
+                    RoleName: data.RoleName,
                 };
                 treeRole.updateNode(selectRole,newNode);
             }

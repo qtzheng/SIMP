@@ -38,7 +38,7 @@ func CloneDB() *mgo.Database {
 	return MgoSession.Clone().DB(DbName)
 }
 func NewDB() *mgo.Database {
-	return MgoSession.New().DB(DbName)
+	return MgoSession.Clone().DB(DbName)
 }
 func CopyDB() *mgo.Database {
 	return MgoSession.Copy().DB(DbName)

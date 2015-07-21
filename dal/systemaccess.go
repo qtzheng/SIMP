@@ -26,7 +26,7 @@ func roleInit() error {
 	return nil
 }
 
-//角色总数./revel run github.com/qtzheng/SIMP
+//角色总数./revel run github.com/qtDepartmentzheng/SIMP
 func RoleCount() (int, error) {
 	count, err := NewDB().C(RoleColl).Count()
 	if err != nil {
@@ -94,3 +94,46 @@ func RoleInfo(id bson.ObjectId) (*modules.Role, error) {
 /*
 ======================================================分割线========================================================
 */
+func depInit() error {
+	count, err := CloneDB().C(DepColl).Count()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		dep := &modules.Department{}
+		dep.ID = bson.NewObjectId()
+		dep.IsUse = true
+		dep.Remark = "系统默认根节点，不可删除，不可编辑"
+		dep.Code = "Defult"
+		dep.Name = "组织架构"
+		err = NewDB().C(DepColl).Insert(dep)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func DepTree() (*[]modules.Department, error) {
+	dep := &[]modules.Department{}
+	query := CloneDB().C(DepColl).Find(nil).Select(bson.M{"_id": 1, "name": 1, "parentid": 1})
+	err := query.All(dep)
+	return dep, err
+}
+
+//插入一条角色信息
+func DepInsert(dep *modules.Department) error {
+	err := CloneDB().C(DepColl).Insert(dep)
+	return err
+}
+
+//修改权限信息
+func DepEdit(dep *modules.Department) error {
+	err := CloneDB().C(DepColl).Update(bson.M{"_id": dep.ID}, dep)
+	return err
+}
+
+//删除权限信息
+func DepDelete(id bson.ObjectId) error {
+	err := CloneDB().C(DepColl).Remove(bson.M{"_id": id})
+	return err
+}
