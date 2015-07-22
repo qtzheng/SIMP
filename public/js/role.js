@@ -32,7 +32,7 @@ function OpenRoleEdit() {
         mini.get("roleAdd").hide();
         mini.get("roleSave").show();
         SetAsLabel("txtRoleCode");
-    })
+    });
 }
 
 function DeleteRole() {

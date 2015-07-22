@@ -40,11 +40,30 @@ func (s System) RoleDelete(id bson.ObjectId) revel.Result {
 }
 
 /*==========================================分割线===========================*/
+func (s System) Dep() revel.Result {
+	return s.Render()
+}
 func (s System) DepTree() revel.Result {
-	roles, err := bll.RoleCreateTree()
+	roles, err := bll.DepTree()
 	if err != nil {
 		return s.RenderText("")
 	} else {
 		return s.RenderJson(roles)
 	}
+}
+func (s System) DepInfo(id bson.ObjectId) revel.Result {
+	dep, err := bll.DepInfo(id)
+	return returnMessage(s.Controller, dep, err)
+}
+func (s System) DepInsert(dep *modules.Department) revel.Result {
+	err := bll.DepInsert(dep)
+	return returnMessage(s.Controller, dep.ID, err)
+}
+func (s System) DepEdit(dep *modules.Department) revel.Result {
+	err := bll.DepEdit(dep)
+	return returnMessage(s.Controller, "", err)
+}
+func (s System) DepDelete(id bson.ObjectId) revel.Result {
+	err := bll.DepDelete(id)
+	return returnMessage(s.Controller, "", err)
 }

@@ -123,6 +123,17 @@ func depInit() error {
 	}
 	return nil
 }
+
+//根据部门id查询信息
+func DepInfo(id bson.ObjectId) (*modules.Department, error) {
+	dep := &modules.Department{}
+	err := NewDB().C(DepColl).Find(bson.M{"_id": id}).One(dep)
+	if err != nil {
+		return nil, err
+	} else {
+		return dep, nil
+	}
+}
 func DepTree() (*[]modules.Department, error) {
 	dep := &[]modules.Department{}
 	query := CloneDB().C(DepColl).Find(nil).Select(bson.M{"_id": 1, "name": 1, "parentid": 1})

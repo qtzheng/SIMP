@@ -31,11 +31,16 @@ func RoleEdit(role *modules.Role) error {
 func RoleDelete(id bson.ObjectId) error {
 	return dal.RoleDelete(id)
 }
+
+//根据id得到角色信息
 func RoleInfo(id bson.ObjectId) (*modules.Role, error) {
 	return dal.RoleInfo(id)
 }
 
 //====================================================分割线===========================================
+func DepInfo(id bson.ObjectId) (*modules.Department, error) {
+	return dal.DepInfo(id)
+}
 func DepTree() (*[]modules.Department, error) {
 	return dal.DepTree()
 }
@@ -43,15 +48,15 @@ func DepTree() (*[]modules.Department, error) {
 //插入一条部门信息
 func DepInsert(dep *modules.Department) error {
 	dep.ID = bson.NewObjectId()
-	return dal.DepInsert()
+	return dal.DepInsert(dep)
 }
 
 //修改部门信息
 func DepEdit(dep *modules.Department) error {
-	return dal.DepEdit()
+	return dal.DepEdit(dep)
 }
 
 //删除部门信息
 func DepDelete(id bson.ObjectId) error {
-	return dal.DepDelete()
+	return dal.DepDelete(id)
 }
