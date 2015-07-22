@@ -36,3 +36,22 @@ func RoleInfo(id bson.ObjectId) (*modules.Role, error) {
 }
 
 //====================================================分割线===========================================
+func DepTree() (*[]modules.Department, error) {
+	return dal.DepTree()
+}
+
+//插入一条部门信息
+func DepInsert(dep *modules.Department) error {
+	dep.ID = bson.NewObjectId()
+	return dal.DepInsert()
+}
+
+//修改部门信息
+func DepEdit(dep *modules.Department) error {
+	return dal.DepEdit()
+}
+
+//删除部门信息
+func DepDelete(id bson.ObjectId) error {
+	return dal.DepDelete()
+}

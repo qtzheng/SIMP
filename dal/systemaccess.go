@@ -1,6 +1,7 @@
 package dal
 
 import (
+	"fmt"
 	"github.com/qtzheng/SIMP/app/modules"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -53,7 +54,16 @@ func RoleTreeSelect() (*[]modules.Role, error) {
 
 //插入一条角色信息
 func RoleInsert(role *modules.Role) error {
-	err := NewDB().C(RoleColl).Insert(role)
+	coll := CloneDB().C(RoleColl)
+	count, err := coll.Find(bson.M{"rolecode": role.RoleCode}).Count()
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return fmt.Errorf("编码：%s已经存在！", role.RoleCode)
+	}
+
+	err = coll.Insert(role)
 	return err
 }
 
@@ -120,19 +130,27 @@ func DepTree() (*[]modules.Department, error) {
 	return dep, err
 }
 
-//插入一条角色信息
+//插入一条部门信息
 func DepInsert(dep *modules.Department) error {
-	err := CloneDB().C(DepColl).Insert(dep)
+	coll := CloneDB().C(DepColl)
+	count, err := coll.Find(bson.M{"code": dep.Code}).Count()
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return fmt.Errorf("编码：%s已经存在！", dep.Code)
+	}
+	err = CloneDB().C(DepColl).Insert(dep)
 	return err
 }
 
-//修改权限信息
+//修改部门信息
 func DepEdit(dep *modules.Department) error {
 	err := CloneDB().C(DepColl).Update(bson.M{"_id": dep.ID}, dep)
 	return err
 }
 
-//删除权限信息
+//删除部门信息
 func DepDelete(id bson.ObjectId) error {
 	err := CloneDB().C(DepColl).Remove(bson.M{"_id": id})
 	return err

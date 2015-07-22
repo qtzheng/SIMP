@@ -29,9 +29,16 @@ func init() {
 	var err error
 	MgoSession, err = mgo.Dial(url)
 	if err != nil {
-		revel.WARN.Fatalln(err)
+		revel.WARN.Panicln(err)
 	}
-	roleInit()
+	err = roleInit()
+	if err != nil {
+		revel.WARN.Panicln(err)
+	}
+	err = depInit()
+	if err != nil {
+		revel.WARN.Panicln(err)
+	}
 }
 
 func CloneDB() *mgo.Database {
