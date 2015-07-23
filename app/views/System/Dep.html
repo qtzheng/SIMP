@@ -90,52 +90,33 @@
         </table>
     </form>
 </div>
-<div id="viewEmp" class="mini-window" style="display:none;width:400px; height:300px" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
-    <form id="formDep">
-        <table cellspacing="1" style=" width:100%" border="0">
-            <tr>
-                <td style="width:30%;min-width:100px;text-align:right">部门名称：</td>
-                <td>
-                    <input id="hidDepId" name="DepartmentID" class="mini-hidden" />
-                    <input id="txtName" name="DepartmentName" class="mini-textbox" required="true" />
-                </td>
-            </tr>
-
-            <tr>
-                <td style="width:30%;min-width:100px;text-align:right">部门编码：</td>
-                <td>
-                    <input id="txtDepCode" name="Code" class="mini-textbox" required="true" />
-                </td>
-            </tr>
-            <tr>
-                <td style="width:30%;min-width:100px;text-align:right">上级部门：</td>
-                <td>
-                    <span id="spanParentName"></span>
-                    <input id="txtParentId" name="ParentDepID" class="mini-hidden" />
-                </td>
-            </tr>
-            <tr>
-                <td style="width:30%;min-width:100px;text-align:right">排序标记：</td>
-                <td>
-                    <input id="txtSort" name="Sort" class="mini-textbox" required="true" vtype="int" />
-                </td>
-            </tr>
-            <tr>
-                <td style="width:30%;min-width:100px;text-align:right">是否启用：</td>
-                <td>
-                    <input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" value="1" truevalue="1" falsevalue="0" />
-                    <input id="txtGrade" name="Grade" class="mini-hidden" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align:center">
-                    <a id="depSave" class=" mini-button" iconcls="icon-add" onclick="submitDep('edit')">保存</a>
-                    <a id="depReset" class=" mini-button" iconcls="icon-add">重置</a>
-                    <a class=" mini-button" iconcls="icon-add" onclick="HideWin(winDep)">取消</a>
-                </td>
-            </tr>
-        </table>
-    </form>
+<div id="viewEmp" class="mini-window" style="display:none;width:600px; height:400px" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+    <table style="width:100%" border="0" cellpadding="0" cellspacing="1">
+        <tr>
+           <td style="width:100px;">登录账号：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+           <td style="width:100px">员工工号：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+        </tr>
+        <tr>
+           <td style="width:100px;">员工姓名：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+           <td style="width:100px">中文拼音：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+        </tr>
+        <tr>
+           <td style="width:100px;">用户名：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+           <td style="width:100px">姓名：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+        </tr>
+        <tr>
+           <td style="width:100px;">用户名：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+           <td style="width:100px">姓名：</td>
+           <td><input id="txtUserName" name="Manager" class="mini-textbox" required="true" /></td>
+        </tr>
+    </table>
 </div>
 <script type="text/javascript" src="/public/js/department.js"></script>
 </body>

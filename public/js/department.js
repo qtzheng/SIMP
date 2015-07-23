@@ -13,13 +13,13 @@ function OpenDepAdd() {
         var parDepName = selectDep.Name;
         mini.get("txtParentId").setValue(parDepId);
         $('#spanParentName').html(parDepName);
-        mini.get("depAdd").hide();
-        mini.get("depSave").show();
+        mini.get("depAdd").show();
+        mini.get("depSave").hide();
         SetAsInput("txtDepCode");
     });
 }
 
-function OpenDepEdit() {
+function OpenDepEdit() {    
     if (!selectDep) {
         mini.alert("请选择编辑部门！");
     }
@@ -40,7 +40,7 @@ function onDepSelect(e) {
 function AddDep() {
     if (!CheckForm(formDep))
         return;
-    var data = mini.encode(formDep.getData());
+    var data = formDep.getData();
     Ajax({
         url: "/System/DepInsert",
         type: "post",
@@ -51,7 +51,7 @@ function AddDep() {
                 HideWin(winDep);
                 var newNode = {
                     ID: msg.Message,
-                    Name: data.RoleName,
+                    Name: data.Name,
                     ParentID: data.ParentID
                 };
                 treeDep.addNode(newNode, 0, selectDep);

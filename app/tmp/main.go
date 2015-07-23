@@ -93,6 +93,29 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.App)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					31: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Role",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					34: []string{ 
+					},
+				},
+			},
+			
+		})
+	
 	revel.RegisterController((*controllers.System)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -189,29 +212,6 @@ func main() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*bson.ObjectId)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.App)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					31: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Role",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					34: []string{ 
-					},
 				},
 			},
 			
