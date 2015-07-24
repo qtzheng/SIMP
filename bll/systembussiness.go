@@ -1,8 +1,8 @@
 package bll
 
 import (
-	"github.com/qtzheng/SIMP/app/modules"
 	"github.com/qtzheng/SIMP/dal"
+	"github.com/qtzheng/SIMP/modules"
 	"gopkg.in/mgo.v2/bson"
 )
 
