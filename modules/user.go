@@ -9,4 +9,6 @@ type User struct {
 	LoginName string
 	Password  string
 	UserName  string
+	DepID     string
+	RoleIDs   []string
 }
