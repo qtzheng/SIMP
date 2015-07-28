@@ -1,14 +1,22 @@
 ﻿package modules
 
 import (
-//"encoding/json"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type User struct {
-	UserID    string `bson:"_id"`
-	LoginName string
-	Password  string
-	UserName  string
-	DepID     string
-	RoleIDs   []string
+	UserID       bson.ObjectId `bson:"_id"`
+	LoginName    string
+	Password     string
+	JobNumber    string
+	UserName     string
+	DepID        string
+	RoleIDs      []string
+	EngName      string
+	PinYin       string
+	Abbreviation string
+	Telephone    string
+	Mobilephone  string
+	Email        string
+	IsUse        bool
 }

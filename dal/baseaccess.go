@@ -11,6 +11,7 @@ const (
 	DbName   = "db_simp"
 	RoleColl = "c_role"
 	DepColl  = "c_department"
+	UserColl = "c_user"
 )
 
 var (

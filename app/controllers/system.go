@@ -44,7 +44,15 @@ func (s System) Dep() revel.Result {
 	return s.Render()
 }
 func (s System) DepTree() revel.Result {
-	roles, err := bll.DepTree()
+	roles, err := bll.DepTree(2)
+	if err != nil {
+		return s.RenderText("")
+	} else {
+		return s.RenderJson(roles)
+	}
+}
+func (s System) DepTreeUsed() revel.Result {
+	roles, err := bll.DepTree(1)
 	if err != nil {
 		return s.RenderText("")
 	} else {
@@ -66,4 +74,9 @@ func (s System) DepEdit(dep *modules.Department) revel.Result {
 func (s System) DepDelete(id bson.ObjectId) revel.Result {
 	err := bll.DepDelete(id)
 	return returnMessage(s.Controller, "", err)
+}
+
+//===========================================================================
+func (s System) UserInsert() {
+
 }
