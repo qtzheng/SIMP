@@ -19,12 +19,11 @@
         <div class="mini-splitter" allowresize="false" vertical="true" style="width:100%;height:100%;" borderstyle="border:0;">
             <div size="30px">
                 <div class="mini-toolbar" borderstyle="border:0;">
-                    <a class=" mini-button" iconcls="icon-add" onclick="add()">增加</a>
-                    <a class="mini-button" iconcls="icon-edit" onclick="add()">修改</a>
-                    <a class="mini-button" iconcls="icon-remove">删除</a>
+                    <a class=" mini-button" iconcls="icon-add" onclick="OpenUserAdd()">增加</a>
+                    <a class="mini-button" iconcls="icon-edit" onclick="OpenUserEdit()">修改</a>
                     <span class="separator"></span>
-                    <input class="mini-textbox" />
-                    <a class="mini-button" plain="true">查询</a>
+                    <input  id="txtKey" class="mini-textbox"  />
+                    <a class="mini-button" plain="true" onclick="SelectUser()">查询</a>
                 </div>
             </div>
             <div>

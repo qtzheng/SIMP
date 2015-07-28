@@ -9,35 +9,6 @@ var BaseCollection tBaseCollection
 
 
 
-type tStatic struct {}
-var Static tStatic
-
-
-func (_ tStatic) Serve(
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
-}
-
-func (_ tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
-}
-
-
 type tTestRunner struct {}
 var TestRunner tTestRunner
 
@@ -68,22 +39,32 @@ func (_ tTestRunner) List(
 }
 
 
-type tApp struct {}
-var App tApp
+type tStatic struct {}
+var Static tStatic
 
 
-func (_ tApp) Index(
+func (_ tStatic) Serve(
+		prefix string,
+		filepath string,
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("App.Index", args).Url
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
 }
 
-func (_ tApp) Role(
+func (_ tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("App.Role", args).Url
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
 }
 
 
@@ -155,6 +136,13 @@ func (_ tSystem) DepTree(
 	return revel.MainRouter.Reverse("System.DepTree", args).Url
 }
 
+func (_ tSystem) DepTreeUsed(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.DepTreeUsed", args).Url
+}
+
 func (_ tSystem) DepInfo(
 		id interface{},
 		) string {
@@ -189,6 +177,25 @@ func (_ tSystem) DepDelete(
 	
 	revel.Unbind(args, "id", id)
 	return revel.MainRouter.Reverse("System.DepDelete", args).Url
+}
+
+
+type tApp struct {}
+var App tApp
+
+
+func (_ tApp) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+func (_ tApp) Role(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Role", args).Url
 }
 
 

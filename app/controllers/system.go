@@ -77,6 +77,14 @@ func (s System) DepDelete(id bson.ObjectId) revel.Result {
 }
 
 //===========================================================================
+func (s System) UserSelect(key string, depIds *[]bson.ObjectId) revel.Result {
+	users, err := bll.UserSelect(depIds, key)
+	if err != nil {
+		return s.RenderText("")
+	} else {
+		return s.RenderJson(users)
+	}
+}
 func (s System) UserInsert() {
 
 }

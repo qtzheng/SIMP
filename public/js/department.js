@@ -83,6 +83,23 @@ function EditDep() {
         });
     }
     //=============================================
+    function SelectUser () {
+        var key=mini.get("txtKey").getValue();
+        var depIds=new Array();
+        if (selectDep||selectDep.ID!="Defult") {
+            depIds.push(selectDep.ID);
+            var nodes=treeDep.getAllChildNodes(selectDep);
+            nodes.each(function(index,e){
+                depIds.push(e.ID);
+            });
+            Ajax({
+                url:"System/",
+                data:{depIds:depIds,key:key},
+                type:"get",
+
+            });
+        }
+    }
 function OpenUserAdd() {
     OpenAddForm(formUser, winUser, "添加员工", "icon-add", function() {
         mini.get("btnUserAdd").show();
