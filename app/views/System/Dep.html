@@ -93,7 +93,7 @@
     </form>
 </div>
 <div id="viewEmp" class="mini-window" style="display:none;width:600px; height:400px" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
-    <table id="formUser" style="width:100%" border="0" cellpadding="0" cellspacing="1">
+    <table class="FormTable" id="formUser" style="width:100%" border="0" cellpadding="0" cellspacing="1">
         <tr>
             <td style="width:100px;">登录账号：</td>
             <td>
@@ -112,7 +112,7 @@
             </td>
             <td style="width:100px">英文名字：</td>
             <td>
-                <input id="txtEngName" name="EngName" class="mini-textbox" required="true" />
+                <input id="txtEngName" name="EngName" class="mini-textbox" />
             </td>
         </tr>
         <tr>
@@ -128,7 +128,10 @@
         <tr>
             <td style="width:100px">所属部门：</td>
             <td colspan="3">
-                <input id="tsDepID" name="DepID" class="mini-treeselect" required="true" url="/System/DepTreeUsed"/>
+                <input id="tsDepID" style="width:100%" name="DepID" class="mini-treeselect" url="/System/DepTreeUsed" multiSelect="false"  valueFromSelect="false"
+        textField="Name" valueField="ID" parentField="ParentID" value="control"  allowInput="false"
+        showRadioButton="false" showFolderCheckBox="false"
+    />
             </td>
         </tr>
         <tr>
@@ -138,7 +141,7 @@
             </td>
             <td style="width:100px">固定电话：</td>
             <td>
-                <input id="txtTelephone" name="Telephone" class="mini-textbox" required="true" />
+                <input id="txtTelephone" name="Telephone" class="mini-textbox" />
             </td>
         </tr>
         <tr>
@@ -148,7 +151,7 @@
             </td>
             <td style="width:100px">是否有效：</td>
             <td>
-                <input id="ckIsUse" name="IsUse" class="mini-textbox" required="true" />
+                <input id="txtIsUse" name="IsUse" class="mini-checkbox" text="启用" checked="true" value="1" truevalue="1" falsevalue="0" />
             </td>
         </tr>
         <tr>

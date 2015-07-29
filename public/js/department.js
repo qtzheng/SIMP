@@ -6,7 +6,8 @@ var selectDep = undefined;
 var winUser = mini.get("viewEmp");
 var formUser = new mini.Form("formUser");
 var gridUser = mini.get("gridUser");
-var selectRow=undefined
+var selectRow = undefined
+
 function OpenDepAdd() {
     if (!selectDep) {
         mini.alert("请选择上级部门！");
@@ -64,39 +65,43 @@ function AddDep() {
 }
 
 function EditDep() {
-        if (!CheckForm(formDep))
-            return;
-        var data = formDep.getData();
-        Ajax({
-            url: "/System/DepEdit",
-            type: "post",
-            data: data,
-            success: function(msg) {
-                if (msg.Result == 0) {
-                    ShowTips("保存成功");
-                    HideWin(winDep);
-                    var newNode = {
-                        Name: data.Name,
-                    };
-                    treeDep.updateNode(selectDep, newNode);
-                }
+    if (!CheckForm(formDep))
+        return;
+    var data = formDep.getData();
+    Ajax({
+        url: "/System/DepEdit",
+        type: "post",
+        data: data,
+        success: function(msg) {
+            if (msg.Result == 0) {
+                ShowTips("保存成功");
+                HideWin(winDep);
+                var newNode = {
+                    Name: data.Name,
+                };
+                treeDep.updateNode(selectDep, newNode);
             }
-        });
-    }
-    //=============================================
+        }
+    });
+}
+//=============================================
 function SelectUser() {
-    var key = mini.get("txtKey").getValue();
-    var depIds = new Array();
-    if (selectDep || selectDep.ID != "Defult") {
-        depIds.push(selectDep.ID);
-        var nodes = treeDep.getAllChildNodes(selectDep);
-        nodes.each(function(index, e) {
-            depIds.push(e.ID);
-        });
+    try {
+        var key = mini.get("txtKey").getValue();
+        var depIds = new Array();
+        if (selectDep != undefined&&selectDep.ID != "Defult") {
+            depIds.push(selectDep.ID);
+            var nodes = treeDep.getAllChildNodes(selectDep);
+            nodes.each(function(index, e) {
+                depIds.push(e.ID);
+            });
+        }
         gridUser.load({
             key: key,
-            depIds: depIds
+            depIds: depIds.join(",")
         });
+    } catch (e) {
+        mini.alert(e.Message);
     }
 }
 
@@ -112,7 +117,7 @@ function OpenUserAdd() {
 }
 
 function OpenUserEdit() {
-    if(!selectRow){
+    if (!selectRow) {
         mini.alert("请选择编辑用户！");
         return;
     }
@@ -159,7 +164,7 @@ function EditUser() {
             if (msg.Result == 0) {
                 ShowTips("保存成功");
                 HideWin(winUser);
-               gridUser.updateRow(selectRow,data);
+                gridUser.updateRow(selectRow, data);
             }
         }
     });

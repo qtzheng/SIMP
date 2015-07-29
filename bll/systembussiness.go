@@ -78,13 +78,14 @@ func UserInsert(user *modules.User) error {
 func UserUpdate(user *modules.User) error {
 	return dal.UserUpdate(user)
 }
-func UserSelect(key string, depIds *[]bson.ObjectId, page, size int) (*[]modules.User, error) {
+func UserSelect(key string, depIds string, page, size int) (*[]modules.User, error) {
 	where := bson.M{}
 	if key = strings.TrimSpace(key); key != "" {
 		where["$or"] = []bson.M{bson.M{"LoginName": key}, bson.M{"JobNumber": key}, bson.M{"UserName": key},
 			bson.M{"EngName": key}, bson.M{"PinYin": key}, bson.M{"Abbreviation": key}}
 	}
-	if len(depIds) > 0 {
+	ids := strings.Split(depIds, ",")
+	if len(ids) > 0 {
 		where["depid"] = bson.M{"$in": depIds}
 	}
 	return dal.UserSelect(where, page, size)
