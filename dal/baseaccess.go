@@ -7,11 +7,13 @@ import (
 )
 
 const (
-	url      = ""
-	DbName   = "db_simp"
-	RoleColl = "c_role"
-	DepColl  = "c_department"
-	UserColl = "c_user"
+	url        = ""
+	DbName     = "db_simp"
+	RoleColl   = "c_role"
+	DepColl    = "c_department"
+	UserColl   = "c_user"
+	ModuleColl = "c_module"
+	FuncColl   = "c_func"
 )
 
 var (

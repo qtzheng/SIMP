@@ -220,3 +220,17 @@ func UserRoles(ids []bson.ObjectId) (*[]modules.Role, error) {
 		return roles, nil
 	}
 }
+
+//=============================================================================================
+func moduleInit() error {
+	count, err = CloneDB().C(ModuleColl).Count()
+	if err != nil {
+		return err
+	}
+	if coun == 0 {
+		module := &modules.Module{}
+		module.ID = bson.NewObjectId()
+		module.Name = "系统模块"
+		err = CloneDB().C(ModuleColl).Insert(module)
+	}
+}

@@ -5,7 +5,8 @@ var treeDep = mini.get("treeDep");
 var selectDep = undefined;
 var winUser = mini.get("viewEmp");
 var formUser = new mini.Form("formUser");
-
+var gridUser = mini.get("gridUser");
+var selectRow=undefined
 function OpenDepAdd() {
     if (!selectDep) {
         mini.alert("请选择上级部门！");
@@ -83,23 +84,22 @@ function EditDep() {
         });
     }
     //=============================================
-    function SelectUser () {
-        var key=mini.get("txtKey").getValue();
-        var depIds=new Array();
-        if (selectDep||selectDep.ID!="Defult") {
-            depIds.push(selectDep.ID);
-            var nodes=treeDep.getAllChildNodes(selectDep);
-            nodes.each(function(index,e){
-                depIds.push(e.ID);
-            });
-            Ajax({
-                url:"System/",
-                data:{depIds:depIds,key:key},
-                type:"get",
-
-            });
-        }
+function SelectUser() {
+    var key = mini.get("txtKey").getValue();
+    var depIds = new Array();
+    if (selectDep || selectDep.ID != "Defult") {
+        depIds.push(selectDep.ID);
+        var nodes = treeDep.getAllChildNodes(selectDep);
+        nodes.each(function(index, e) {
+            depIds.push(e.ID);
+        });
+        gridUser.load({
+            key: key,
+            depIds: depIds
+        });
     }
+}
+
 function OpenUserAdd() {
     OpenAddForm(formUser, winUser, "添加员工", "icon-add", function() {
         mini.get("btnUserAdd").show();
@@ -112,6 +112,10 @@ function OpenUserAdd() {
 }
 
 function OpenUserEdit() {
+    if(!selectRow){
+        mini.alert("请选择编辑用户！");
+        return;
+    }
     var url = "/System/DepInfo?id=" + selectDep.ID;
     OpenEditForm(url, formUser, winUser, "编辑员工", "icon-edit", function() {
         var depName = treeDep.getParentNode(selectDep).Name;
@@ -124,6 +128,7 @@ function OpenUserEdit() {
         SetAsLabel("txtJobNumber");
     });
 }
+
 function AddUser() {
     if (!CheckForm(formUser))
         return;
@@ -135,35 +140,27 @@ function AddUser() {
         success: function(msg) {
             if (msg.Result == 0) {
                 ShowTips("保存成功");
-                HideWin(winDep);
-                var newNode = {
-                    ID: msg.Message,
-                    Name: data.Name,
-                    ParentID: data.ParentID
-                };
-                treeDep.addNode(newNode, 0, selectDep);
+                HideWin(winUser);
+                gridUser.addRow(data);
             }
         }
     });
 }
 
 function EditUser() {
-        if (!CheckForm(formUser))
-            return;
-        var data = formUser.getData();
-        Ajax({
-            url: "/System/DepEdit",
-            type: "post",
-            data: data,
-            success: function(msg) {
-                if (msg.Result == 0) {
-                    ShowTips("保存成功");
-                    HideWin(winDep);
-                    var newNode = {
-                        Name: data.Name,
-                    };
-                    treeDep.updateNode(selectDep, newNode);
-                }
+    if (!CheckForm(formUser))
+        return;
+    var data = formUser.getData();
+    Ajax({
+        url: "/System/DepEdit",
+        type: "post",
+        data: data,
+        success: function(msg) {
+            if (msg.Result == 0) {
+                ShowTips("保存成功");
+                HideWin(winUser);
+               gridUser.updateRow(selectRow,data);
             }
-        });
-    }
+        }
+    });
+}

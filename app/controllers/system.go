@@ -77,7 +77,7 @@ func (s System) DepDelete(id bson.ObjectId) revel.Result {
 }
 
 //===========================================================================
-func (s System) UserSelect(key string, depIds *[]bson.ObjectId) revel.Result {
+func (s System) UserSelect(key string, depIds *[]bson.ObjectId, pageIndex, pageSize int) revel.Result {
 	users, err := bll.UserSelect(depIds, key)
 	if err != nil {
 		return s.RenderText("")
@@ -88,3 +88,5 @@ func (s System) UserSelect(key string, depIds *[]bson.ObjectId) revel.Result {
 func (s System) UserInsert() {
 
 }
+
+//==============================================================================

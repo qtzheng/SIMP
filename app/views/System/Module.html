@@ -4,13 +4,13 @@
         <div class="mini-splitter" vertical="true" allowresize="false" style="width:100%;height:100%;" borderstyle="border:0;">
             <div size="30px">
                 <div class="mini-toolbar" borderstyle="border:0;">
-                    <a id="ModuleAdd" name="Module" class="mini-button" iconcls="icon-add" onclick="OnClick">增加</a>
-                    <a id="ModuleEdit" name="Module" class="mini-button" iconcls="icon-edit" onclick="OnClick">修改</a>
-                    <a id="ModuleDelete" name="Module" class="mini-button" iconcls="icon-remove" onclick="OnClick">删除</a>
+                    <a id="ModuleAdd" name="Module" class="mini-button" iconcls="icon-add" onclick="OpenModuleAdd">增加</a>
+                    <a id="ModuleEdit" name="Module" class="mini-button" iconcls="icon-edit" onclick="OpenModuleEdit">修改</a>
+                    <a id="ModuleDelete" name="Module" class="mini-button" iconcls="icon-remove" onclick="">删除</a>
                 </div>
             </div>
             <div>
-                <ul id="treeMenu" class="mini-tree" style="width:100%;padding:0px;height:100%" url='@Url.Action("GetAllModule", "Module")' onnodeselect="onNodeSelect" expandonload="0"
+                <ul id="treeModule" class="mini-tree" style="width:100%;padding:0px;height:100%" url='@Url.Action("GetAllModule", "Module")' onnodeselect="onModuleSelect" expandonload="0"
                     showtreeicon="true" textfield="Name" idfield="ID" parentfield="PId" resultastree="false"></ul>
             </div>
         </div>
@@ -40,31 +40,31 @@
         </div>
     </div>
 </div>
-<div id="moduleEdit" class="mini-window" style="width:400px;height:300px;" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+<div id="winModule" class="mini-window" style="width:400px;height:300px;" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
 
     <div id="formModule">
         <table class="FormTable" style="width:100%" cellspacing="1">
             <tr>
-                <th>模块标志:</th>
-                <td style="width:100%">
-                    <input width="100%" id="txtId" name="ModuleID" class="mini-textbox" required="true" />
-                </td>
-            </tr>
-            <tr>
                 <th>模块名称:</th>
                 <td>
-                    <input width="100%" id="txtName" name="ModuleName" class="mini-textbox" required="true" />
+                    <input width="100%" id="txtId" name="ID" class="mini-hidden" required="true" />
+                    <input width="100%" id="txtName" name="Name" class="mini-textbox" required="true" />
                 </td>
             </tr>
             <tr>
                 <th>模块编码:</th>
                 <td>
                     <input width="100%" id="txtCode" name="Code" class="mini-textbox" required="false" />
-                    <input id="hidPID" name="ParentModID" class="mini-hidden" />
+                    <input id="hidPID" name="ParentID" class="mini-hidden" />
                 </td>
 
             </tr>
-
+            <tr>
+                <th>上级模块:</th>
+                <td>
+                    <span id="spParentName"></span>
+                </td>
+            </tr>
             <tr>
                 <th>Url地址:</th>
                 <td>
@@ -74,13 +74,14 @@
             <tr>
                 <th>是否启用:</th>
                 <td>
-                    <input width="200px" id="txtGrade" name="Grade" class="mini-hidden" value="1" required="true" />
-                    <input id="isModuleUse" name="IsUse" class="mini-checkbox" checked="true" text="启用" value="2" truevalue="2" falsevalue="1" />
+                    <input id="isModuleUse" name="IsUse" class="mini-checkbox" checked="true" text="启用" value="true" truevalue="true" falsevalue="false" />
                 </td>
             </tr>
             <tr>
                 <th>排序顺序:</th>
-                <td><input width="100%" id="txtModuleSort" name="Sort" value=0 class="mini-textbox" vtype="int" required="true" /></td>
+                <td>
+                    <input width="100%" id="txtModuleSort" name="Sort" value=0 class="mini-textbox" vtype="int" required="true" />
+                </td>
             </tr>
             <tr>
                 <th>备注:</th>
@@ -93,20 +94,20 @@
     </div>
 
     <div property="footer" style="text-align:center;padding:5px;padding-right:15px;">
-        <a id="btnModuleAdd" name="Module" class="mini-button" iconcls="icon-add" onclick="SaveModuleInfo('Module', 'add', '/Module/AddModule')">新 增</a>
-        <a id="btnModuleEdit" name="Module" class="mini-button" iconcls="icon-save" onclick="SaveModuleInfo('Module', 'edit', '/Module/EditModule')">修 改</a>
-        <a class="mini-button" iconcls="icon-reload" onclick="hideWindow(mini.get(moduleEdit))">取 消</a>
+        <a id="btnModuleAdd" class="mini-button" iconcls="icon-add" onclick="AddModule()">新 增</a>
+        <a id="btnModuleEdit" class="mini-button" iconcls="icon-save" onclick="EditModule()">修 改</a>
+        <a class="mini-button" iconcls="icon-reload" onclick="HideWin(winModule)">取 消</a>
     </div>
 </div>
-<div id="functionEdit" class="mini-window" title="Window" style="width:400px;height:300px;" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+<div id="winFunc" class="mini-window" title="Window" style="width:400px;height:300px;" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true" onselect="OnFuncSelect">
 
     <div id="formFunction">
         <table>
             <tr>
                 <td>功能点名称</td>
                 <td>
-                    <input width="200px" id="txtFunName" name="FunctionName" class="mini-textbox" required="true" />
-                    <input width="200px" id="txtFunId" name="FunctionID" class="mini-hidden" />
+                    <input width="200px" id="txtFunName" name="Name" class="mini-textbox" required="true" />
+                    <input width="200px" id="txtFunId" name="ID" class="mini-hidden" />
                 </td>
             </tr>
             <tr>
@@ -117,14 +118,16 @@
                 </td>
             </tr>
             <tr>
+                <td>所属模块</td>
+                <td>
+                    <span id="spModuleName"></span>
+                </td>
+            </tr>
+            <tr>
                 <td>是否启用</td>
                 <td>
                     <input id="IsFuncUse" name="IsUse" class="mini-checkbox" text="启用" value="2" truevalue="2" falsevalue="1" />
                 </td>
-            </tr>
-            <tr>
-                <td>排序顺序</td>
-                <td><input width="200px" id="txtFunSort" name="Sort" class="mini-textbox" vtype="int" required="true" value="0" /></td>
             </tr>
             <tr>
                 <td>备注</td>
@@ -139,7 +142,7 @@
     <div property="footer" style="text-align:center;padding:5px;padding-right:15px;">
         <a id="btnFunctionAdd" name="Module" class="mini-button" iconcls="icon-add" onclick="SaveFunctionInfo('add')">新 增</a>
         <a id="btnFunctionEdit" name="Module" class="mini-button" iconcls="icon-save" onclick="SaveFunctionInfo('edit')">修 改</a>
-        <a class="mini-button" iconcls="icon-reload" onclick="hideWindow(mini.get('functionEdit'))">取 消</a>
+        <a class="mini-button" iconcls="icon-reload" onclick="HideWin(winFunc)">取 消</a>
     </div>
 </div>
 </body>
