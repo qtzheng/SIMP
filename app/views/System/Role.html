@@ -24,7 +24,7 @@
 								<div class="mini-toolbar" borderstyle="border:0;" style="height:30px">选择可操作模块</div>
 							</div>
 							<div style="vertical-align:top">
-								<ul id="treeModule" class="mini-tree" style="width:100%;padding:5px;height:100%" url="/System/GetRoleTreeJson" onnodeselect="onModuleSelect"
+								<ul id="treeModule" class="mini-tree" style="width:100%;padding:5px;height:100%" url="/System/ModelTreeUsed" onnodeselect="onModuleSelect"
                                     onbeforenodecheck="onModuleCheck"
                                     showtreeicon="true" showcheckbox="true" parentfield="pid" textfield="text" idfield="id" resultastree="false" expandonload="0"></ul>
 							</div>
@@ -37,7 +37,7 @@
 								<div class="mini-toolbar" borderstyle="border:0;" style="height:30px">选择可操作功能点</div>
 							</div>
 							<div>
-								<div id="gridFunction" class="mini-datagrid" multiselect="true" style="width:100%;height:100%;" url="/Module/GetModuleFunc" borderstyle="border:0;"
+								<div id="gridFunction" class="mini-datagrid" multiselect="true" style="width:100%;height:100%;" url="/System/FuncSelect" borderstyle="border:0;"
                                      showpager="false" onload="OnFunctionLoad">
 									<div property="columns">
 										<div type="indexcolumn" headeralign="center" width="40px">序号</div>

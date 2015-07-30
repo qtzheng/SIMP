@@ -86,3 +86,43 @@ function EditRole() {
 function onRoleSelect(e) {
     selectRole = e.node;
 }
+function onModuleSelect(e) {
+    selectModule = e.node;
+    gridFunc.load({ moduleID: selectModule.ID });
+}
+function onModuleCheck(e) {
+    if (!selectRole) {
+        mini.alert("选择模块前,请选择角色！");
+        e.cancel = true;
+        return;
+    }
+    var node = e.node;
+    if (e.checked) {
+        if (node.PermissionId) {
+            var msg = DeleteRolePer(node.PermissionId);
+            if (msg.Result == 0) {
+                e.node.PermissionId = undefined;
+                ShowTips('删除成功', 500);
+            }
+            else {
+                ShowTips('删除失败', 500);
+                e.cancel = true;
+            }
+        }
+        else {
+            e.cancel = true;
+            ShowTips('删除失败', 500);
+        }
+    }
+    else {
+        var msg = SaveRolePer(selectRole.ID, node.ID, 1);
+        if (msg.Result == 0) {
+            e.node.PermissionId = msg.Message;
+            ShowTips('添加成功', 500);
+        }
+        else {
+            e.cancel = true;
+            ShowTips('添加失败', 500);
+        }
+    }
+}

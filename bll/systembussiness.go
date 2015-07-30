@@ -73,6 +73,7 @@ func UserInfo(id bson.ObjectId) (*modules.User, error) {
 	return dal.UserInfo(id)
 }
 func UserInsert(user *modules.User) error {
+	user.UserID = bson.NewObjectId()
 	return dal.UserInsert(user)
 }
 func UserUpdate(user *modules.User) error {
@@ -92,3 +93,43 @@ func UserSelect(key string, depIds string, page, size int) (*[]modules.User, err
 }
 
 //===============================================================================================
+func ModuleInsert(module *modules.Module) error {
+	module.ID = bson.NewObjectId()
+	return dal.ModuleInsert(module)
+}
+func ModuleUpdate(module *modules.Module) error {
+	return dal.ModuleUpdate(module)
+}
+func ModuleDelete(id bson.ObjectId) error {
+	return dal.ModuleDelete(id)
+}
+func ModuleInfo(id bson.ObjectId) error {
+	return dal.ModuleInfo(id)
+}
+func ModuleTree(flag int) (*[]modules.Module, error) {
+	var where bson.M
+	if flag == 0 {
+		where = bson.M{"isuse": false}
+	} else if flag == 1 {
+		where = bson.M{"isuse": true}
+	}
+	return dal.ModuleTree(where)
+}
+
+//=====================================================================
+func FuncInsert(function *modules.Function) error {
+	function.ID = bson.NewObjectId()
+	return dal.FuncInsert(function)
+}
+func FuncUpdate(function *modules.Function) error {
+	return dal.FuncUpdate(function)
+}
+func FuncDelete(id bson.ObjectId) error {
+	return dal.FuncDelete(id)
+}
+func FuncInfo(id bson.ObjectId) (modules.Function, error) {
+	return dal.FuncInfo(id)
+}
+func FuncSelect(moduleID bson.ObjectId) (*[]modules.Function, error) {
+	return dal.FuncSelect(moduleID)
+}

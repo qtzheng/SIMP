@@ -235,3 +235,76 @@ func moduleInit() error {
 	}
 	return err
 }
+func ModuleInsert(module *modules.Module) error {
+	return CloneDB().C(ModuleColl).Insert(module)
+}
+func ModuleUpdate(module *modules.Module) error {
+	return CloneDB().C(ModuleColl).Update(bson.M{"_id": module.ID}, module)
+}
+func ModuleDelete(id bson.ObjectId) error {
+	return CloneDB().C(ModuleColl).Remove(bson.M{"_id": id})
+}
+func ModuleInfo(id bson.ObjectId) (*modules.Module, error) {
+	module := &modules.Module{}
+	err := CloneDB().C(ModuleColl).Find(bson.M{"_id": id}).One(module)
+	return module, err
+}
+func ModuleTree(where bson.M) (*[]modules.Module, error) {
+	list := &[]modules.Module{}
+	err := CloneDB().C(ModuleColl).Find(where).Select(bson.M{"_id": 1, "parentid": 1, "name": 1}).All(list)
+	return list, err
+}
+
+//=====================================================================
+func FuncInsert(function *modules.Function) error {
+	return CloneDB().C(FuncColl).Insert(function)
+}
+func FuncUpdate(function *modules.Function) error {
+	return CloneDB().C(FuncColl).Update(bson.M{"_id": function.ID}, function)
+}
+func FuncDelete(id bson.ObjectId) error {
+	return CloneDB().C(FuncColl).Remove(bson.M{"_id": id})
+}
+func FuncInfo(id bson.ObjectId) (*modules.Function, error) {
+	function := &modules.Function{}
+	err := CloneDB().C(FuncColl).Find(bson.M{"_id": id}).One(function)
+	return function, err
+}
+func FuncSelect(moduleID bson.ObjectId) (*[]modules.Function, error) {
+	list := &[]modules.Function{}
+	err := CloneDB().C(FuncColl).Find(bson.M{"moduleid": moduleID}).All(list)
+	return list, err
+}
+
+//=========================================================================
+func RolePerInsert(rp *modules.RolePermission) error {
+	var where bson.M
+	if rp.IsModule {
+		where = bson.M{"moduleid": rp.FunctionID, "roleid": rp.RoleID, "ismodule": true}
+	} else {
+		where = bson.M{"functionid": rp.FunctionID, "roleid": rp.RoleID, "ismodule": false}
+	}
+	count, err := CloneDB().C(RolePermiColl).Find(where).Count()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		err = CloneDB().C(RolePermiColl).Insert(rp)
+
+	}
+	return err
+}
+func RolePerDelete(id bson.ObjectId) error {
+	err := CloneDB().C(RolePermiColl).Remove(bson.M{"_id": id})
+	return err
+}
+func RoleModuleSelect(roleID bson.ObjectId) (*[]modules.RolePermission, error) {
+	list := &[]modules.RolePermission{}
+	err := CloneDB().C(RolePermiColl).Find(bson.M{"roleid": roleID, "ismodule": true}).All(list)
+	return list, err
+}
+func RoleFuncSelect(roleID, moduleID bson.ObjectId) (*[]modules.RolePermission, error) {
+	list := &[]modules.RolePermission{}
+	err := CloneDB().C(RolePermiColl).Find(bson.M{"roleid": roleID, "moduleID": moduleID, "ismodule": false}).All(list)
+	return list, err
+}

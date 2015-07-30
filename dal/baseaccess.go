@@ -7,13 +7,14 @@ import (
 )
 
 const (
-	url        = ""
-	DbName     = "db_simp"
-	RoleColl   = "c_role"
-	DepColl    = "c_department"
-	UserColl   = "c_user"
-	ModuleColl = "c_module"
-	FuncColl   = "c_func"
+	url           = ""
+	DbName        = "db_simp"
+	RoleColl      = "c_role"
+	DepColl       = "c_department"
+	UserColl      = "c_user"
+	ModuleColl    = "c_module"
+	FuncColl      = "c_func"
+	RolePermiColl = "c_rolepermission"
 )
 
 var (
@@ -39,6 +40,10 @@ func init() {
 		revel.WARN.Panicln(err)
 	}
 	err = depInit()
+	if err != nil {
+		revel.WARN.Panicln(err)
+	}
+	err = userInit()
 	if err != nil {
 		revel.WARN.Panicln(err)
 	}

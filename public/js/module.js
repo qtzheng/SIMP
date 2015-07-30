@@ -36,7 +36,7 @@ function OpenModuleEdit() {
 		mini.alert("请选择模块");
 		return;
 	}
-	var url = "/System/GetRoleInfo?id=" + selectModule.ID;
+	var url = "/System/ModuleInfo?id=" + selectModule.ID;
 	OpenEditForm(url, formModule, winModule, "编辑模块", "icon-edit", function() {
 		var Name = treeModule.getParentNode(selectModule).Name;
 		$('#spParentName').html(Name);
@@ -51,7 +51,7 @@ function AddModule() {
 		return;
 	var data = formModule.getData();
 	Ajax({
-		url: "/System/AddRole",
+		url: "/System/ModuleInsert",
 		type: "post",
 		data: data,
 		success: function(msg) {
@@ -75,7 +75,7 @@ function EditModule() {
 			return;
 		var data = formModule.getData();
 		Ajax({
-			url: "/System/EditRole",
+			url: "/System/ModuleUpdate",
 			type: "post",
 			data: data,
 			success: function(msg) {
@@ -100,7 +100,7 @@ function SelectFunc() {
 	if (moduleId == "Defult")
 		return;
 	gridFunction.load({
-		moduleId: moduleId
+		moduleID: moduleId
 	});
 }
 
@@ -125,7 +125,7 @@ function OpenFunctionEdit() {
 		mini.alert("请选择功能点");
 		return;
 	}
-	var url = "/System/GetRoleInfo?id=" + selectFunction.ID;
+	var url = "/System/FuncInfo?id=" + selectFunction.ID;
 	OpenEditForm(url, formFunction, winFunc, "编辑模块", "icon-edit", function() {
 		var Name = treeModule.getParentNode(selectModule).Name;
 		$('#spModuleName').html(Name);
@@ -140,7 +140,7 @@ function AddFunction() {
 		return;
 	var data = formFunction.getData();
 	Ajax({
-		url: "/System/AddRole",
+		url: "/System/FuncInsert",
 		type: "post",
 		data: data,
 		success: function(msg) {
@@ -159,7 +159,7 @@ function EditFunction() {
 		return;
 	var data = formFunction.getData();
 	Ajax({
-		url: "/System/EditRole",
+		url: "/System/FuncUpdate",
 		type: "post",
 		data: data,
 		success: function(msg) {
