@@ -1,10 +1,9 @@
 # SIMP
 System Integration Manage Platform
-# Welcome to Revel
+It's not finished yet
 
 ## Getting Started
 
-A high-productivity web framework for the [Go language](http://www.golang.org/).
 
 ### Start the web server:
 
@@ -12,9 +11,7 @@ A high-productivity web framework for the [Go language](http://www.golang.org/).
 
    Run with <tt>--help</tt> for options.
 
-### Go to http://localhost:9000/ and you'll see:
-
-"It works"
+### Go to http://localhost:9000/ and you'll see
 
 ### Description of Contents
 
@@ -24,14 +21,16 @@ The default directory structure of a generated Revel application:
       app               App sources
         controllers     App controllers
           init.go       Interceptor registration
-        models          App domain models
         routes          Reverse routes (generated code)
         views           Templates
+      bll               bussiness
+      dal               data access
       tests             Test suites
       conf              Configuration files
         app.conf        Main configuration file
         routes          Routes definition
       messages          Message files
+      modules           App domain
       public            Public assets
         css             CSS files
         js              Javascript files
