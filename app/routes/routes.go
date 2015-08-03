@@ -9,35 +9,6 @@ var BaseCollection tBaseCollection
 
 
 
-type tStatic struct {}
-var Static tStatic
-
-
-func (_ tStatic) Serve(
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.Serve", args).Url
-}
-
-func (_ tStatic) ServeModule(
-		moduleName string,
-		prefix string,
-		filepath string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "moduleName", moduleName)
-	revel.Unbind(args, "prefix", prefix)
-	revel.Unbind(args, "filepath", filepath)
-	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
-}
-
-
 type tTestRunner struct {}
 var TestRunner tTestRunner
 
@@ -65,6 +36,35 @@ func (_ tTestRunner) List(
 	args := make(map[string]string)
 	
 	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+}
+
+
+type tStatic struct {}
+var Static tStatic
+
+
+func (_ tStatic) Serve(
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.Serve", args).Url
+}
+
+func (_ tStatic) ServeModule(
+		moduleName string,
+		prefix string,
+		filepath string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleName", moduleName)
+	revel.Unbind(args, "prefix", prefix)
+	revel.Unbind(args, "filepath", filepath)
+	return revel.MainRouter.Reverse("Static.ServeModule", args).Url
 }
 
 
@@ -192,6 +192,128 @@ func (_ tSystem) UserSelect(
 	revel.Unbind(args, "pageIndex", pageIndex)
 	revel.Unbind(args, "pageSize", pageSize)
 	return revel.MainRouter.Reverse("System.UserSelect", args).Url
+}
+
+func (_ tSystem) UserInsert(
+		user interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("System.UserInsert", args).Url
+}
+
+func (_ tSystem) UserUpdate(
+		user interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("System.UserUpdate", args).Url
+}
+
+func (_ tSystem) UserInfo(
+		id interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("System.UserInfo", args).Url
+}
+
+func (_ tSystem) ModuleInsert(
+		module interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "module", module)
+	return revel.MainRouter.Reverse("System.ModuleInsert", args).Url
+}
+
+func (_ tSystem) ModuleUpdate(
+		module interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "module", module)
+	return revel.MainRouter.Reverse("System.ModuleUpdate", args).Url
+}
+
+func (_ tSystem) ModuleInfo(
+		id interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("System.ModuleInfo", args).Url
+}
+
+func (_ tSystem) ModuleDelete(
+		id interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("System.ModuleDelete", args).Url
+}
+
+func (_ tSystem) ModelTreeUsed(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.ModelTreeUsed", args).Url
+}
+
+func (_ tSystem) ModelTree(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("System.ModelTree", args).Url
+}
+
+func (_ tSystem) FuncInsert(
+		function interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "function", function)
+	return revel.MainRouter.Reverse("System.FuncInsert", args).Url
+}
+
+func (_ tSystem) FuncUpdate(
+		function interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "function", function)
+	return revel.MainRouter.Reverse("System.FuncUpdate", args).Url
+}
+
+func (_ tSystem) FuncDelete(
+		id interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("System.FuncDelete", args).Url
+}
+
+func (_ tSystem) FuncInfo(
+		id interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("System.FuncInfo", args).Url
+}
+
+func (_ tSystem) FuncSelect(
+		moduleID interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "moduleID", moduleID)
+	return revel.MainRouter.Reverse("System.FuncSelect", args).Url
 }
 
 

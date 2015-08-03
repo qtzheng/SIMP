@@ -103,7 +103,7 @@ func ModuleUpdate(module *modules.Module) error {
 func ModuleDelete(id bson.ObjectId) error {
 	return dal.ModuleDelete(id)
 }
-func ModuleInfo(id bson.ObjectId) error {
+func ModuleInfo(id bson.ObjectId) (*modules.Module, error) {
 	return dal.ModuleInfo(id)
 }
 func ModuleTree(flag int) (*[]modules.Module, error) {
@@ -127,7 +127,7 @@ func FuncUpdate(function *modules.Function) error {
 func FuncDelete(id bson.ObjectId) error {
 	return dal.FuncDelete(id)
 }
-func FuncInfo(id bson.ObjectId) (modules.Function, error) {
+func FuncInfo(id bson.ObjectId) (*modules.Function, error) {
 	return dal.FuncInfo(id)
 }
 func FuncSelect(moduleID bson.ObjectId) (*[]modules.Function, error) {

@@ -93,9 +93,9 @@ func (s System) UserUpdate(user *modules.User) revel.Result {
 	err := bll.UserUpdate(user)
 	return returnMessage(s.Controller, "", err)
 }
-func (s System) UserInfo(id bson.ObjectId) {
+func (s System) UserInfo(id bson.ObjectId) revel.Result {
 	user, err := bll.UserInfo(id)
-	return returnMessage(c, user, err)
+	return returnMessage(s.Controller, user, err)
 }
 
 //==============================================================================
@@ -107,28 +107,28 @@ func (s System) ModuleUpdate(module *modules.Module) revel.Result {
 	err := bll.ModuleUpdate(module)
 	return returnMessage(s.Controller, "", err)
 }
-func (s System) ModuleInfo(id bson.ObjectId) {
+func (s System) ModuleInfo(id bson.ObjectId) revel.Result {
 	module, err := bll.ModuleInfo(id)
-	return returnMessage(c, module, err)
+	return returnMessage(s.Controller, module, err)
 }
-func (s System) ModuleDelete(id bson.ObjectId) {
+func (s System) ModuleDelete(id bson.ObjectId) revel.Result {
 	err := bll.ModuleDelete(id)
-	return returnMessage(c, "", err)
+	return returnMessage(s.Controller, "", err)
 }
 func (s System) ModelTreeUsed() revel.Result {
 	list, err := bll.ModuleTree(1)
 	if err == nil {
-		return revel.RenderJsonResult(list)
+		return s.RenderJson(list)
 	} else {
-		return ""
+		return s.RenderText("")
 	}
 }
 func (s System) ModelTree() revel.Result {
 	list, err := bll.ModuleTree(2)
 	if err == nil {
-		return revel.RenderJsonResult(list)
+		return s.RenderJson(list)
 	} else {
-		return ""
+		return s.RenderText("")
 	}
 }
 
@@ -139,21 +139,21 @@ func (s System) FuncInsert(function *modules.Function) revel.Result {
 }
 func (s System) FuncUpdate(function *modules.Function) revel.Result {
 	err := bll.FuncUpdate(function)
-	return returnMessage(s.Controller, function.ID, err)
+	return returnMessage(s.Controller, "", err)
 }
 func (s System) FuncDelete(id bson.ObjectId) revel.Result {
 	err := bll.FuncDelete(id)
-	return returnMessage(s.Controller, function.ID, err)
+	return returnMessage(s.Controller, "", err)
 }
 func (s System) FuncInfo(id bson.ObjectId) revel.Result {
-	err := bll.FuncInfo(id)
-	return returnMessage(s.Controller, function.ID, err)
+	function, err := bll.FuncInfo(id)
+	return returnMessage(s.Controller, function, err)
 }
 func (s System) FuncSelect(moduleID bson.ObjectId) revel.Result {
 	list, err := bll.FuncSelect(moduleID)
 	if err == nil {
-		return revel.RenderJsonResult(list)
+		return s.RenderJson(list)
 	} else {
-		return ""
+		return s.RenderText("")
 	}
 }
