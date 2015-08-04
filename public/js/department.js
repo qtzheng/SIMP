@@ -6,7 +6,6 @@ var selectDep = undefined;
 var winUser = mini.get("viewEmp");
 var formUser = new mini.Form("formUser");
 var gridUser = mini.get("gridUser");
-var selectRow = undefined
 
 function OpenDepAdd() {
     if (!selectDep) {
@@ -83,7 +82,7 @@ function EditDep() {
             }
         }
     });
-}
+}OpenUserAdd
 //=============================================
 function SelectUser() {
     try {
@@ -117,14 +116,13 @@ function OpenUserAdd() {
 }
 
 function OpenUserEdit() {
+    var selectRow=gridUser.getSelected();
     if (!selectRow) {
         mini.alert("请选择编辑用户！");
         return;
     }
-    var url = "/System/DepInfo?id=" + selectDep.ID;
+    var url = "/System/UserInfo?id=" + selectRow.UserID;
     OpenEditForm(url, formUser, winUser, "编辑员工", "icon-edit", function() {
-        var depName = treeDep.getParentNode(selectDep).Name;
-        $('#spanParentName').html(depName);
         mini.get("btnUserAdd").hide();
         mini.get("btnUserEdit").show();
         mini.get("btnSetRole").show();
@@ -157,13 +155,14 @@ function EditUser() {
         return;
     var data = formUser.getData();
     Ajax({
-        url: "/System/DepEdit",
+        url: "/System/UserUpdate",
         type: "post",
         data: data,
         success: function(msg) {
             if (msg.Result == 0) {
                 ShowTips("保存成功");
                 HideWin(winUser);
+                 var selectRow=gridUser.getSelected();
                 gridUser.updateRow(selectRow, data);
             }
         }

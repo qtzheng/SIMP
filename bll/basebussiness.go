@@ -1,6 +1,7 @@
 package bll
 
 import (
+	"fmt"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -17,4 +18,7 @@ func ErrorLog(err error) {
 }
 func NewObjectID() bson.ObjectId {
 	return bson.NewObjectId()
+}
+func Log(e interface{}) {
+	fmt.Println(e)
 }

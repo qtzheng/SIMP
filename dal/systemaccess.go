@@ -203,6 +203,7 @@ func UserUpdate(user *modules.User) error {
 	return CloneDB().C(UserColl).Update(bson.M{"_id": user.UserID}, user)
 }
 func UserSelect(where bson.M, page, size int) (*[]modules.User, error) {
+	fmt.Println(where)
 	users := &[]modules.User{}
 	query := CloneDB().C(UserColl).Find(where)
 	if size > 0 {

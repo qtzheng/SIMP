@@ -86,8 +86,8 @@ func UserSelect(key string, depIds string, page, size int) (*[]modules.User, err
 			bson.M{"EngName": key}, bson.M{"PinYin": key}, bson.M{"Abbreviation": key}}
 	}
 	ids := strings.Split(depIds, ",")
-	if len(ids) > 0 {
-		where["depid"] = bson.M{"$in": depIds}
+	if len(ids) > 0 && strings.TrimSpace(ids[0]) != "" {
+		where["depid"] = bson.M{"$in": ids}
 	}
 	return dal.UserSelect(where, page, size)
 }
