@@ -37,18 +37,17 @@
 								<div class="mini-toolbar" borderstyle="border:0;" style="height:30px">选择可操作功能点</div>
 							</div>
 							<div>
-								<div id="gridFunction" class="mini-datagrid" multiselect="true" style="width:100%;height:100%;" url="/System/FuncSelect" borderstyle="border:0;"
+                                <div id="gridFunction" class="mini-datagrid" multiselect="true" style="width:100%;height:100%;" url="/System/FuncSelect" borderstyle="border:0;"
                                      showpager="false" onload="OnFunctionLoad">
-									<div property="columns">
-										<div type="indexcolumn" headeralign="center" width="40px">序号</div>
-										<div field="name" headeralign="center" width="40px" renderer="CreateCheck">选择</div>
-										<div field="id" headeralign="center" visible="false">功能点ID</div>
-										<div field="name" headeralign="center" width="200px">功能点名称</div>
-										<div field="code" headeralign="center" width="200px">功能点编码</div>
-										<div field="perId" headeralign="center" visible="false">授权ID</div>
-										<div headeralign="center" width="100px" renderer="OnRenderer">查看资源</div>
-									</div>
-								</div>
+                                    <div property="columns">
+                                        <div type="indexcolumn" headeralign="center" width="40px">序号</div>
+                                        <div field="name" headeralign="center" width="40px" renderer="CreateCheck">选择</div>
+                                        <div field="name" headeralign="center" width="200px">功能点名称</div>
+                                        <div field="code" headeralign="center" width="200px">功能点编码</div>
+                                        <div field="perId" headeralign="center" visible="false">授权ID</div>
+                                        <div headeralign="center" width="100px" renderer="OnRenderer">查看资源</div>
+                                    </div>
+                                </div>
 							</div>
 						</div>
 

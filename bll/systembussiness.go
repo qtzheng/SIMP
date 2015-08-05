@@ -1,6 +1,7 @@
 package bll
 
 import (
+	"fmt"
 	"github.com/qtzheng/SIMP/dal"
 	"github.com/qtzheng/SIMP/modules"
 	"gopkg.in/mgo.v2/bson"
@@ -132,4 +133,31 @@ func FuncInfo(id bson.ObjectId) (*modules.Function, error) {
 }
 func FuncSelect(moduleID bson.ObjectId) (*[]modules.Function, error) {
 	return dal.FuncSelect(moduleID)
+}
+
+//=====================================================================
+func RolePerInsert(rp *modules.RolePermission) error {
+	rp.PermissionId = bson.NewObjectId()
+	err := dal.RolePerInsert(rp)
+	return err
+}
+func RolePerDelete(id bson.ObjectId) error {
+	return dal.RolePerDelete(id)
+}
+func RolePers(roleID, moduleID string) (*map[string][]modules.RolePermission, error) {
+	roleID = strings.TrimSpace(roleID)
+	moduleID = strings.TrimSpace(moduleID)
+	if roleID == "" {
+		return nil, fmt.Errorf("角色ID不能为空！")
+	}
+
+	per_m, err := dal.RoleModuleSelect(bson.ObjectIdHex(roleID))
+	per_f := &[]modules.RolePermission{}
+	data := make(map[string][]modules.RolePermission)
+	data["per_m"] = *per_m
+	if moduleID == "" {
+		per_f, err = dal.RoleFuncSelect(bson.ObjectIdHex(roleID), bson.ObjectIdHex(moduleID))
+		data["per_f"] = *per_f
+	}
+	return &data, err
 }

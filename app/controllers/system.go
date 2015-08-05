@@ -157,3 +157,21 @@ func (s System) FuncSelect(moduleID bson.ObjectId) revel.Result {
 		return s.RenderText("")
 	}
 }
+
+//========================================================================================
+func (s System) RolePerAdd(per *modules.RolePermission) revel.Result {
+	err := bll.RolePerInsert(per)
+	return returnMessage(s.Controller, per.PermissionId, err)
+}
+func (s System) RolePerDelete(id bson.ObjectId) revel.Result {
+	err := bll.RolePerDelete(id)
+	return returnMessage(s.Controller, "", err)
+}
+func (s System) RoleModule(roleID, moduleID string) revel.Result {
+	data, err := bll.RolePers(roleID, moduleID)
+	return returnMessage(s.Controller, data, err)
+}
+func (s System) RoleFunc(roleID, moduleID string) revel.Result {
+	data, err := bll.RolePers(roleID, moduleID)
+	return returnMessage(s.Controller, data, err)
+}
