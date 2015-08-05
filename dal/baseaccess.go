@@ -47,6 +47,10 @@ func init() {
 	if err != nil {
 		revel.WARN.Panicln(err)
 	}
+	err = moduleInit()
+	if err != nil {
+		revel.WARN.Panicln(err)
+	}
 }
 
 func CloneDB() *mgo.Database {

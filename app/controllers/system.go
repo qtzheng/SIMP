@@ -5,6 +5,7 @@ import (
 	"github.com/qtzheng/SIMP/modules"
 	"github.com/revel/revel"
 	"gopkg.in/mgo.v2/bson"
+	"strings"
 )
 
 type System struct {
@@ -86,10 +87,12 @@ func (s System) UserSelect(key string, depIds string, pageIndex, pageSize int) r
 	}
 }
 func (s System) UserInsert(user *modules.User) revel.Result {
+	user.RoleIDs = strings.Split(s.Params.Get("RoleIDs"), ",")
 	err := bll.UserInsert(user)
 	return returnMessage(s.Controller, user.UserID, err)
 }
 func (s System) UserUpdate(user *modules.User) revel.Result {
+	user.RoleIDs = strings.Split(s.Params.Get("RoleIDs"), ",")
 	err := bll.UserUpdate(user)
 	return returnMessage(s.Controller, "", err)
 }
@@ -99,6 +102,9 @@ func (s System) UserInfo(id bson.ObjectId) revel.Result {
 }
 
 //==============================================================================
+func (s System) Module() revel.Result {
+	return s.Render()
+}
 func (s System) ModuleInsert(module *modules.Module) revel.Result {
 	err := bll.ModuleInsert(module)
 	return returnMessage(s.Controller, module.ID, err)

@@ -108,7 +108,6 @@ function OpenUserAdd() {
     OpenAddForm(formUser, winUser, "添加员工", "icon-add", function() {
         mini.get("btnUserAdd").show();
         mini.get("btnUserEdit").hide();
-        mini.get("btnSetRole").hide();
         mini.get("btnSetPas").hide();
         SetAsInput("txtLoginName");
         SetAsInput("txtJobNumber");
@@ -125,10 +124,12 @@ function OpenUserEdit() {
     OpenEditForm(url, formUser, winUser, "编辑员工", "icon-edit", function() {
         mini.get("btnUserAdd").hide();
         mini.get("btnUserEdit").show();
-        mini.get("btnSetRole").show();
         mini.get("btnSetPas").show();
         SetAsLabel("txtLoginName");
         SetAsLabel("txtJobNumber");
+    },function(data){
+        var ids=data.RoleIDs.join(',');
+        mini.get("tsRoleID").setValue(ids);
     });
 }
 

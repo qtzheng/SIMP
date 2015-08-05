@@ -232,6 +232,10 @@ func moduleInit() error {
 		module := &modules.Module{}
 		module.ID = bson.NewObjectId()
 		module.Name = "系统模块"
+		module.Code = "system"
+		module.IsUse = true
+		module.DisplayType = 1
+		module.Remark = "系统默认添加"
 		err = CloneDB().C(ModuleColl).Insert(module)
 	}
 	return err
