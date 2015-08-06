@@ -8,10 +8,6 @@ import (
 	"strings"
 )
 
-func RoleInit() {
-
-}
-
 //创建权限树
 func RoleCreateTree() (*[]modules.Role, error) {
 	roles, err := dal.RoleTreeSelect()

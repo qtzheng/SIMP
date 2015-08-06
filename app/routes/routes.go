@@ -68,6 +68,11 @@ func (_ tStatic) ServeModule(
 }
 
 
+type tDocker struct {}
+var Docker tDocker
+
+
+
 type tSystem struct {}
 var System tSystem
 

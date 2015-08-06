@@ -15,6 +15,7 @@ const (
 	ModuleColl    = "c_module"
 	FuncColl      = "c_func"
 	RolePermiColl = "c_rolepermission"
+	MachineColl   = "c_machine"
 )
 
 var (

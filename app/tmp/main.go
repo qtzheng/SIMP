@@ -93,6 +93,11 @@ func main() {
 			
 		})
 	
+	revel.RegisterController((*controllers.Docker)(nil),
+		[]*revel.MethodType{
+			
+		})
+	
 	revel.RegisterController((*controllers.System)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{

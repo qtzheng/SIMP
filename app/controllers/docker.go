@@ -12,6 +12,9 @@ type Docker struct {
 	BaseCollection
 }
 
-func (d Docker) Index() {
-
+func (d Docker) Index() revel.Result {
+	return d.Render()
+}
+func (d Docker) MachineAdd(machine *modules.Machine) revel.Result {
+	return
 }
