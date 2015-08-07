@@ -1,0 +1,99 @@
+{{template "header.html" .}}
+<div class="mini-splitter" vertical="false" style="width:100%;height:100%;" borderstyle="border:0;">
+    <div size="300px">
+        <div class="mini-splitter" vertical="true" allowresize="false" style="width:100%;height:100%;" borderstyle="border:0;">
+            <div size="30px">
+                <div class="mini-toolbar" borderstyle="border:0;">
+                    <a id="ModuleAdd" name="Module" class="mini-button" iconcls="icon-add" onclick="OpenModuleAdd">增加</a>
+                    <a id="ModuleEdit" name="Module" class="mini-button" iconcls="icon-edit" onclick="OpenModuleEdit">修改</a>
+                    <a id="ModuleDelete" name="Module" class="mini-button" iconcls="icon-remove" onclick="">删除</a>
+                </div>
+            </div>
+            <div>
+                <ul id="treeModule" class="mini-tree" style="width:100%;padding:0px;height:100%" url='/System/ModelTree' onnodeselect="onModuleSelect" expandonload="0"
+                    showtreeicon="true" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false"></ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="mini-splitter" vertical="true" allowresize="false" style="width:100%;height:100%;" borderstyle="border:0;">
+            <div size="30px">
+                <div class="mini-toolbar" borderstyle="border:0;">
+                    <a id="FunctionAdd" name="Function" class="mini-button" iconcls="icon-add" onclick="OnClick">增加</a>
+                    <a id="FunctionEdit" name="Function" class="mini-button" iconcls="icon-edit" onclick="OnClick">修改</a>
+                    <a id="FunctionDelete" name="Function" class="mini-button" iconcls="icon-remove" onclick="OnClick">删除</a>
+                </div>
+            </div>
+            <div>
+                <div id="gridFunction" class="mini-datagrid" style="width:100%;height:100%;" idfield="id" url="/System/FuncSelect" borderstyle="border:0;" onrowclick="OnRowSelect"
+                     pagesize="20" sizelist="[20]">
+                    <div property="columns">
+                        <div type="indexcolumn" headeralign="center" width="40px">序号</div>
+                        <div field="name" headeralign="center" width="200px">功能点名称</div>
+                        <div field="code" headeralign="center" width="200px">功能点编码</div>
+                        <div field="remark" headeralign="center" width="400px">备注</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="winModule" class="mini-window" style="width:400px;height:300px;" showshadow="true" showfooter="true" showmodal="true" allowresize="false" allowdrag="true">
+    <div id="formModule">
+        <table class="FormTable" style="width:100%" cellspacing="1">
+            <tr>
+                <th>计算机名称:</th>
+                <td>
+                    <input width="100%" id="txtId" name="ID" class="mini-hidden" required="true" />
+                    <input width="100%" id="txtName" name="Name" class="mini-textbox" required="true" />
+                </td>
+            </tr>
+            <tr>
+                <th>计算机编码:</th>
+                <td>
+                    <input width="100%" id="txtCode" name="Code" class="mini-textbox" required="false" />
+                    <input id="hidPID" name="ParentID" class="mini-hidden" />
+                </td>
+
+            </tr>
+            <tr>
+                <th>上级模块:</th>
+                <td>
+                    <span id="spParentName"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>Url地址:</th>
+                <td>
+                    <input width="100%" id="txtUrl" name="URL" class="mini-textbox" onvalidation="onPathValidation" required="false" />
+                </td>
+            </tr>
+            <tr>
+                <th>是否启用:</th>
+                <td>
+                    <input id="isModuleUse" name="IsUse" class="mini-checkbox" checked="true" text="启用" value="true" truevalue="true" falsevalue="false" />
+                </td>
+            </tr>
+            <tr>
+                <th>排序顺序:</th>
+                <td>
+                    <input width="100%" id="txtModuleSort" name="Sort" value=0 class="mini-textbox" vtype="int" required="true" />
+                </td>
+            </tr>
+            <tr>
+                <th>备注:</th>
+                <td>
+                    <textarea id="txtRemark" name="Remark" style="width:100%;height:50px" class="mini-textarea"></textarea>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div property="footer" style="text-align:center;padding:5px;padding-right:15px;">
+        <a id="btnModuleAdd" class="mini-button" iconcls="icon-add" onclick="AddModule()">新 增</a>
+        <a id="btnModuleEdit" class="mini-button" iconcls="icon-save" onclick="EditModule()">修 改</a>
+        <a class="mini-button" iconcls="icon-reload" onclick="HideWin(winModule)">取 消</a>
+    </div>
+</div>
