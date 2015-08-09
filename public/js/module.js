@@ -12,6 +12,9 @@ var selectFunction = undefined;
 function onModuleSelect(e) {
 	selectModule = e.node;
 	selectFunction = undefined;
+	if (selectModule.Code=="system") {
+		return;
+	}
 	SelectFunc();
 }
 
@@ -26,6 +29,7 @@ function OpenModuleAdd() {
 		mini.get("hidPID").setValue(parId);
 		mini.get("btnModuleAdd").show();
 		mini.get("btnModuleEdit").hide();
+		$('#trDsType').css("display", "none");
 		$('#spParentName').html(parName);
 		SetAsInput("txtCode");
 	});
@@ -43,9 +47,36 @@ function OpenModuleEdit() {
 		mini.get("btnModuleAdd").hide();
 		mini.get("btnModuleEdit").show();
 		SetAsLabel("txtCode");
+	}, function(data) {
+		if (data.DisplayType == 1) {
+			$('#trDsType').css("display", "");
+		} else {
+			$('#trDsType').css("display", "none");
+		}
 	});
 }
 
+function OnTypeChanged(e) {
+	if (e.value == "1") {
+		$('#trDsType').css("display", "");
+	} else {
+		$('#trDsType').css("display", "none");
+	}
+}
+function onPathValidation(e)
+{
+    if (e.isValid) {
+        var re = new RegExp("^\/[a-zA-Z]+");
+        if (e.value.replace(' ','')=='') {
+            e.isValid = true;
+            return;
+        }
+        if (!re.test(e.value)) {
+            e.errorText = "必须为：/ABC/DCF格式";
+            e.isValid = false;
+        }
+    }
+}
 function AddModule() {
 	if (!CheckForm(formModule))
 		return;
@@ -71,36 +102,63 @@ function AddModule() {
 }
 
 function EditModule() {
-		if (!CheckForm(formModule))
-			return;
-		var data = formModule.getData();
-		Ajax({
-			url: "/System/ModuleUpdate",
-			type: "post",
-			data: data,
-			success: function(msg) {
-				if (msg.Result == 0) {
-					ShowTips("保存成功");
-					HideWin(winModule);
-					var newNode = {
-						RoleName: data.RoleName,
-					};
-					treeModule.updateNode(selectModule, newNode);
-				}
+	if (!CheckForm(formModule))
+		return;
+	var data = formModule.getData();
+	Ajax({
+		url: "/System/ModuleUpdate",
+		type: "post",
+		data: data,
+		success: function(msg) {
+			if (msg.Result == 0) {
+				ShowTips("保存成功");
+				HideWin(winModule);
+				var newNode = {
+					RoleName: data.RoleName,
+				};
+				treeModule.updateNode(selectModule, newNode);
 			}
-		});
+		}
+	});
+}
+
+function DeleteModule() {
+	if (!selectModule) {
+		mini.alert("请选择模块");
+		return;
 	}
-	//=======================================================================
-function OnFuncSelect(e) {
+	if (!treeModule.isLeaf(selectModule)) {
+		mini.alert("有子模块不能删除");
+		return;
+	}
+	mini.confirm("是否删除？", "提示", function(action) {
+		if (action == "ok") {
+			var url = "/System/ModuleDelete?id=" + selectModule.ID;
+			Ajax({
+				url: url,
+				type: "post",
+				success: function(msg) {
+					if (msg.Result == 0) {
+						ShowTips("删除成功");
+						treeModule.removeNode(selectModule);
+					}
+				},
+			});
+		}
+	});
+
+}
+//=======================================================================
+function OnFunctionSelect(e) {
 	selectFunction = e.record;
 }
 
 function SelectFunc() {
-	var moduleId = selectModule.ID;
-	if (moduleId == "Defult")
+	var moduleid = selectModule.ID;
+	if (selectModule.Code == "system")
 		return;
 	gridFunction.load({
-		moduleID: moduleId
+		moduleid: moduleid
 	});
 }
 
@@ -110,13 +168,15 @@ function OpenFunctionAdd() {
 		return;
 	}
 	OpenAddForm(formFunction, winFunc, "添加模块", "icon-add", function() {
-		var moduleId = selectModule.ID;
+		var moduleID = selectModule.ID;
+		var moduleCode = selectModule.Code;
 		var moduleName = selectModule.Name;
-		mini.get("hidFunModuleID").setValue(moduleId);
+		mini.get("hidFunModuleID").setValue(moduleID);
+		mini.get("hidFunModuleCode").setValue(moduleCode);
 		mini.get("btnFunctionAdd").show();
 		mini.get("btnFunctionEdit").hide();
 		$('#spModuleName').html(moduleName);
-		SetAsInput("txtCode");
+		SetAsInput("txtFunCode");
 	});
 }
 
@@ -131,7 +191,7 @@ function OpenFunctionEdit() {
 		$('#spModuleName').html(Name);
 		mini.get("btnFunctionAdd").hide();
 		mini.get("btnFunctionEdit").show();
-		SetAsLabel("txtCode");
+		SetAsLabel("txtFunCode");
 	});
 }
 
@@ -170,4 +230,27 @@ function EditFunction() {
 			}
 		}
 	});
+}
+
+function DeleteFunction() {
+	if (!selectFunction) {
+		mini.alert("请选择功能点");
+		return;
+	}
+	mini.confirm("是否删除？", "提示", function(action) {
+		if (action == "ok") {
+			var url = "/System/FuncDelete?id=" + selectFunction.ID;
+			Ajax({
+				url: url,
+				type: "post",
+				success: function(msg) {
+					if (msg.Result == 0) {
+						ShowTips("删除成功");
+						gridFunction.removeRow(selectFunction);
+					}
+				},
+			});
+		}
+	});
+
 }

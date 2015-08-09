@@ -30,3 +30,13 @@ func returnMessage(c *revel.Controller, message interface{}, err error) revel.Re
 
 	return c.RenderJson(result)
 }
+
+type GridJson struct {
+	total int
+	data  interface{}
+}
+
+func GetGridJson(c *revel.Controller, count int, data interface{}) revel.Result {
+	json := &GridJson{count, data}
+	return c.RenderJson(json)
+}

@@ -50,21 +50,14 @@ func bindStruct(params *revel.Params, name string, typ reflect.Type) reflect.Val
 	result := reflect.New(typ).Elem()
 	fieldValues := make(map[string]reflect.Value)
 	for key, _ := range params.Values {
-		// Get the name of the struct property.
-		// Strip off the prefix. e.g. foo.bar.baz => bar.baz
 		suffix := strings.TrimSpace(key)
 		fieldName := nextKey(suffix)
-		//fieldLen := len(fieldName)
-		fmt.Println(key)
 		if _, ok := fieldValues[fieldName]; !ok {
-			// Time to bind this field.  Get it and make sure we can set it.
 			fieldValue := result.FieldByName(fieldName)
 			if !fieldValue.IsValid() {
-				//revel.WARN.Println("W: bindStruct: Field not found:", fieldName)
 				continue
 			}
 			if !fieldValue.CanSet() {
-				//revel.WARN.Println("W: bindStruct: Field not settable:", fieldName)
 				continue
 			}
 			boundVal := revel.Bind(params, fieldName, fieldValue.Type())

@@ -6,10 +6,11 @@ import (
 )
 
 type Function struct {
-	ID       bson.ObjectId `bson:"_id"`
-	Name     string
-	Code     string
-	ModuleID string
-	IsUse    bool
-	Remark   string
+	ID         bson.ObjectId `bson:"_id"`
+	Name       string
+	Code       string
+	ModuleCode string
+	ModuleID   string
+	IsUse      bool
+	Remark     string
 }

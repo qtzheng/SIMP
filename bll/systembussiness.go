@@ -76,7 +76,7 @@ func UserInsert(user *modules.User) error {
 func UserUpdate(user *modules.User) error {
 	return dal.UserUpdate(user)
 }
-func UserSelect(key string, depIds string, page, size int) (*[]modules.User, error) {
+func UserSelect(key string, depIds string, page, size int) (*[]modules.User, int, error) {
 	where := bson.M{}
 	if key = strings.TrimSpace(key); key != "" {
 		where["$or"] = []bson.M{bson.M{"LoginName": key}, bson.M{"JobNumber": key}, bson.M{"UserName": key},
@@ -127,33 +127,65 @@ func FuncDelete(id bson.ObjectId) error {
 func FuncInfo(id bson.ObjectId) (*modules.Function, error) {
 	return dal.FuncInfo(id)
 }
-func FuncSelect(moduleID bson.ObjectId) (*[]modules.Function, error) {
-	return dal.FuncSelect(moduleID)
+func FuncSelect(moduleCode string) (*[]modules.Function, error) {
+	return dal.FuncSelect(moduleCode)
 }
 
 //=====================================================================
-func RolePerInsert(rp *modules.RolePermission) error {
+func RolePerInsert(rp *modules.RolePermission, parentModuleID string) error {
 	rp.PermissionId = bson.NewObjectId()
 	err := dal.RolePerInsert(rp)
 	return err
 }
-func RolePerDelete(id bson.ObjectId) error {
+func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems *map[string]string) (*map[string]string, error) {
+	data := &map[string]string{}
+	list := make([]modules.RolePermission, len(parentItems+1))
+	per := &modules.RolePermission{}
+	per.PermissionId = bson.NewObjectId()
+	per.RoleID = roleID
+	per.RoleCode = roleCode
+	per.ModuleID = moduleID
+	per.ModuleCode = moduleCode
+	per.IsModule = true
+	per.IsRef = false
+	list.append(per)
+	for key, value := range parentItems {
+		per := &modules.RolePermission{}
+		per.PermissionId = bson.NewObjectId()
+		per.RoleID = roleID
+		per.RoleCode = roleCode
+		per.ModuleID = key
+		per.ModuleCode = value
+		per.IsModule = true
+		per.IsRef = true
+		list.append(per)
+	}
+
+}
+func RolePerDelete(id bson.ObjectId, parentModuleID string) error {
+	parentModuleID = strings.TrimSpace(parentModuleID)
+	if parentModuleID == "" {
+		return dal.RolePerDelete(id)
+	} else {
+
+	}
 	return dal.RolePerDelete(id)
 }
-func RolePers(roleID, moduleID string) (*map[string][]modules.RolePermission, error) {
+func RolePerModule(roleID string) (*[]modules.RolePermission, error) {
+	roleID = strings.TrimSpace(roleID)
+	if roleID == "" {
+		return nil, fmt.Errorf("角色ID不能为空！")
+	}
+	per_m, err := dal.RoleModuleSelect(roleID)
+	return per_m, err
+
+}
+func RolePerFunc(roleID, moduleID string) (*[]modules.RolePermission, error) {
 	roleID = strings.TrimSpace(roleID)
 	moduleID = strings.TrimSpace(moduleID)
 	if roleID == "" {
 		return nil, fmt.Errorf("角色ID不能为空！")
 	}
-
-	per_m, err := dal.RoleModuleSelect(bson.ObjectIdHex(roleID))
-	per_f := &[]modules.RolePermission{}
-	data := make(map[string][]modules.RolePermission)
-	data["per_m"] = *per_m
-	if moduleID == "" {
-		per_f, err = dal.RoleFuncSelect(bson.ObjectIdHex(roleID), bson.ObjectIdHex(moduleID))
-		data["per_f"] = *per_f
-	}
-	return &data, err
+	list, err := dal.RoleFuncSelect(roleID, moduleID)
+	return list, err
 }

@@ -9,9 +9,9 @@ import (
 	controllers "github.com/qtzheng/SIMP/app/controllers"
 	modules "github.com/qtzheng/SIMP/modules"
 	tests "github.com/qtzheng/SIMP/tests"
-	controllers1 "github.com/revel/modules/static/app/controllers"
+	controllers0 "github.com/revel/modules/static/app/controllers"
 	_ "github.com/revel/modules/testrunner/app"
-	controllers0 "github.com/revel/modules/testrunner/app/controllers"
+	controllers1 "github.com/revel/modules/testrunner/app/controllers"
 	bson "gopkg.in/mgo.v2/bson"
 	"github.com/revel/revel/testing"
 )
@@ -36,7 +36,31 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers0.TestRunner)(nil),
+	revel.RegisterController((*controllers0.Static)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Serve",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "ServeModule",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers1.TestRunner)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Index",
@@ -66,35 +90,6 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 				},
 			},
-			
-		})
-	
-	revel.RegisterController((*controllers1.Static)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Serve",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			&revel.MethodType{
-				Name: "ServeModule",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleName", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "prefix", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "filepath", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Docker)(nil),
-		[]*revel.MethodType{
 			
 		})
 	
@@ -328,7 +323,7 @@ func main() {
 			&revel.MethodType{
 				Name: "FuncSelect",
 				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "moduleID", Type: reflect.TypeOf((*bson.ObjectId)(nil)) },
+					&revel.MethodArg{Name: "moduleid", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -353,7 +348,6 @@ func main() {
 				Name: "RoleModule",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "roleID", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "moduleID", Type: reflect.TypeOf((*string)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
@@ -388,6 +382,28 @@ func main() {
 				RenderArgNames: map[int][]string{ 
 					34: []string{ 
 					},
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Docker)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					16: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "MachineAdd",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "machine", Type: reflect.TypeOf((**modules.Machine)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
 				},
 			},
 			

@@ -7,8 +7,13 @@ import (
 
 type RolePermission struct {
 	PermissionId bson.ObjectId `bson:"_id"`
+	FunctionCode string
 	FunctionID   string
+	ModuleCode   string
 	ModuleID     string
+	RoleCode     string
 	RoleID       string
 	IsModule     bool
+	//是否引用：true:子节点点选中，自己没选中；false:自己选中
+	IsRef bool
 }

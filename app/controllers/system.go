@@ -79,11 +79,11 @@ func (s System) DepDelete(id bson.ObjectId) revel.Result {
 
 //===========================================================================
 func (s System) UserSelect(key string, depIds string, pageIndex, pageSize int) revel.Result {
-	users, err := bll.UserSelect(key, depIds, pageIndex, pageSize)
+	users, count, err := bll.UserSelect(key, depIds, pageIndex, pageSize)
 	if err != nil {
 		return s.RenderText("")
 	} else {
-		return s.RenderJson(users)
+		return GetGridJson(s.Controller, count, users)
 	}
 }
 func (s System) UserInsert(user *modules.User) revel.Result {
@@ -155,11 +155,12 @@ func (s System) FuncInfo(id bson.ObjectId) revel.Result {
 	function, err := bll.FuncInfo(id)
 	return returnMessage(s.Controller, function, err)
 }
-func (s System) FuncSelect(moduleID bson.ObjectId) revel.Result {
-	list, err := bll.FuncSelect(moduleID)
+func (s System) FuncSelect(moduleid string) revel.Result {
+	list, err := bll.FuncSelect(moduleid)
 	if err == nil {
 		return s.RenderJson(list)
 	} else {
+		revel.WARN.Fatalln(err)
 		return s.RenderText("")
 	}
 }
@@ -169,15 +170,18 @@ func (s System) RolePerAdd(per *modules.RolePermission) revel.Result {
 	err := bll.RolePerInsert(per)
 	return returnMessage(s.Controller, per.PermissionId, err)
 }
-func (s System) RolePerDelete(id bson.ObjectId) revel.Result {
-	err := bll.RolePerDelete(id)
+func (s System) RolePerModuleAdd(roleID, moduleID string, parentItems *map[string]string) revel.Result {
+
+}
+func (s System) RolePerDelete(id bson.ObjectId, parentModuleID string) revel.Result {
+	err := bll.RolePerDelete(id, parentModuleID)
 	return returnMessage(s.Controller, "", err)
 }
-func (s System) RoleModule(roleID, moduleID string) revel.Result {
-	data, err := bll.RolePers(roleID, moduleID)
+func (s System) RoleModule(roleID string) revel.Result {
+	data, err := bll.RolePerModule(roleID)
 	return returnMessage(s.Controller, data, err)
 }
 func (s System) RoleFunc(roleID, moduleID string) revel.Result {
-	data, err := bll.RolePers(roleID, moduleID)
+	data, err := bll.RolePerFunc(roleID, moduleID)
 	return returnMessage(s.Controller, data, err)
 }

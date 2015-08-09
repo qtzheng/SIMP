@@ -2,6 +2,7 @@ mini.parse();
 var formRole = new mini.Form("formRole");
 var winRole = mini.get("winRole");
 var treeRole = mini.get("treeRole");
+var mainTab = mini.get("tabMain");
 var selectRole = undefined;
 var selectModule = undefined;
 
@@ -26,7 +27,7 @@ function OpenRoleEdit() {
         mini.alert("请选择角色");
         return;
     }
-    var url = "/System/GetRoleInfo?id="+selectRole.RoleID;
+    var url = "/System/GetRoleInfo?id=" + selectRole.RoleID;
     OpenEditForm(url, formRole, winRole, "编辑角色", "icon-edit", function() {
         var RoleName = treeRole.getParentNode(selectRole).RoleName;
         $('#spanParentName').html(RoleName);
@@ -78,50 +79,57 @@ function EditRole() {
                 var newNode = {
                     RoleName: data.RoleName,
                 };
-                treeRole.updateNode(selectRole,newNode);
+                treeRole.updateNode(selectRole, newNode);
             }
         }
     });
 }
 
 function onRoleSelect(e) {
+    if (e.node.RoleCode == "Defult") {
+        selectRole = undefined;
+        return;
+    }
     selectRole = e.node;
     var tab = mainTab.getActiveTab();
     if (tab.title == "用户") {
         var iframe = mainTab.getTabIFrameEl(tab);
         iframe.contentWindow.LoadData();
-    }
-    else {
+    } else {
         LoadRolePermi();
     }
 }
+
 function LoadRolePermi() {
     if (!selectRole)
         return;
-    OpenWaite();
-    $.ajax({
-        url: '/System/RoleModule/' + selectRole.ID,
-        dataType: 'json',
-        success: function (ret) {
+    var url = '/System/RoleModule?roleID=' + selectRole.RoleID;
+    Ajax({
+        url: url,
+        success: function(ret) {
             if (ret.Result != 0) {
-                CloseWaite();
                 mini.alert("模块权限加载出错");
                 return;
             }
             if (selectModule)
                 OnFunctionLoad();
-            CheckModules(ret);
+            CheckModules(ret.Message);
             CloseWaite();
-        }, error: function (q, m, e) {
+        },
+        error: function(q, m, e) {
             CloseWaite();
             mini.alert(m);
         }
     });
 }
+
 function onModuleSelect(e) {
     selectModule = e.node;
-    gridFunc.load({ moduleID: selectModule.ID });
+    gridFunc.load({
+        moduleID: selectModule.ID
+    });
 }
+
 function onModuleCheck(e) {
     if (!selectRole) {
         mini.alert("添加模块前,请选择角色！");
@@ -129,41 +137,77 @@ function onModuleCheck(e) {
         return;
     }
     var node = e.node;
+    var parentNodes = treeModule.getAncestors(selectModule);
+    var parentModuleID = "";
     if (e.checked) {
         if (node.PermissionId) {
-            var msg = DeleteRolePer(node.PermissionId);
+            if (parentNode.Code = !"system") {
+                parentModuleID = parentNode.ID;
+            }
+            var msg = DeleteRolePer(node.PermissionId, parentModuleID);
             if (msg.Result == 0) {
                 e.node.PermissionId = undefined;
                 ShowTips('删除成功', 500);
-            }
-            else {
+            } else {
                 ShowTips('删除失败', 500);
                 e.cancel = true;
             }
-        }
-        else {
+        } else {
             e.cancel = true;
             ShowTips('删除失败', 500);
         }
-    }
-    else {
-        var msg = SaveRolePer(selectRole.ID, node.ID,'', true);
+    } else {
+        var parentItems = new Array();
+        for (var i = parentNodes.length - 1; i >= 0; i--) {
+            var parentNode = parentNodes[i]
+            if (parentNode.PermissionId == undefined || parentNode.PermissionId == "") {
+                parentItems.push({
+                    parentModuleID: parentNode.ID,
+                    parentModuleCode: parentNode.Code
+                });
+            }
+        };
+        var data = {
+            roleID: selectRole.RoleID,
+            moduleID: selectModule.ID,
+            parentItems: mini.encode(parentItems)
+        };
+        $.ajax({
+            url: '/System/RolePerModuleAdd',
+            type: 'post',
+            data: data,
+            async: false,
+            success: function(msg) {
+                CloseWaite();
+                if (msg.Result == 0) {
+                    ShowTips("添加成功");
+                } else {
+                    mini.alert("添加失败");
+                }
+            },
+            error: function(q, m, e) {
+                CloseWaite();
+                mini.alert(m);
+            }
+        });
+        var msg = SaveRolePer(selectRole.ID, node.ID, '', true);
         if (msg.Result == 0) {
             e.node.PermissionId = msg.Message;
             ShowTips('添加成功', 500);
-        }
-        else {
+        } else {
             e.cancel = true;
             ShowTips('添加失败', 500);
         }
     }
 }
+
 function CreateCheck(e) {
     var check = '<input id="ck' + e.record.id + '" type="checkbox" onclick="OnFunctionCheck(\'' + e.record.id + '\',this)"/>';
     var hidPerId = '<input id="hid' + e.record.id + '" type="hidden" value="" />';
     var div = '<div>' + check + hidPerId + '</div>';
     return div;
 }
+
 function OnFuncCkClicked(funcId, e) {
     if (!selectRole) {
         mini.alert("请选择角色");
@@ -174,16 +218,14 @@ function OnFuncCkClicked(funcId, e) {
         var msg = SaveRolePer(selectRole.ID, selectModule.ID, funcId, 2);
         if (msg.Result == 0) {
             $('#hid' + funcId).val(msg.Message);
-            ShowTips('添加成功',500);
+            ShowTips('添加成功', 500);
             AddResourceBtn(funcId, msg.Message);
-        }
-        else {
+        } else {
             e.checked = !e.checked;
             ShowTips('添加失败', 500);
             $('#hid' + funcId).val('');
         }
-    }
-    else {
+    } else {
         var hidPer = $('#hid' + funcId);
         var perId = hidPer.val();
         if (perId != '') {
@@ -191,28 +233,32 @@ function OnFuncCkClicked(funcId, e) {
             if (msg.Result == 0) {
                 hidPer.val('');
                 ShowTips('删除成功', 500);
-            }
-            else {
+            } else {
                 e.checked = !e.checked;
                 ShowTips('删除失败', 500);
             }
         }
     }
 }
+
 function CheckModules(data) {
-    var nodes = treeModule.findNodes(function (node) {
+    var nodes = treeModule.findNodes(function(node) {
         for (var i = 0; i < data.length; i++) {
             if (data[i].moduleId == node.ID) {
                 node.PermissionId = data[i].perId;
                 return true;
+            } else {
+                node.PermissionId = undefined;
+                return false;
             }
         }
     });
     treeModule.uncheckAllNodes();
     treeModule.checkNodes(nodes);
 }
+
 function CheckFuncs(data) {
-    var roles = gridFunc.findRows(function (row) {
+    var roles = gridFunc.findRows(function(row) {
         RemoveResourceBtn(row.id);
         var hidPer = $('#hid' + row.id);
         var ckFunc = $('#ck' + row.id);
@@ -229,49 +275,69 @@ function CheckFuncs(data) {
         }
     });
 }
-function SaveRolePer(roleId,moduleID, funcId, type) {
+
+function SaveRolePer(roleId, moduleID, funcId, type) {
     OpenWaite();
-    var retData;
+    var retData = {
+        Result: 1
+    };
+    var data = {
+        RoleID: roleId,
+        FunctionID: funcId,
+        IsModule: type,
+        ModuleID: moduleID
+    };
+    if (type == 1) {
+        data.parentModuleID = treeModule.getParentNode(selectModule).ID;
+    }
     $.ajax({
         url: '/System/RolePerAdd',
         type: 'post',
         async: false,
-        data: { RoleID: roleId, FunctionID: funcId, IsModule: type, ModuleID: moduleID },
-        success: function (ret) {
+        data: data,
+        success: function(ret) {
             retData = ret;
-        }, error: function (q, m, e) {
+        },
+        error: function(q, m, e) {
             CloseWaite();
             mini.alert(m);
         }
     });
     return retData;
 }
-function DeleteRolePer(perId) {
+
+function DeleteRolePer(perId, parentModuleID) {
     OpenWaite();
     var retData;
     $.ajax({
-        url: '/System/RolePerDelete/' + perId,
+        url: '/System/RolePerDelete?id=' + perId + '&parentModuleID=' + parentModuleID,
         type: 'post',
         async: false,
-        success: function (ret) {
+        success: function(ret) {
             retData = ret;
-        }, error: function (q, m, e) {
+        },
+        error: function(q, m, e) {
             CloseWaite();
             mini.alert(m);
         }
     });
     return retData;
 }
+
 function OnFunctionLoad() {
     $.ajax({
         url: '/System/RoleFunc',
-        data: { roleId: selectRole.ID, moduleId: selectModule.ID },
-        success: function (ret) {
+        data: {
+            roleId: selectRole.ID,
+            moduleId: selectModule.ID
+        },
+        success: function(ret) {
             if (ret.Result == 0)
                 CheckFuncs(ret);
             else
                 mini.alert("功能点权限加载出错");
-        }, error: function (q, m, e) {
+        },
+        error: function(q, m, e) {
             CloseWaite();
             mini.alert(m);
         }

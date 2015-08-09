@@ -1,7 +1,7 @@
 package bll
 
 import (
-	"fmt"
+	//"fmt"
 	"github.com/qtzheng/SIMP/dal"
 	"github.com/qtzheng/SIMP/modules"
 	"gopkg.in/mgo.v2/bson"
@@ -10,5 +10,6 @@ import (
 
 func MachineAdd(machine *modules.Machine) error {
 	machine.ID = bson.NewObjectId()
-
+	err := dal.MachineAdd(machine)
+	return err
 }

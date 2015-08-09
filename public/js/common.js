@@ -87,7 +87,7 @@ function OpenEditForm(url, form, win, title, icons, funcBefore, funcLoad) {
                 } else {
                     data = text;
                 }
-                if (typeof data.Result !="undefined" && data.Result == 0) {
+                if (typeof data.Result != "undefined" && data.Result == 0) {
                     form.setData(data.Message); //设置多个控件数据
                     if (typeof funcLoad == "function") {
                         funcLoad(data.Message);
@@ -161,19 +161,24 @@ function Ajax(option) {
 }
 
 function CheckForm(form) {
-    if (typeof form == "string") {
-        form = new mini.Form(form);
-    }
-    form.validate();
-    if (!form.isValid) {
-        var err = form.getErrorTexts().join(";");
-        if (err == "") {
-            err = "数据验证不通过";
+    try {
+        if (typeof form == "string") {
+            form = new mini.Form(form);
         }
-        mini.alert(err);
+        form.validate();
+        if (!form.isValid()) {
+            var err = form.getErrorTexts().join(";");
+            if (err == "") {
+                err = "数据验证不通过";
+            }
+            mini.alert(err);
+            return false;
+        } else
+            return true;
+    } catch (e) {
+        mini.alert(e.Message);
         return false;
-    } else
-        return true;
+    }
 }
 
 function ShowTips(msg, time) {

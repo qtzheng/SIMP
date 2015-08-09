@@ -47,7 +47,7 @@ func RoleSelect(page, size int) (*[]modules.Role, error) {
 //查询角色树
 func RoleTreeSelect() (*[]modules.Role, error) {
 	roles := &[]modules.Role{}
-	query := CloneDB().C(RoleColl).Find(nil).Select(bson.M{"_id": 1, "rolename": 1, "parentid": 1})
+	query := CloneDB().C(RoleColl).Find(nil).Select(bson.M{"_id": 1, "rolename": 1, "parentid": 1, "rolecode": 1})
 	err := query.All(roles)
 	return roles, err
 }
@@ -69,7 +69,12 @@ func RoleInsert(role *modules.Role) error {
 
 //修改权限信息
 func RoleEdit(role *modules.Role) error {
-	err := CloneDB().C(RoleColl).Update(bson.M{"_id": role.RoleID}, role)
+	info := bson.M{}
+	info["rolename"] = role.RoleName
+	info["isuse"] = role.IsUse
+	info["remark"] = role.Remark
+	info["sort"] = role.Sort
+	err := CloneDB().C(RoleColl).Update(bson.M{"_id": role.RoleID}, bson.M{"$set": info})
 	return err
 }
 
@@ -157,7 +162,12 @@ func DepInsert(dep *modules.Department) error {
 
 //修改部门信息
 func DepEdit(dep *modules.Department) error {
-	err := CloneDB().C(DepColl).Update(bson.M{"_id": dep.ID}, dep)
+	info := bson.M{}
+	info["name"] = dep.Name
+	info["manager"] = dep.Manager
+	info["isuse"] = dep.IsUse
+	info["remark"] = dep.Remark
+	err := CloneDB().C(DepColl).Update(bson.M{"_id": dep.ID}, bson.M{"$set": info})
 	return err
 }
 
@@ -200,17 +210,32 @@ func UserInsert(user *modules.User) error {
 	return CloneDB().C(UserColl).Insert(user)
 }
 func UserUpdate(user *modules.User) error {
-	return CloneDB().C(UserColl).Update(bson.M{"_id": user.UserID}, user)
+	info := bson.M{}
+	info["loginname"] = user.LoginName
+	info["username"] = user.UserName
+	info["depid"] = user.DepID
+	info["roleids"] = user.RoleIDs
+	info["engname"] = user.EngName
+	info["pinyin"] = user.PinYin
+	info["abbreviation"] = user.Abbreviation
+	info["telephone"] = user.Telephone
+	info["mobilephone"] = user.Mobilephone
+	info["email"] = user.Email
+	info["isuse"] = user.IsUse
+	return CloneDB().C(UserColl).Update(bson.M{"_id": user.UserID}, bson.M{"$set": info})
 }
-func UserSelect(where bson.M, page, size int) (*[]modules.User, error) {
-	fmt.Println(where)
+func UserSelect(where bson.M, page, size int) (*[]modules.User, int, error) {
 	users := &[]modules.User{}
 	query := CloneDB().C(UserColl).Find(where)
+	count, err := query.Count()
+	if err != nil {
+		return users, 0, err
+	}
 	if size > 0 {
 		query = query.Skip(page * size).Limit(size)
 	}
-	err := query.All(users)
-	return users, err
+	err = query.All(users)
+	return users, count, err
 }
 func UserRoles(ids []bson.ObjectId) (*[]modules.Role, error) {
 	roles := &[]modules.Role{}
@@ -241,13 +266,37 @@ func moduleInit() error {
 	return err
 }
 func ModuleInsert(module *modules.Module) error {
+	coll := CloneDB().C(ModuleColl)
+	if count, err := coll.Find(bson.M{"code": module.Code}).Count(); err == nil {
+		if count == 0 {
+			return coll.Insert(module)
+		} else {
+			return fmt.Errorf("%s已经存在该编码！", module.Code)
+		}
+	} else {
+		return err
+	}
 	return CloneDB().C(ModuleColl).Insert(module)
 }
 func ModuleUpdate(module *modules.Module) error {
-	return CloneDB().C(ModuleColl).Update(bson.M{"_id": module.ID}, module)
+	info := bson.M{}
+	info["name"] = module.Name
+	info["url"] = module.URL
+	info["isuse"] = module.IsUse
+	info["sort"] = module.Sort
+	info["remark"] = module.Remark
+	info["displaytype"] = module.DisplayType
+	return CloneDB().C(ModuleColl).Update(bson.M{"_id": module.ID}, bson.M{"$set": info})
 }
 func ModuleDelete(id bson.ObjectId) error {
+	if err := RolePerDeleteByModule(id.String()); err != nil {
+		return err
+	}
+	if err := CloneDB().C(FuncColl).Remove(bson.M{"moduleid": id.String()}); err != nil {
+		return err
+	}
 	return CloneDB().C(ModuleColl).Remove(bson.M{"_id": id})
+
 }
 func ModuleInfo(id bson.ObjectId) (*modules.Module, error) {
 	module := &modules.Module{}
@@ -256,18 +305,35 @@ func ModuleInfo(id bson.ObjectId) (*modules.Module, error) {
 }
 func ModuleTree(where bson.M) (*[]modules.Module, error) {
 	list := &[]modules.Module{}
-	err := CloneDB().C(ModuleColl).Find(where).Select(bson.M{"_id": 1, "parentid": 1, "name": 1}).All(list)
+	err := CloneDB().C(ModuleColl).Find(where).Select(bson.M{"_id": 1, "parentid": 1, "name": 1, "code": 1}).All(list)
 	return list, err
 }
 
 //=====================================================================
 func FuncInsert(function *modules.Function) error {
-	return CloneDB().C(FuncColl).Insert(function)
+	coll := CloneDB().C(FuncColl)
+	if count, err := coll.Find(bson.M{"modulecode": function.ModuleCode, "code": function.Code}).Count(); err == nil {
+		if count > 0 {
+			return fmt.Errorf("%s已经存在该编码！", function.Code)
+		} else {
+			err = coll.Insert(function)
+			return err
+		}
+	} else {
+		return err
+	}
 }
 func FuncUpdate(function *modules.Function) error {
-	return CloneDB().C(FuncColl).Update(bson.M{"_id": function.ID}, function)
+	info := bson.M{}
+	info["name"] = function.Name
+	info["isuse"] = function.IsUse
+	info["remark"] = function.Remark
+	return CloneDB().C(FuncColl).Update(bson.M{"_id": function.ID}, bson.M{"$set": info})
 }
 func FuncDelete(id bson.ObjectId) error {
+	if err := RolePerDeleteByFunc(id.String()); err != nil {
+		return err
+	}
 	return CloneDB().C(FuncColl).Remove(bson.M{"_id": id})
 }
 func FuncInfo(id bson.ObjectId) (*modules.Function, error) {
@@ -275,7 +341,7 @@ func FuncInfo(id bson.ObjectId) (*modules.Function, error) {
 	err := CloneDB().C(FuncColl).Find(bson.M{"_id": id}).One(function)
 	return function, err
 }
-func FuncSelect(moduleID bson.ObjectId) (*[]modules.Function, error) {
+func FuncSelect(moduleID string) (*[]modules.Function, error) {
 	list := &[]modules.Function{}
 	err := CloneDB().C(FuncColl).Find(bson.M{"moduleid": moduleID}).All(list)
 	return list, err
@@ -295,20 +361,32 @@ func RolePerInsert(rp *modules.RolePermission) error {
 	}
 	if count == 0 {
 		err = CloneDB().C(RolePermiColl).Insert(rp)
-
+	} else {
+		err = CloneDB().C(RolePermiColl).Update(where, bson.M{"#set": bson.M{"isref": false}})
 	}
 	return err
+}
+func RolePerModuleAdd(*[]modules.RolePermission) error {
+
 }
 func RolePerDelete(id bson.ObjectId) error {
 	err := CloneDB().C(RolePermiColl).Remove(bson.M{"_id": id})
 	return err
 }
-func RoleModuleSelect(roleID bson.ObjectId) (*[]modules.RolePermission, error) {
+func RolePerDeleteByModule(moduleID string) error {
+	err := CloneDB().C(RolePermiColl).Remove(bson.M{"moduleid": moduleID})
+	return err
+}
+func RolePerDeleteByFunc(functionID string) error {
+	err := CloneDB().C(RolePermiColl).Remove(bson.M{"functionid": functionID})
+	return err
+}
+func RoleModuleSelect(roleID string) (*[]modules.RolePermission, error) {
 	list := &[]modules.RolePermission{}
 	err := CloneDB().C(RolePermiColl).Find(bson.M{"roleid": roleID, "ismodule": true}).All(list)
 	return list, err
 }
-func RoleFuncSelect(roleID, moduleID bson.ObjectId) (*[]modules.RolePermission, error) {
+func RoleFuncSelect(roleID, moduleID string) (*[]modules.RolePermission, error) {
 	list := &[]modules.RolePermission{}
 	err := CloneDB().C(RolePermiColl).Find(bson.M{"roleid": roleID, "moduleID": moduleID, "ismodule": false}).All(list)
 	return list, err
