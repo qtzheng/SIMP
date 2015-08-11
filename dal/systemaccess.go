@@ -348,6 +348,11 @@ func FuncSelect(moduleID string) (*[]modules.Function, error) {
 }
 
 //=========================================================================
+func RolePerCheck(moduleID, roleID string, isModule bool) (*[]modules.RolePermission, error) {
+	pers := &[]modules.RolePermission{}
+	err := CloneDB().C(RolePermiColl).Find(bson.M{"moduleid": moduleID, "roleid": roleID, "ismodule": isModule}).All(pers)
+	return pers, err
+}
 func RolePerInsert(rp *modules.RolePermission) error {
 	var where bson.M
 	if rp.IsModule {
@@ -365,6 +370,9 @@ func RolePerInsert(rp *modules.RolePermission) error {
 		err = CloneDB().C(RolePermiColl).Update(where, bson.M{"#set": bson.M{"isref": false}})
 	}
 	return err
+}
+func RolePersInsert(rps *[]modules.RolePermission) error {
+
 }
 func RolePerModuleAdd(*[]modules.RolePermission) error {
 

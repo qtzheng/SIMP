@@ -162,6 +162,32 @@ func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems
 	}
 
 }
+func rolePerCheck(moduleID, roleID string, isModule bool) (string, int, error) {
+	coll := CloneDB().C(RolePermiColl)
+	pers, err := RolePerCheck(moduleID, roleID, isModule)
+	if err == nil {
+		switch len(pers) {
+		case 1:
+			return pers[0].PermissionId.String(), 1, nil
+		case 0:
+			return nil, 0, nil
+		default:
+			{
+				var perID string
+				for index, value := range pers {
+					if index == 0 {
+						perID = value.PermissionId.String()
+						continue
+					} else {
+
+					}
+				}
+				return perID, 1, nil
+			}
+		}
+	}
+
+}
 func RolePerDelete(id bson.ObjectId, parentModuleID string) error {
 	parentModuleID = strings.TrimSpace(parentModuleID)
 	if parentModuleID == "" {
