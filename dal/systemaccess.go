@@ -348,6 +348,16 @@ func FuncSelect(moduleID string) (*[]modules.Function, error) {
 }
 
 //=========================================================================
+func RolePerInfo(id bson.ObjectId) (*modules.RolePermission, error) {
+	per := &modules.RolePermission{}
+	err := CloneDB().C(RolePermiColl).Find(bson.M{"_id": id}).One(per)
+	return per, err
+}
+func RolePersByParentID(parentPerID string, isModule bool) (*[]modules.RolePermission, error) {
+	list := &[]modules.RolePermission{}
+	err := CloneDB().C(RolePermiColl).Find(bson.M{"parentperid": parentPerID, "ismodule": isModule}).Select(bson.M{"_id": 1, ""}).All(list)
+	return list, err
+}
 func RolePerCheck(moduleID, roleID string, isModule bool) (*[]modules.RolePermission, error) {
 	pers := &[]modules.RolePermission{}
 	err := CloneDB().C(RolePermiColl).Find(bson.M{"moduleid": moduleID, "roleid": roleID, "ismodule": isModule}).All(pers)

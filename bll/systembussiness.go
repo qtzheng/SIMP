@@ -162,7 +162,7 @@ func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems
 	}
 
 }
-func rolePerCheck(moduleID, roleID string, isModule bool) (string, int, error) {
+func rolePerAddCheck(moduleID, roleID string, isModule bool) (string, int, error) {
 	coll := CloneDB().C(RolePermiColl)
 	pers, err := RolePerCheck(moduleID, roleID, isModule)
 	if err == nil {
@@ -179,7 +179,7 @@ func rolePerCheck(moduleID, roleID string, isModule bool) (string, int, error) {
 						perID = value.PermissionId.String()
 						continue
 					} else {
-
+						err = dal.de
 					}
 				}
 				return perID, 1, nil
@@ -188,14 +188,34 @@ func rolePerCheck(moduleID, roleID string, isModule bool) (string, int, error) {
 	}
 
 }
-func RolePerDelete(id bson.ObjectId, parentModuleID string) error {
-	parentModuleID = strings.TrimSpace(parentModuleID)
-	if parentModuleID == "" {
-		return dal.RolePerDelete(id)
-	} else {
-
+func RolePerDelete(id bson.ObjectId) error {
+	per,err:=dal.RolePerInfo(id)
+	if err!=nil {
+		return err
 	}
-	return dal.RolePerDelete(id)
+	if per.IsModule {
+		
+	}else{
+		return nil
+	}
+	err = dal.RolePerDelete(id)
+	if err != nil {
+		return err
+	}
+	if !isModule {
+		return nil
+	}
+	rolePerDelCheck(id.String())
+}
+func rolePerDelCheck(permissionD string) error {
+	list, err := dal.RolePersByParentID(permissionD, true)
+	if err != nil {
+		return err
+	} else {
+		for _, value := range list {
+			sonList,newErr:=
+		}
+	}
 }
 func RolePerModule(roleID string) (*[]modules.RolePermission, error) {
 	roleID = strings.TrimSpace(roleID)
