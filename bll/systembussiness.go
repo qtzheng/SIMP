@@ -137,10 +137,11 @@ func RolePerInsert(rp *modules.RolePermission, parentModuleID string) error {
 	err := dal.RolePerInsert(rp)
 	return err
 }
-func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems *map[string]string) (*map[string]string, error) {
-	data := &map[string]string{}
-	list := make([]modules.RolePermission, len(parentItems+1))
-	per := &modules.RolePermission{}
+func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems map[string]string) (*map[string]string, error) {
+	//data := &map[string]string{}
+	length := len(parentItems) + 1
+	list := make([]modules.RolePermission, length)
+	per := modules.RolePermission{}
 	per.PermissionId = bson.NewObjectId()
 	per.RoleID = roleID
 	per.RoleCode = roleCode
@@ -148,9 +149,9 @@ func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems
 	per.ModuleCode = moduleCode
 	per.IsModule = true
 	per.IsRef = false
-	list.append(per)
+	list = append(list, per)
 	for key, value := range parentItems {
-		per := &modules.RolePermission{}
+		per := modules.RolePermission{}
 		per.PermissionId = bson.NewObjectId()
 		per.RoleID = roleID
 		per.RoleCode = roleCode
@@ -158,64 +159,56 @@ func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems
 		per.ModuleCode = value
 		per.IsModule = true
 		per.IsRef = true
-		list.append(per)
+		list = append(list, per)
 	}
+	return nil, nil
+}
 
-}
-func rolePerAddCheck(moduleID, roleID string, isModule bool) (string, int, error) {
-	coll := CloneDB().C(RolePermiColl)
-	pers, err := RolePerCheck(moduleID, roleID, isModule)
-	if err == nil {
-		switch len(pers) {
-		case 1:
-			return pers[0].PermissionId.String(), 1, nil
-		case 0:
-			return nil, 0, nil
-		default:
-			{
-				var perID string
-				for index, value := range pers {
-					if index == 0 {
-						perID = value.PermissionId.String()
-						continue
-					} else {
-						err = dal.de
-					}
-				}
-				return perID, 1, nil
-			}
-		}
-	}
+func RolePerDelete(id bson.ObjectId) ([]string, error) {
 
-}
-func RolePerDelete(id bson.ObjectId) error {
-	per,err:=dal.RolePerInfo(id)
-	if err!=nil {
-		return err
-	}
-	if per.IsModule {
-		
-	}else{
-		return nil
-	}
-	err = dal.RolePerDelete(id)
+	per, err := dal.RolePerInfo(id)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if !isModule {
-		return nil
-	}
-	rolePerDelCheck(id.String())
-}
-func rolePerDelCheck(permissionD string) error {
-	list, err := dal.RolePersByParentID(permissionD, true)
+	count, err := dal.RolePersCountByParentID(id.String(), true)
 	if err != nil {
-		return err
+		return nil, err
+	}
+	if count > 0 {
+		err = dal.RolePerIsRefUpdate(id, true)
 	} else {
-		for _, value := range list {
-			sonList,newErr:=
-		}
+		err = dal.RolePerDelete(id)
 	}
+	if err != nil {
+		return nil, err
+	}
+	perIDs := make([]string, 20)
+	perIDs = append(perIDs, id.String())
+	err = rolePerDelCheck(per.ParentPerID, perIDs)
+	return perIDs, err
+}
+func rolePerDelCheck(permissionID string, perIDs []string) error {
+	per, err := dal.RolePerInfo(bson.ObjectIdHex(permissionID))
+	if err != nil {
+		return err
+	}
+	if !per.IsRef {
+		return nil
+	}
+	count, err := dal.RolePersCountByParentID(permissionID, true)
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		err = dal.RolePerDelete(bson.ObjectIdHex(permissionID))
+		if err != nil {
+			return err
+		}
+		perIDs = append(perIDs, permissionID)
+		return rolePerDelCheck(per.ParentPerID, perIDs)
+	}
+	return nil
+
 }
 func RolePerModule(roleID string) (*[]modules.RolePermission, error) {
 	roleID = strings.TrimSpace(roleID)

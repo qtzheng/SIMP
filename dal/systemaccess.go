@@ -348,6 +348,10 @@ func FuncSelect(moduleID string) (*[]modules.Function, error) {
 }
 
 //=========================================================================
+func RolePerIsRefUpdate(id bson.ObjectId, isRef bool) error {
+	err := CloneDB().C(RolePermiColl).Update(bson.M{"_id": id}, bson.M{"$set": bson.M{"isref": isRef}})
+	return err
+}
 func RolePerInfo(id bson.ObjectId) (*modules.RolePermission, error) {
 	per := &modules.RolePermission{}
 	err := CloneDB().C(RolePermiColl).Find(bson.M{"_id": id}).One(per)
@@ -355,8 +359,12 @@ func RolePerInfo(id bson.ObjectId) (*modules.RolePermission, error) {
 }
 func RolePersByParentID(parentPerID string, isModule bool) (*[]modules.RolePermission, error) {
 	list := &[]modules.RolePermission{}
-	err := CloneDB().C(RolePermiColl).Find(bson.M{"parentperid": parentPerID, "ismodule": isModule}).Select(bson.M{"_id": 1, ""}).All(list)
+	err := CloneDB().C(RolePermiColl).Find(bson.M{"parentperid": parentPerID, "ismodule": isModule}).All(list)
 	return list, err
+}
+func RolePersCountByParentID(parentPerID string, isModule bool) (int, error) {
+	count, err := CloneDB().C(RolePermiColl).Find(bson.M{"parentperid": parentPerID, "ismodule": isModule}).Count()
+	return count, err
 }
 func RolePerCheck(moduleID, roleID string, isModule bool) (*[]modules.RolePermission, error) {
 	pers := &[]modules.RolePermission{}
@@ -380,12 +388,6 @@ func RolePerInsert(rp *modules.RolePermission) error {
 		err = CloneDB().C(RolePermiColl).Update(where, bson.M{"#set": bson.M{"isref": false}})
 	}
 	return err
-}
-func RolePersInsert(rps *[]modules.RolePermission) error {
-
-}
-func RolePerModuleAdd(*[]modules.RolePermission) error {
-
 }
 func RolePerDelete(id bson.ObjectId) error {
 	err := CloneDB().C(RolePermiColl).Remove(bson.M{"_id": id})
