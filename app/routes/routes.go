@@ -9,6 +9,36 @@ var BaseCollection tBaseCollection
 
 
 
+type tTestRunner struct {}
+var TestRunner tTestRunner
+
+
+func (_ tTestRunner) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
+}
+
+func (_ tTestRunner) Run(
+		suite string,
+		test string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "suite", suite)
+	revel.Unbind(args, "test", test)
+	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
+}
+
+func (_ tTestRunner) List(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+}
+
+
 type tStatic struct {}
 var Static tStatic
 
@@ -38,33 +68,43 @@ func (_ tStatic) ServeModule(
 }
 
 
-type tTestRunner struct {}
-var TestRunner tTestRunner
+type tApp struct {}
+var App tApp
 
 
-func (_ tTestRunner) Index(
+func (_ tApp) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("TestRunner.Index", args).Url
+	return revel.MainRouter.Reverse("App.Index", args).Url
 }
 
-func (_ tTestRunner) Run(
-		suite string,
-		test string,
+func (_ tApp) Role(
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "suite", suite)
-	revel.Unbind(args, "test", test)
-	return revel.MainRouter.Reverse("TestRunner.Run", args).Url
+	return revel.MainRouter.Reverse("App.Role", args).Url
 }
 
-func (_ tTestRunner) List(
+
+type tDocker struct {}
+var Docker tDocker
+
+
+func (_ tDocker) Index(
 		) string {
 	args := make(map[string]string)
 	
-	return revel.MainRouter.Reverse("TestRunner.List", args).Url
+	return revel.MainRouter.Reverse("Docker.Index", args).Url
+}
+
+func (_ tDocker) MachineAdd(
+		machine interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "machine", machine)
+	return revel.MainRouter.Reverse("Docker.MachineAdd", args).Url
 }
 
 
@@ -323,13 +363,17 @@ func (_ tSystem) FuncSelect(
 	return revel.MainRouter.Reverse("System.FuncSelect", args).Url
 }
 
-func (_ tSystem) RolePerAdd(
-		per interface{},
+func (_ tSystem) RolePerModuleAdd(
+		RoleID string,
+		RoleCode string,
+		ModuleID string,
 		) string {
 	args := make(map[string]string)
 	
-	revel.Unbind(args, "per", per)
-	return revel.MainRouter.Reverse("System.RolePerAdd", args).Url
+	revel.Unbind(args, "RoleID", RoleID)
+	revel.Unbind(args, "RoleCode", RoleCode)
+	revel.Unbind(args, "ModuleID", ModuleID)
+	return revel.MainRouter.Reverse("System.RolePerModuleAdd", args).Url
 }
 
 func (_ tSystem) RolePerDelete(
@@ -359,46 +403,6 @@ func (_ tSystem) RoleFunc(
 	revel.Unbind(args, "roleID", roleID)
 	revel.Unbind(args, "moduleID", moduleID)
 	return revel.MainRouter.Reverse("System.RoleFunc", args).Url
-}
-
-
-type tApp struct {}
-var App tApp
-
-
-func (_ tApp) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-func (_ tApp) Role(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Role", args).Url
-}
-
-
-type tDocker struct {}
-var Docker tDocker
-
-
-func (_ tDocker) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Docker.Index", args).Url
-}
-
-func (_ tDocker) MachineAdd(
-		machine interface{},
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "machine", machine)
-	return revel.MainRouter.Reverse("Docker.MachineAdd", args).Url
 }
 
 

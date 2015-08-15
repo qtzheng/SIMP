@@ -8,6 +8,7 @@ It's not finished yet
 ### Start the web server:
 
     $GOPATH/bin/revel run github.com/qtzheng/SIMP
+    mygo/bin/revel run github.com/qtzheng/SIMP
 
    Run with <tt>--help</tt> for options.
 

@@ -132,38 +132,97 @@ func FuncSelect(moduleCode string) (*[]modules.Function, error) {
 }
 
 //=====================================================================
-func RolePerInsert(rp *modules.RolePermission, parentModuleID string) error {
-	rp.PermissionId = bson.NewObjectId()
-	err := dal.RolePerInsert(rp)
-	return err
-}
-func RolePerModuleAdd(roleID, roleCode, moduleID, moduleCode string, parentItems map[string]string) (*map[string]string, error) {
-	//data := &map[string]string{}
-	length := len(parentItems) + 1
-	list := make([]modules.RolePermission, length)
-	per := modules.RolePermission{}
-	per.PermissionId = bson.NewObjectId()
-	per.RoleID = roleID
-	per.RoleCode = roleCode
-	per.ModuleID = moduleID
-	per.ModuleCode = moduleCode
-	per.IsModule = true
-	per.IsRef = false
-	list = append(list, per)
-	for key, value := range parentItems {
-		per := modules.RolePermission{}
+func RolePerModuleAdd(roleID, roleCode, moduleID string) (map[string]string, error) {
+	data := make(map[string]string)
+	list := []*modules.RolePermission{}
+	per, err := dal.RolePerCheck(moduleID, roleID, true)
+	if err != nil {
+		ErrorLog(err)
+		return nil, err
+	}
+	if per != nil && per.IsRef {
+		err = dal.RolePerIsRefUpdate(per.PermissionId, false)
+		if err != nil {
+			ErrorLog(err)
+			return nil, err
+		}
+	} else if per == nil {
+		fmt.Println(per)
+		mod, modErr := dal.ModuleInfo(bson.ObjectIdHex(moduleID))
+
+		if modErr != nil {
+			ErrorLog(modErr)
+			return nil, modErr
+		}
+		per := &modules.RolePermission{}
 		per.PermissionId = bson.NewObjectId()
 		per.RoleID = roleID
 		per.RoleCode = roleCode
-		per.ModuleID = key
-		per.ModuleCode = value
+		per.ModuleID = mod.ID.String()
+		per.ModuleCode = mod.Code
 		per.IsModule = true
-		per.IsRef = true
-		list = append(list, per)
+		per.IsRef = false
+		data[moduleID] = per.PermissionId.String()
+		parentMod, parErr := dal.ModuleInfo(bson.ObjectIdHex(mod.ParentID))
+		if parErr != nil {
+			ErrorLog(parErr)
+			return nil, parErr
+		} else if parentMod.Code != "system" {
+			parentPer, perErr := dal.RolePerCheck(parentMod.ID.String(), roleID, true)
+			if perErr != nil {
+				ErrorLog(perErr)
+				return nil, perErr
+			}
+			if parentPer == nil {
+				parentPer.PermissionId = bson.NewObjectId()
+				parentPer.RoleID = roleID
+				parentPer.RoleCode = roleCode
+				parentPer.ModuleID = parentMod.ID.String()
+				parentPer.ModuleCode = parentMod.Code
+				parentPer.IsModule = true
+				parentPer.IsRef = true
+				per.ParentPerID = parentPer.PermissionId.String()
+			} else {
+				per.ParentPerID = parentPer.PermissionId.String()
+			}
+			err = rolePerAddCheck(roleID, roleCode, parentPer, list, data)
+		}
 	}
-	return nil, nil
+	list = append(list, per)
+	if err == nil {
+		err = dal.RolePersInsert(list)
+		ErrorLog(err)
+	}
+	return data, err
 }
-
+func rolePerAddCheck(roleID, roleCode string, per *modules.RolePermission, parentPers []*modules.RolePermission, data map[string]string) error {
+	parentMod, parErr := dal.ModuleInfo(bson.ObjectIdHex(per.ModuleID))
+	if parErr != nil {
+		return parErr
+	} else if parentMod.Code == "system" {
+		return nil
+	}
+	parentPer, perErr := dal.RolePerCheck(parentMod.ID.String(), roleID, true)
+	if perErr != nil {
+		return perErr
+	}
+	if parentPer == nil {
+		parentPer = &modules.RolePermission{}
+		parentPer.PermissionId = bson.NewObjectId()
+		parentPer.RoleID = roleID
+		parentPer.RoleCode = roleCode
+		parentPer.ModuleID = parentMod.ID.String()
+		parentPer.ModuleCode = parentMod.Code
+		parentPer.IsModule = true
+		parentPer.IsRef = true
+		per.ParentPerID = parentPer.PermissionId.String()
+	} else {
+		per.ParentPerID = parentPer.PermissionId.String()
+	}
+	parentPers = append(parentPers, per)
+	data[per.ModuleID] = per.PermissionId.String()
+	return rolePerAddCheck(roleID, roleCode, parentPer, parentPers, data)
+}
 func RolePerDelete(id bson.ObjectId) ([]string, error) {
 
 	per, err := dal.RolePerInfo(id)

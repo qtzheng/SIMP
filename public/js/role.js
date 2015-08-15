@@ -137,14 +137,12 @@ function onModuleCheck(e) {
         return;
     }
     var node = e.node;
-    var parentNodes = treeModule.getAncestors(selectModule);
-    var parentModuleID = "";
     if (e.checked) {
         if (node.PermissionId) {
             if (parentNode.Code = !"system") {
                 parentModuleID = parentNode.ID;
             }
-            var msg = DeleteRolePer(node.PermissionId, parentModuleID);
+            var msg = DeleteRolePer(node.PermissionId);
             if (msg.Result == 0) {
                 e.node.PermissionId = undefined;
                 ShowTips('删除成功', 500);
@@ -157,20 +155,10 @@ function onModuleCheck(e) {
             ShowTips('删除失败', 500);
         }
     } else {
-        var parentItems = new Array();
-        for (var i = parentNodes.length - 1; i >= 0; i--) {
-            var parentNode = parentNodes[i]
-            if (parentNode.PermissionId == undefined || parentNode.PermissionId == "") {
-                parentItems.push({
-                    parentModuleID: parentNode.ID,
-                    parentModuleCode: parentNode.Code
-                });
-            }
-        };
         var data = {
-            roleID: selectRole.RoleID,
-            moduleID: selectModule.ID,
-            parentItems: mini.encode(parentItems)
+            RoleID: selectRole.RoleID,
+            ModuleID: selectModule.ID,
+            RoleCode:selectRole.RoleCode
         };
         $.ajax({
             url: '/System/RolePerModuleAdd',
@@ -190,14 +178,6 @@ function onModuleCheck(e) {
                 mini.alert(m);
             }
         });
-        var msg = SaveRolePer(selectRole.ID, node.ID, '', true);
-        if (msg.Result == 0) {
-            e.node.PermissionId = msg.Message;
-            ShowTips('添加成功', 500);
-        } else {
-            e.cancel = true;
-            ShowTips('添加失败', 500);
-        }
     }
 }
 
@@ -306,11 +286,11 @@ function SaveRolePer(roleId, moduleID, funcId, type) {
     return retData;
 }
 
-function DeleteRolePer(perId, parentModuleID) {
+function DeleteRolePer(perId) {
     OpenWaite();
     var retData;
     $.ajax({
-        url: '/System/RolePerDelete?id=' + perId + '&parentModuleID=' + parentModuleID,
+        url: '/System/RolePerDelete?id=' + perId ,
         type: 'post',
         async: false,
         success: function(ret) {
