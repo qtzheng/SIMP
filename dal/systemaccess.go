@@ -393,8 +393,15 @@ func RolePerInsert(rp *modules.RolePermission) error {
 	}
 	return err
 }
-func RolePersInsert(list []*modules.RolePermission) error {
-	return CloneDB().C(RolePermiColl).Insert(list)
+func RolePersInsert(list []modules.RolePermission) error {
+	coll := CloneDB().C(RolePermiColl)
+	for _, per := range list {
+		err := coll.Insert(per)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 func RolePerDelete(id bson.ObjectId) error {
 	err := CloneDB().C(RolePermiColl).Remove(bson.M{"_id": id})

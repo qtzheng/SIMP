@@ -68,46 +68,6 @@ func (_ tStatic) ServeModule(
 }
 
 
-type tApp struct {}
-var App tApp
-
-
-func (_ tApp) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Index", args).Url
-}
-
-func (_ tApp) Role(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("App.Role", args).Url
-}
-
-
-type tDocker struct {}
-var Docker tDocker
-
-
-func (_ tDocker) Index(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Docker.Index", args).Url
-}
-
-func (_ tDocker) MachineAdd(
-		machine interface{},
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "machine", machine)
-	return revel.MainRouter.Reverse("Docker.MachineAdd", args).Url
-}
-
-
 type tSystem struct {}
 var System tSystem
 
@@ -376,13 +336,22 @@ func (_ tSystem) RolePerModuleAdd(
 	return revel.MainRouter.Reverse("System.RolePerModuleAdd", args).Url
 }
 
-func (_ tSystem) RolePerDelete(
+func (_ tSystem) RolePerModuleDelete(
 		id interface{},
 		) string {
 	args := make(map[string]string)
 	
 	revel.Unbind(args, "id", id)
-	return revel.MainRouter.Reverse("System.RolePerDelete", args).Url
+	return revel.MainRouter.Reverse("System.RolePerModuleDelete", args).Url
+}
+
+func (_ tSystem) RolePerFuncDelete(
+		id interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("System.RolePerFuncDelete", args).Url
 }
 
 func (_ tSystem) RoleModule(
@@ -403,6 +372,46 @@ func (_ tSystem) RoleFunc(
 	revel.Unbind(args, "roleID", roleID)
 	revel.Unbind(args, "moduleID", moduleID)
 	return revel.MainRouter.Reverse("System.RoleFunc", args).Url
+}
+
+
+type tApp struct {}
+var App tApp
+
+
+func (_ tApp) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Index", args).Url
+}
+
+func (_ tApp) Role(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("App.Role", args).Url
+}
+
+
+type tDocker struct {}
+var Docker tDocker
+
+
+func (_ tDocker) Index(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Docker.Index", args).Url
+}
+
+func (_ tDocker) MachineAdd(
+		machine interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "machine", machine)
+	return revel.MainRouter.Reverse("Docker.MachineAdd", args).Url
 }
 
 

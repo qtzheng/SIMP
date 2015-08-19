@@ -2,6 +2,7 @@ mini.parse();
 var formRole = new mini.Form("formRole");
 var winRole = mini.get("winRole");
 var treeRole = mini.get("treeRole");
+var treeModule=mini.get("treeModule");
 var mainTab = mini.get("tabMain");
 var selectRole = undefined;
 var selectModule = undefined;
@@ -158,7 +159,7 @@ function onModuleCheck(e) {
         var data = {
             RoleID: selectRole.RoleID,
             ModuleID: selectModule.ID,
-            RoleCode:selectRole.RoleCode
+            RoleCode: selectRole.RoleCode
         };
         $.ajax({
             url: '/System/RolePerModuleAdd',
@@ -169,7 +170,14 @@ function onModuleCheck(e) {
                 CloseWaite();
                 if (msg.Result == 0) {
                     ShowTips("添加成功");
+                    var list = msg.Message;
+                    for (var i = list.length - 1; i >= 0; i--) {
+                        var per = list[i];
+                        var node = treeModule.getNode(per.ModuleID);
+                        node.PermissionId = per.PermissionId;
+                    };
                 } else {
+                    e.cancel = true;
                     mini.alert("添加失败");
                 }
             },
@@ -222,19 +230,19 @@ function OnFuncCkClicked(funcId, e) {
 }
 
 function CheckModules(data) {
-    var nodes = treeModule.findNodes(function(node) {
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].moduleId == node.ID) {
-                node.PermissionId = data[i].perId;
-                return true;
-            } else {
-                node.PermissionId = undefined;
-                return false;
-            }
-        }
-    });
-    treeModule.uncheckAllNodes();
-    treeModule.checkNodes(nodes);
+    try {
+        var nodes = new Array();
+        for (var i = data.length - 1; i >= 0; i--) {
+           var node=treeModule.getNode(data[i].ModuleID);
+            nodes.push(node);
+        };
+       
+
+        treeModule.uncheckAllNodes();
+        treeModule.checkNodes(nodes);
+    } catch (e) {
+        alert(e.message);
+    }
 }
 
 function CheckFuncs(data) {
@@ -290,7 +298,7 @@ function DeleteRolePer(perId) {
     OpenWaite();
     var retData;
     $.ajax({
-        url: '/System/RolePerDelete?id=' + perId ,
+        url: '/System/RolePerDelete?id=' + perId,
         type: 'post',
         async: false,
         success: function(ret) {

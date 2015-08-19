@@ -170,9 +170,13 @@ func (s System) RolePerModuleAdd(RoleID, RoleCode, ModuleID string) revel.Result
 	data, err := bll.RolePerModuleAdd(RoleID, RoleCode, ModuleID)
 	return returnMessage(s.Controller, data, err)
 }
-func (s System) RolePerDelete(id bson.ObjectId) revel.Result {
-	data, err := bll.RolePerDelete(id)
+func (s System) RolePerModuleDelete(id bson.ObjectId) revel.Result {
+	data, err := bll.RolePerModuleDelete(id)
 	return returnMessage(s.Controller, data, err)
+}
+func (s System) RolePerFuncDelete(id bson.ObjectId) revel.Result {
+	err := bll.RolePerFuncDelete(id)
+	return returnMessage(s.Controller, "", err)
 }
 func (s System) RoleModule(roleID string) revel.Result {
 	data, err := bll.RolePerModule(roleID)

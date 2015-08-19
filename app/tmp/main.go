@@ -93,51 +93,6 @@ func main() {
 			
 		})
 	
-	revel.RegisterController((*controllers.App)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					31: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "Role",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					34: []string{ 
-					},
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Docker)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					16: []string{ 
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "MachineAdd",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "machine", Type: reflect.TypeOf((**modules.Machine)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
 	revel.RegisterController((*controllers.System)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
@@ -384,7 +339,15 @@ func main() {
 				},
 			},
 			&revel.MethodType{
-				Name: "RolePerDelete",
+				Name: "RolePerModuleDelete",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*bson.ObjectId)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			&revel.MethodType{
+				Name: "RolePerFuncDelete",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*bson.ObjectId)(nil)) },
 				},
@@ -404,6 +367,51 @@ func main() {
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "roleID", Type: reflect.TypeOf((*string)(nil)) },
 					&revel.MethodArg{Name: "moduleID", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.App)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					31: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Role",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					34: []string{ 
+					},
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Docker)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Index",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					16: []string{ 
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "MachineAdd",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "machine", Type: reflect.TypeOf((**modules.Machine)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},
