@@ -236,8 +236,6 @@ function CheckModules(data) {
            var node=treeModule.getNode(data[i].ModuleID);
             nodes.push(node);
         };
-       
-
         treeModule.uncheckAllNodes();
         treeModule.checkNodes(nodes);
     } catch (e) {

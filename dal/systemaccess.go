@@ -80,7 +80,11 @@ func RoleEdit(role *modules.Role) error {
 
 //删除权限信息
 func RoleDelete(id bson.ObjectId) error {
-	err := CloneDB().C(RoleColl).Remove(bson.M{"_id": id})
+	_, err := CloneDB().C(RolePermiColl).RemoveAll(bson.M{"roleid": id.Hex()})
+	if err != nil {
+		return err
+	}
+	err = CloneDB().C(RoleColl).Remove(bson.M{"_id": id})
 	return err
 }
 
@@ -289,10 +293,10 @@ func ModuleUpdate(module *modules.Module) error {
 	return CloneDB().C(ModuleColl).Update(bson.M{"_id": module.ID}, bson.M{"$set": info})
 }
 func ModuleDelete(id bson.ObjectId) error {
-	if err := RolePerDeleteByModule(id.String()); err != nil {
+	if err := RolePerDeleteByModule(id.Hex()); err != nil {
 		return err
 	}
-	if err := CloneDB().C(FuncColl).Remove(bson.M{"moduleid": id.String()}); err != nil {
+	if _, err := CloneDB().C(FuncColl).RemoveAll(bson.M{"moduleid": id.Hex()}); err != nil {
 		return err
 	}
 	return CloneDB().C(ModuleColl).Remove(bson.M{"_id": id})
@@ -408,11 +412,11 @@ func RolePerDelete(id bson.ObjectId) error {
 	return err
 }
 func RolePerDeleteByModule(moduleID string) error {
-	err := CloneDB().C(RolePermiColl).Remove(bson.M{"moduleid": moduleID})
+	_, err := CloneDB().C(RolePermiColl).RemoveAll(bson.M{"moduleid": moduleID})
 	return err
 }
 func RolePerDeleteByFunc(functionID string) error {
-	err := CloneDB().C(RolePermiColl).Remove(bson.M{"functionid": functionID})
+	_, err := CloneDB().C(RolePermiColl).RemoveAll(bson.M{"functionid": functionID})
 	return err
 }
 func RoleModuleSelect(roleID string) (*[]modules.RolePermission, error) {
